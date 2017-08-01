@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of a basic simple game with all elements -->
+
+<!-- Root element -->
+<gameDefinition>
+
+  <representation id="gameInfo" location="TOP">
+    <objectRef id="score"/>
+    <objectRef id="hiScore"/>
+  </representation>
+
+  <representation id="gameInfo" location="DOWN">
+    <objectRef id="lives"/>
+    <objectRef id="items"/>
+  </representation>
+
+  <!-- Defining the map of the game 
+  Attributes:
+  type=[2D|3D]
+  size=[x,y[,z]] : Size will be pixels, characters or whatever the concrete implementation decides
+  generator=classname: Study if this is a property or is general implementation dependent.
+  spherical=[true|false]: Indicates if the limits of the map are endings or elements can appear in the opposite side
+  renderer=classname
+  -->
+  <map type="2D" size="25,30" spherical="false">
+    <generator classname="pacmanMapGenerator">
+  </map>
+  
+  <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles, structures, collectibles, etc... -->
+  <objects>
+    <object id="wall" dynamic="false" volatile="false" renderer="wallRenderer" size="1,1"/>
+    <object id="ghost" dynamic="true" volatile="true" renderer="ghostRenderer" size="1,1"/>
+    <object id="pacman" dynamic="true" volatile="true" renderer="pacmanRenderer" size="1,1"/>
+    <object id="dot" dynamic="true" volatile="true" renderer="dotRenderer" size="1,1"/>
+    <object id="bigdot" dynamic="true" volatile="true" renderer="bigDotRenderer" size="1,1"/>
+    <object id="cherry" dynamic="true" volatile="true" renderer="cherryRenderer" size="1,1"/>
+  </objects>
+  
+  <!-- Players Definition -->
+  <players number="" maxNumber="" minNumber="">
+  </players>
+  
+  <!-- Avatars ? -->
+  <avatars>
+  </avatars>
+  
+  <!-- Defining Game physics. Movements and collisions 
+  Define set of possible physics action: gravitational pull, friction, repulsion forces, bouncing effects, stickiness, etc
+  Define the 
+  -->
+  <physics>
+  </physics>
+  
+  <!-- Defining game events. Events sent from the player via input devices, timed or random events, and object collision triggered events that affect the game -->
+  <events>
+  </events>
+  
+  <!-- Defining rules. Events consecuences -->
+  <rules>
+  </rules>
+</gameDefinition>
