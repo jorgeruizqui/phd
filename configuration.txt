@@ -1,0 +1,5 @@
+Steps to configure:
+1. git init
+2. git remote add origin https://github.com/jorgeruizqui/phd.git
+3. (configure proxy if necessary) git config --global http.proxy http://proxyaddress:proxyport
+4. git pull origin master
