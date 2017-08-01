@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of a basic simple game with all elements -->
+
+<!-- Root element -->
+<gameDefinition>
+
+  <!-- Defining game representation. Where to locate the menus, lives information, score, etc... Outside the game map. 
+  It can reference game objects to be included
+  Attributes:
+  id=Identifier
+  location=[TOP|DOWN|LEFT|RIGHT]
+  -->
+  <representation id="gameInfo" location="DOWN">
+    <objectRef id="score"/>
+    <objectRef id="lives"/>
+    <objectRef id="time"/>
+    <objectRef id="items"/>
+    <!-- Reference all needed objects -->
+  </representation>
+
+  <!-- Defining the map of the game 
+  Attributes:
+  type=[2D|3D]
+  size=[x,y[,z]] : Size will be pixels, characters or whatever the concrete implementation decides
+  generator=classname: Study if this is a property or is general implementation dependent.
+  spherical=[true|false]: Indicates if the limits of the map are endings or elements can appear in the opposite side
+  renderer=classname
+  -->
+  <map type="2D" size="500,500" spherical="false">
+  </map>
+  
+  <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles, structures, collectibles, etc... -->
+  <objects>
+    <!-- List of Object Definition 
+    Attributes:
+    renderer=classname
+    size=[x,y[,z]]
+    position=[x,y[,z]]
+    dynamic=[true|false]: Indicates wether the object can move or change its state or not
+    volatile=[true|false]: Indicates if an object can appear/disappear from game 
+    avatar=classname: Avatar representing the object
+    -->
+    <object>
+    </object>
+  </objects>
+  
+  <!-- Players Definition -->
+  <players number="" maxNumber="" minNumber="">
+  </players>
+  
+  <!-- Avatars ? -->
+  <avatars>
+  </avatars>
+  
+  <!-- Defining Game physics. Movements and collisions 
+  Define set of possible physics action: gravitational pull, friction, repulsion forces, bouncing effects, stickiness, etc
+  Define the 
+  -->
+  <physics>
+  </physics>
+  
+  <!-- Defining game events. Events sent from the player via input devices, timed or random events, and object collision triggered events that affect the game -->
+  <events>
+  </events>
+  
+  <!-- Defining rules. Events consecuences -->
+  <rules>
+  </rules>
+</gameDefinition>
