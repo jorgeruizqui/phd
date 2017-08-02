@@ -1,22 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>xvgdl-core</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>xvgdl-core</artifactId>
+    <packaging>jar</packaging>
 
-	<name>xvgdl-core</name>
-  <description>XVGDL Core implementation</description>
+    <name>xvgdl-core</name>
+    <description>XVGDL Core implementation</description>
 
-	<parent>
-		<groupId>es.jor.phd.xvgdl</groupId>
-		<artifactId>xvgdl-def</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../xvgdl-def/pom.xml</relativePath>
-	</parent>
+    <parent>
+        <groupId>es.jor.phd.xvgdl</groupId>
+        <artifactId>xvgdl-def</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../xvgdl-def/pom.xml</relativePath>
+    </parent>
 
-	<dependencies>
+    <dependencies>
 
-	</dependencies>
+    </dependencies>
 
 </project>
