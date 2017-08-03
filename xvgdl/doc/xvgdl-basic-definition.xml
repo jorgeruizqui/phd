@@ -4,19 +4,22 @@
 <!-- Root element -->
 <gameDefinition>
 
-  <!-- Defining game representation. Where to locate the menus, lives information, score, etc... Outside the game map. 
-  It can reference game objects to be included
+  <!-- Defining game layout. Where to locate the menus, lives information, score, etc... Outside the game map. 
+  It can reference game objects to be included.
+  CENTER Location is always reserved for game screen
   Attributes:
   id=Identifier
   location=[TOP|DOWN|LEFT|RIGHT]
   -->
-  <representation id="gameInfo" location="DOWN">
-    <objectRef id="score"/>
-    <objectRef id="lives"/>
-    <objectRef id="time"/>
-    <objectRef id="items"/>
-    <!-- Reference all needed objects -->
-  </representation>
+  <layout>
+    <component id="gameInfo" location="DOWN">
+      <objectRef id="score"/>
+      <objectRef id="lives"/>
+      <objectRef id="time"/>
+      <objectRef id="items"/>
+      <!-- Reference all needed objects -->
+    </component>
+  </layout>
 
   <!-- Defining the map of the game 
   Attributes:
@@ -31,7 +34,8 @@
   
   <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles, structures, collectibles, etc... -->
   <objects>
-    <!-- List of Object Definition 
+    <!-- List of Object Definition
+    All objects will have a position and a size. If not specified, size will be always 1 in all axis 
     Attributes:
     renderer=classname
     size=[x,y[,z]]
@@ -46,10 +50,15 @@
   
   <!-- Players Definition -->
   <players number="" maxNumber="" minNumber="">
+    <!-- Player definition 
+    object=objectReference: Sets the current object of the player. It can be changed during game
+    -->
+    <player id="Player 1" object="objectId">
   </players>
   
   <!-- Avatars ? -->
   <avatars>
+    
   </avatars>
   
   <!-- Defining Game physics. Movements and collisions 
@@ -61,9 +70,26 @@
   
   <!-- Defining game events. Events sent from the player via input devices, timed or random events, and object collision triggered events that affect the game -->
   <events>
+    <event id="eventId" rule="ruleId">
   </events>
   
   <!-- Defining rules. Events consecuences -->
   <rules>
+    <!-- Every rule is defined by:
+    An ID which will be referenced by events
+    A list of 0..N objects can be involved in a rule
+    Rules can be provoked by an event (attribute type=eventual) or always to be checked (type=permanent)
+    -->
+    <rule id="ruleId" type="eventual">
+      <!-- 
+      Objetc ref attributes
+      -->
+      <ref id="objectRef1">
+        <!-- Action options
+        action="[scoreUp[,n]|scoreDown[,n]|scoreReset[,n]|livesUp[,n]|livesDown[,n]|livesReset[,n]|disappear|duplicate[,x,y,z]|teletransport[,x,y,z]|freeze[,time]|transform,objecRef]|bounce[,n]"
+        -->
+        <action id="scoreUp,1000">
+      <ref id="objectRef2">
+    </rule>
   </rules>
 </gameDefinition>

@@ -17,11 +17,12 @@
     <properties>
 
         <!-- Default Properties. Can be overwritten using -D in maven execution -->
-        <default.phd.version>0.0.1-SNAPSHOT</default.phd.version>
+        <xvgdl.version>0.0.1-SNAPSHOT</xvgdl.version>
 
         <!-- Artifact versions -->
         <log4j.version>1.2.17</log4j.version>
         <junit.version>4.12</junit.version>
+        <slf4j.version>1.7.21</slf4j.version>
 
         <!-- Build definitions -->
 
@@ -36,9 +37,9 @@
         <build.metainf.classpath.default.prefix>./jar/</build.metainf.classpath.default.prefix>
         <build.metainf.classpath.prefix>${build.metainf.classpath.default.prefix}</build.metainf.classpath.prefix>
 
-        <!-- This property is used in Deployment. By default, classpath will 
-            include versions and SNAPSHOTS in their JAR names. If this property is set 
-            to "custom", then classpath in MANIFEST will only include JAR names (without 
+        <!-- This property is used in Deployment. By default, classpath will
+            include versions and SNAPSHOTS in their JAR names. If this property is set
+            to "custom", then classpath in MANIFEST will only include JAR names (without
             versions an SNAPSHOTS -->
         <default.custom.layout.type>custom</default.custom.layout.type>
         <custom.layout.type>${default.custom.layout.type}</custom.layout.type>
@@ -48,19 +49,24 @@
 
     </properties>
 
-    <!-- General dependency definition. All dependencies declares within 
-        this node can be referenced by this POM or by its child modules' POMs without 
+    <!-- General dependency definition. All dependencies declares within
+        this node can be referenced by this POM or by its child modules' POMs without
         declaring the version. -->
     <dependencyManagement>
         <dependencies>
-
+            <!-- Project dependencies -->
+            <dependency>
+                <groupId>es.jor.phd.xvgdl</groupId>
+                <artifactId>xvgdl-core</artifactId>
+                <version>${xvgdl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>es.jor.phd.xvgdl</groupId>
+                <artifactId>xvgdl-pacman</artifactId>
+                <version>${xvgdl.version}</version>
+            </dependency>
 
             <!-- Third-party dependencies -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -75,14 +81,24 @@
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
-            <artifactId>apache-log4j-extras</artifactId>
-            <version>1.2.17</version>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 
     <build>
 
-        <!-- Plugins declared here can be reused by child POM's without taking 
+        <!-- Plugins declared here can be reused by child POM's without taking
             care of version, if any is reused you may want to configured it. -->
         <pluginManagement>
             <plugins>
@@ -114,16 +130,16 @@
                     </configuration>
                 </plugin>
 
-                <!-- None is declared here because all plugins have to be 
-                    configured and reused by child POMs, so they are declared in next sibling 
+                <!-- None is declared here because all plugins have to be
+                    configured and reused by child POMs, so they are declared in next sibling
                     node. -->
             </plugins>
         </pluginManagement>
 
-        <!-- Plugins declared here are reused by child POM's. No extra re-config. 
-            is needed except to override the behavior defined here. If no version is 
-            declared the last one found in repositories is used. This feature is not 
-            used to avoid going to codehouse or maven repos, sometimes are no in good 
+        <!-- Plugins declared here are reused by child POM's. No extra re-config.
+            is needed except to override the behavior defined here. If no version is
+            declared the last one found in repositories is used. This feature is not
+            used to avoid going to codehouse or maven repos, sometimes are no in good
             shape...Specifying version we ensure to get the one catched at nexus repo. -->
         <plugins>
 
@@ -172,7 +188,7 @@
                             <classpathPrefix>${build.metainf.classpath.prefix}</classpathPrefix>
                             <mainClass>${build.metainf.main.class}</mainClass>
                             <classpathLayoutType>${custom.layout.type}</classpathLayoutType>
-                            <!-- Only used if classpathLayoutType is set 
+                            <!-- Only used if classpathLayoutType is set
                                 to 'custom' -->
                             <customClasspathLayout>$${artifact.artifactId}.$${artifact.extension}</customClasspathLayout>
                         </manifest>
@@ -274,6 +290,7 @@
             </activation>
             <modules>
                 <module>../xvgdl-core</module>
+                <module>../xvgdl-pacman</module>
             </modules>
 
             <properties>

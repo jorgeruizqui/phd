@@ -4,15 +4,17 @@
 <!-- Root element -->
 <gameDefinition>
 
-  <representation id="gameInfo" location="TOP">
-    <objectRef id="score"/>
-    <objectRef id="hiScore"/>
-  </representation>
-
-  <representation id="gameInfo" location="DOWN">
-    <objectRef id="lives"/>
-    <objectRef id="items"/>
-  </representation>
+  <layout>
+    <component id="gameInfo" location="TOP">
+      <objectRef id="score"/>
+      <objectRef id="hiScore"/>
+    </component>
+  
+    <component id="gameInfo" location="DOWN">
+      <objectRef id="lives"/>
+      <objectRef id="items"/>
+    </component>
+  </layout>
 
   <!-- Defining the map of the game 
   Attributes:
@@ -22,22 +24,23 @@
   spherical=[true|false]: Indicates if the limits of the map are endings or elements can appear in the opposite side
   renderer=classname
   -->
-  <map type="2D" size="25,30" spherical="false">
+  <map type="2D" size="25,30" toroidal="false">
     <generator classname="pacmanMapGenerator">
   </map>
   
   <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles, structures, collectibles, etc... -->
   <objects>
-    <object id="wall" dynamic="false" volatile="false" renderer="wallRenderer" size="1,1"/>
-    <object id="ghost" dynamic="true" volatile="true" renderer="ghostRenderer" size="1,1"/>
-    <object id="pacman" dynamic="true" volatile="true" renderer="pacmanRenderer" size="1,1"/>
-    <object id="dot" dynamic="true" volatile="true" renderer="dotRenderer" size="1,1"/>
-    <object id="bigdot" dynamic="true" volatile="true" renderer="bigDotRenderer" size="1,1"/>
-    <object id="cherry" dynamic="true" volatile="true" renderer="cherryRenderer" size="1,1"/>
+    <object id="wall" dynamic="false" volatile="false" renderer="wallRenderer" size="1,1" instances="100"/>
+    <object id="ghost" dynamic="true" volatile="true" renderer="ghostRenderer" size="1,1" instances="4"/>
+    <object id="pacman" dynamic="true" volatile="true" renderer="pacmanRenderer" size="1,1" instances="1"/>
+    <object id="smallDot" dynamic="true" volatile="true" renderer="dotRenderer" size="1,1" instances="100"/>
+    <object id="bigDot" dynamic="true" volatile="true" renderer="bigDotRenderer" size="1,1" instances="10"/>
+    <object id="cherry" dynamic="true" volatile="true" renderer="cherryRenderer" size="1,1" instances="0"/>
   </objects>
   
   <!-- Players Definition -->
-  <players number="" maxNumber="" minNumber="">
+  <players number="1" maxNumber="1" minNumber="1">
+    <player id="Player 1" objectRef="pacman">
   </players>
   
   <!-- Avatars ? -->
@@ -57,5 +60,20 @@
   
   <!-- Defining rules. Events consecuences -->
   <rules>
+    <!-- Rule for pacman eating small dots -->
+    <rule id="eatSmallDot" type="eventual">
+      <objectRef id="pacman" action="scoreUp,100"/>
+      <objectRef id="smallDot" action="disappear"/>
+    </rule>
+    <!-- Rule for pacman eating big dots -->
+    <rule id="eatBigDot" type="eventual">
+      <objectRef id="pacman" action="scoreUp,500"/>
+      <objectRef id="bigDot" action="disappear"/>
+    </rule>
+
+    <!-- Rule for pacman eating all dots -->
+    <rule id="dotsCounter" type="permanent">
+      <action condition="0" consequence="????"/>
+    </rule>
   </rules>
 </gameDefinition>
