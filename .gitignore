@@ -56,3 +56,7 @@ target/
 
 # Maven repo folder
 mvn/
+mvn-settings.xml
+
+#Checkstyle
+.checkstyle
