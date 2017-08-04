@@ -17,29 +17,22 @@
         </component>
     </layout>
 
-    <!-- Defining the map of the game Attributes: type=[2D|3D] size=[x,y[,z]]
-        : Size will be pixels, characters or whatever the concrete implementation
-        decides generator=classname: Study if this is a property or is general implementation
-        dependent. spherical=[true|false]: Indicates if the limits of the map are
-        endings or elements can appear in the opposite side renderer=classname -->
-    <map type="2D" size="25,30" toroidal="false">
-        <generator classname="pacmanMapGenerator" />
+    <map type="2D" sizeX="25" sizeY="30" toroidal="false" generator="es.jor.phd.xvgdl.model.map.GameMapGenerator">
     </map>
 
     <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles,
         structures, collectibles, etc... -->
     <objects>
-        <object id="wall" dynamic="false" volatile="false"
-            renderer="wallRenderer" size="1,1" instances="100" />
-        <object id="ghost" dynamic="true" volatile="true"
+        <object id="wall" type="wall" dynamic="false" volatile="false" renderer="wallRenderer" sizeX="1" sizeY="1" instances="100" />
+        <object id="ghost" type="enemy" dynamic="true" volatile="true"
             renderer="ghostRenderer" size="1,1" instances="4" />
-        <object id="pacman" dynamic="true" volatile="true"
+        <object id="pacman" type="player" dynamic="true" volatile="true"
             renderer="pacmanRenderer" size="1,1" instances="1" />
-        <object id="smallDot" dynamic="true" volatile="true"
+        <object id="smallDot" type="item" dynamic="true" volatile="true"
             renderer="dotRenderer" size="1,1" instances="100" />
-        <object id="bigDot" dynamic="true" volatile="true"
+        <object id="bigDot" type="item" dynamic="true" volatile="true"
             renderer="bigDotRenderer" size="1,1" instances="10" />
-        <object id="cherry" dynamic="true" volatile="true"
+        <object id="cherry" type="item" dynamic="true" volatile="true"
             renderer="cherryRenderer" size="1,1" instances="0" />
     </objects>
 

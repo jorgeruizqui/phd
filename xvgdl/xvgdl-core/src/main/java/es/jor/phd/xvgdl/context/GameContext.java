@@ -1,5 +1,7 @@
 package es.jor.phd.xvgdl.context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import es.indra.eplatform.util.IOUtils;
 import es.jor.phd.xvgdl.context.xml.GameContextXMLHandler;
 import es.jor.phd.xvgdl.model.actions.IGameAction;
 import es.jor.phd.xvgdl.model.map.IGameMap;
+import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 import es.jor.phd.xvgdl.model.physics.IGamePhysic;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
@@ -60,6 +63,10 @@ public final class GameContext extends Context {
      */
     private GameContext(String configurationFile) {
 
+        // Force initialize Objects map
+        Map<GameObjectType, List<IGameObject>> objectsMap = new HashMap<GameObjectType, List<IGameObject>>();
+        setObjectProperty(OBJECTS, objectsMap);
+
         if (IOUtils.getInputStream(configurationFile) != null) {
             GameContextXMLHandler handler = new GameContextXMLHandler(this);
             handler.parseResource(configurationFile);
@@ -86,16 +93,21 @@ public final class GameContext extends Context {
      *
      * @return objects
      */
-    public Map<String, List<IGameObject>> getObjects() {
-        return (Map<String, List<IGameObject>>) get(OBJECTS);
+    public Map<GameObjectType, List<IGameObject>> getObjects() {
+        return (Map<GameObjectType, List<IGameObject>>) get(OBJECTS);
     }
 
     /**
      *
-     * @param objects Objects to set
+     * @param object Object to be added
      */
-    public void setObjects(Map<String, List<IGameObject>> objects) {
-        setObjectProperty(OBJECTS, objects);
+    public void addObject(IGameObject object) {
+        List<IGameObject> currentList = getObjects().get(object.getType());
+        if (currentList == null) {
+            currentList = new ArrayList<IGameObject>();
+        }
+        currentList.add(object);
+        getObjects().put(object.getType(), currentList);
     }
 
     /**

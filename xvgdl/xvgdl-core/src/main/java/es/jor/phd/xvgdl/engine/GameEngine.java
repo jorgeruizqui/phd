@@ -33,7 +33,7 @@ public final class GameEngine extends Properties {
     /**
      * Singleton instance.
      */
-    private GameEngine instance;
+    private static GameEngine instance;
 
     /**
      * Constructor.
@@ -60,7 +60,19 @@ public final class GameEngine extends Properties {
      * @return The game engine instance
      */
     public static GameEngine createGameEngine(String configFile) {
-        return new GameEngine(configFile);
+        instance = new GameEngine(configFile);
+        return instance;
+    }
+
+    /**
+     *
+     * @return the instance
+     */
+    public static GameEngine getInstance() {
+        if (instance == null) {
+            throw new NullPointerException("Game Engine instance hasn't been created");
+        }
+        return instance;
     }
 
     /**
