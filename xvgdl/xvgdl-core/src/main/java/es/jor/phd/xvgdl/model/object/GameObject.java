@@ -1,5 +1,8 @@
 package es.jor.phd.xvgdl.model.object;
 
+import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
+
 /**
  * Game Object
  *
@@ -8,8 +11,10 @@ package es.jor.phd.xvgdl.model.object;
  */
 public class GameObject implements IGameObject {
 
-    /** Unique identifier of the game object. */
-    private String id;
+    /** Name of the game object. */
+    private String name;
+    /** Instance. */
+    private int instance;
     /** x position. */
     private int x;
     /** y position. */
@@ -41,17 +46,40 @@ public class GameObject implements IGameObject {
      */
     private boolean isVolatile;
 
+    /**
+     * Artificial Intelligence associated with this object.
+     */
+    private IGameObjectAI objectAI;
+
     @Override
     public String getId() {
-        return id;
+        return getName() + "-" + getInstance();
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**
      *
-     * @param id Id
+     * @param name Name
      */
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public int getInstance() {
+        return instance;
+    }
+
+    /**
+     *
+     * @param instance Instance
+     */
+    public void setInstance(int instance) {
+        this.instance = instance;
     }
 
     @Override
@@ -208,6 +236,37 @@ public class GameObject implements IGameObject {
      */
     public void setDynamic(boolean isDynamic) {
         this.isDynamic = isDynamic;
+    }
+
+    @Override
+    public void moveTo(int x, int y, int z) {
+        setX(x);
+        setY(y);
+        setZ(z);
+    }
+
+    /**
+     *
+     * @param gameObjectAI Object Artificial Intelligence
+     */
+    public void setAI(IGameObjectAI gameObjectAI) {
+        this.objectAI = gameObjectAI;
+    }
+
+    @Override
+    public void applyAI(GameContext gameContext) {
+        if (objectAI != null) {
+            objectAI.applyAIonObject(gameContext, this);
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "GameObject [id=" + getId() + ", name=" + name + ", instance=" + instance + ", x=" + x + ", y=" + y
+                + ", z=" + z + ", intendedX=" + intendedX + ", intendedY=" + intendedY + ", intendedZ=" + intendedZ
+                + ", sizeX=" + sizeX + ", sizeY=" + sizeY + ", sizeZ=" + sizeZ + ", objectType=" + objectType
+                + ", isDynamic=" + isDynamic + ", isVolatile=" + isVolatile + "]";
     }
 
 }

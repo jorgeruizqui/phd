@@ -1,21 +1,20 @@
 package es.jor.phd.xvgdl.context.xml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import es.indra.eplatform.properties.Properties;
+import es.indra.eplatform.util.log.ELogger;
 import es.indra.eplatform.util.xml.BasicXMLHandler;
 import es.indra.eplatform.util.xml.IgnorableXMLElementParser;
 import es.indra.eplatform.util.xml.XMLException;
 import es.indra.eplatform.util.xml.XMLObjectParser;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.map.IGameMap;
-import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.IGameObject;
+import es.jor.phd.xvgdl.model.rules.IGameRule;
+import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
  * XML Handler for Context configuration
+ *
  * @author jrquinones
  *
  */
@@ -41,13 +40,14 @@ public class GameContextXMLHandler extends BasicXMLHandler {
 
     /**
      * Constructor.
-     * @param gameContext
+     *
+     * @param gameContext Game Context instance
      */
     public GameContextXMLHandler(GameContext gameContext) {
         super();
         this.gameContext = gameContext;
 
-        // Ignore grouping tags.
+        // Ignoring tags:
         this.register(new IgnorableXMLElementParser(XMLTAG_GAME_DEFINITION));
         this.register(new IgnorableXMLElementParser(XMLTAG_OBJECTS));
         this.register(new IgnorableXMLElementParser(XMLTAG_PLAYERS));
@@ -56,8 +56,15 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         this.register(new IgnorableXMLElementParser(XMLTAG_EVENTS));
         this.register(new IgnorableXMLElementParser(XMLTAG_RULES));
 
+        // Parsing tags:
+        this.register(new Properties.PropertyXMLElement());
+        // this.register(new XMLObjectParser(GameLayoutDefinition.XMLTAG,
+        // GameLayoutDefinition.class));
         this.register(new XMLObjectParser(GameMapDefinition.XMLTAG, GameMapDefinition.class));
         this.register(new XMLObjectParser(GameObjectDefinition.XMLTAG, GameObjectDefinition.class));
+        this.register(new XMLObjectParser(GamePlayerDefinition.XMLTAG, GamePlayerDefinition.class));
+        this.register(new XMLObjectParser(GameRuleDefinition.XMLTAG, GameRuleDefinition.class));
+        this.register(new XMLObjectParser(GameRuleActionDefinition.XMLTAG, GameRuleActionDefinition.class));
     }
 
     @Override
@@ -72,18 +79,46 @@ public class GameContextXMLHandler extends BasicXMLHandler {
 
     @Override
     public void onElementFinished(String xmlTag, Object obj) {
-        if (xmlTag.equals(GameMapDefinition.XMLTAG)) {
+
+        if (xmlTag.equals(Properties.XMLTAG_PROPERTY)) {
+            String key = obj.toString().substring(0, obj.toString().indexOf(":"));
+            String value = obj.toString().substring(obj.toString().indexOf(":") + 1);
+            ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Added property: " + key + " - " + value);
+            gameContext.put(key, value);
+        } else if (xmlTag.equals(GameMapDefinition.XMLTAG)) {
             IGameMap gameMap = GameMapDefinition.convert((GameMapDefinition) obj);
+            ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Created Game Map: " + gameMap.toString());
             gameContext.setMap(gameMap);
 
         } else if (xmlTag.equals(GameObjectDefinition.XMLTAG)) {
-            Map<GameObjectType, List<IGameObject>> objects = new HashMap<GameObjectType, List<IGameObject>>();
             GameObjectDefinition objectDefinition = (GameObjectDefinition) obj;
 
             // Create the instances of object
-            for (int i = 0; i < objectDefinition.getIntegerValue(GameObjectDefinition.XMLATTR_INSTANCES, 0); i++) {
-                IGameObject gameObject = GameObjectDefinition.convert(objectDefinition);
+            for (int i = 0; i < objectDefinition.getIntegerValue(GameObjectDefinition.XMLATTR_INSTANCES, 1); i++) {
+                IGameObject gameObject = GameObjectDefinition.convert(objectDefinition, i);
+                ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
+                        "Created Object: " + gameObject.toString());
                 gameContext.addObject(gameObject);
+            }
+        } else if (xmlTag.equals(GamePlayerDefinition.XMLTAG)) {
+            GamePlayerDefinition objectDefinition = (GamePlayerDefinition) obj;
+
+            // Create the instances of object
+            IGameObject gameObject = GamePlayerDefinition.convert(objectDefinition);
+            ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Created Player: " + gameObject.toString());
+            gameContext.addObject(gameObject);
+
+        } else if (xmlTag.equals(GameRuleDefinition.XMLTAG)) {
+            GameRuleDefinition ruleDefinition = (GameRuleDefinition) obj;
+            IGameRule gameRule = ruleDefinition.convert(ruleDefinition);
+            gameContext.addRule(gameRule);
+
+        } else if (xmlTag.equals(GameRuleActionDefinition.XMLTAG)) {
+            GameRuleActionDefinition ruleActionDefinition = (GameRuleActionDefinition) obj;
+
+            if (getParent() instanceof GameRuleDefinition) {
+                GameRuleDefinition parentRuleDefinition = (GameRuleDefinition) getParent();
+                parentRuleDefinition.addActionDefinition(ruleActionDefinition);
             }
         }
     }

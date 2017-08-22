@@ -16,7 +16,10 @@
     </parent>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.1stleg</groupId>
+            <artifactId>jnativehook</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<!-- Definition of a basic simple game with all elements -->
+<!-- Example Definition of a basic simple game with all elements -->
 
 <!-- Root element -->
 <gameDefinition>
 
-  <!-- Defining game layout. Where to locate the menus, lives information, score, etc... Outside the game map. 
-  It can reference game objects to be included.
+  <!-- Renderer configuration independent from engine context definition, so the same file could be valid for different renderers -->
+  <property key="rendererConfiguration" value="/path/to/file.xml"/>
+
+  <!-- 
+  Defining game layout. Where to locate the menus, lives information, score, etc... Outside the game map. 
+  Properties from game context are referenced to be shown in the concrete area.
+  The Game Renderer is in charge of render the elements
   CENTER Location is always reserved for game screen
   Attributes:
   id=Identifier
@@ -13,23 +18,23 @@
   -->
   <layout>
     <component id="gameInfo" location="DOWN">
-      <objectRef id="score"/>
-      <objectRef id="lives"/>
-      <objectRef id="time"/>
-      <objectRef id="items"/>
-      <!-- Reference all needed objects -->
+      <contextProperty id="score"/>
+      <contextProperty id="lives"/>
+      <contextProperty id="time"/>
+      <contextProperty id="playerItems"/>
+      <!-- Reference all needed context properties -->
     </component>
   </layout>
 
-  <!-- Defining the map of the game 
+  <!-- 
+  Defining the map of the game 
   Attributes:
   type=[2D|3D]
-  size=[x,y[,z]] : Size will be pixels, characters or whatever the concrete implementation decides
-  generator=classname: Study if this is a property or is general implementation dependent.
-  spherical=[true|false]: Indicates if the limits of the map are endings or elements can appear in the opposite side
-  renderer=classname
+  sizeX, sizeY, sizeZ : Size will be pixels, characters or whatever the concrete renderer implementation decides
+  generator=classname: This class will be in charge of distribute the game objects to initialize the map
+  toroidal=[true|false]: Indicates if the limits of the map are endings or elements can appear in the opposite side
   -->
-  <map type="2D" size="500,500" spherical="false">
+  <map type="2D" sizeX="25" sizeY="30" toroidal="false" generator="package.name.ClassName">
   </map>
   
   <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles, structures, collectibles, etc... -->
@@ -37,31 +42,38 @@
     <!-- List of Object Definition
     All objects will have a position and a size. If not specified, size will be always 1 in all axis 
     Attributes:
-    renderer=classname
-    size=[x,y[,z]]
-    position=[x,y[,z]]
+    name: Object name
+    type: Object Type (wall|enemy|player|item)
+    sizeX, sizeY, sizeZ=Object size
+    x,y,z=Object position. If not specified, map generator will assign a concrete position.
     dynamic=[true|false]: Indicates wether the object can move or change its state or not
-    volatile=[true|false]: Indicates if an object can appear/disappear from game 
-    avatar=classname: Avatar representing the object
+    volatile=[true|false]: Indicates if an object can appear/disappear from game
+    ai: Optional field declaring a class that will be in charge of applying IA to the objects
+    
+    Objects will have an ID according to the object name and object instance, so every object will have a unique ID 
     -->
-    <object>
-    </object>
+    <object name="objectName" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" instances="100" ai="classname"/>
   </objects>
   
-  <!-- Players Definition -->
-  <players number="" maxNumber="" minNumber="">
-    <!-- Player definition 
-    object=objectReference: Sets the current object of the player. It can be changed during game
+  <!-- Defining Players 
+    Attributes:
+    number: Number of players
+    maxNumber: Maximum number of players
+    minNumber: Minimum number of players
+  -->
+  <players number="1" maxNumber="1" minNumber="1">
+    <!-- Player definition
+    Attributes:
+    objectRef=objectReference: Sets the object associated with the player. Instance is needed in case more than one instance of that kind of objects exists
+    id: Will be composed by player name, objectRef and object instance
+    
+    Has the same attributes as object (is actually a game object, but type, dynamic, volatile and instances should not be configured. Different players must have different name attributes) 
     -->
-    <player id="Player 1" object="objectId">
+    <player name="Player 1" type="player" dynamic="true" volatile="true" sizeX="1" sizeY="1" />
   </players>
   
-  <!-- Avatars ? -->
-  <avatars>
-    
-  </avatars>
-  
-  <!-- Defining Game physics. Movements and collisions 
+  <!-- Defining Game physics. 
+  Movements and collisions 
   Define set of possible physics action: gravitational pull, friction, repulsion forces, bouncing effects, stickiness, etc
   Define the 
   -->
@@ -79,6 +91,12 @@
     An ID which will be referenced by events
     A list of 0..N objects can be involved in a rule
     Rules can be provoked by an event (attribute type=eventual) or always to be checked (type=permanent)
+    
+    Rules can be type 
+      generic: a rule that will be applied to game context without any objects involved
+      collision: If two objects collide
+      proximity: If two objects are closed eachother
+      distant: If two objects are separated eachother 
     -->
     <rule id="ruleId" type="eventual">
       <!-- 

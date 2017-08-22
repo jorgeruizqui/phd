@@ -1,5 +1,7 @@
 package es.jor.phd.xvgdl.model.map;
 
+import java.util.Arrays;
+
 import es.jor.phd.xvgdl.model.object.IGameObject;
 
 /**
@@ -129,4 +131,13 @@ public class GameMap implements IGameMap {
     public void setGenerator(IGameMapGenerator generator) {
         this.generator = generator;
     }
+
+    @Override
+    public String toString() {
+        return "GameMap [mapRepresentation=" + Arrays.toString(mapRepresentation) + ", mapType=" + mapType + ", sizeX="
+                + sizeX + ", sizeY=" + sizeY + ", sizeZ=" + sizeZ + ", toroidal=" + toroidal + ", generator="
+                + generator + "]";
+    }
+
+
 }

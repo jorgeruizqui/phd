@@ -1,40 +1,45 @@
 package es.jor.phd.xvgdl.context;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 import es.indra.eplatform.context.Context;
 import es.indra.eplatform.util.IOUtils;
 import es.jor.phd.xvgdl.context.xml.GameContextXMLHandler;
+import es.jor.phd.xvgdl.context.xml.GameRendererXMLHandler;
+import es.jor.phd.xvgdl.event.IGameEvent;
 import es.jor.phd.xvgdl.model.actions.IGameAction;
 import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 import es.jor.phd.xvgdl.model.physics.IGamePhysic;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
+import es.jor.phd.xvgdl.renderer.IGameRenderer;
 
 /**
  * Game context
+ *
  * @author jrquinones
  *
- *   List of all objects
- *   Map<String, List<IGameObject>> objects;
- *
- *   Game map. Will be initialize when map will be generated/loaded.
- *   IGameMap map;
- *
- *   Game Rules.
- *   Map<String, IGameRule> rules;
- *
- *   Game Physics.
- *   Map<String, IGamePhysic> physics;
- *
- *   Game Actions.
- *   private Map<String, IGameAction> actions;
  */
 public final class GameContext extends Context {
+
+    /** Renderer configuration key. */
+    private static final String RENDERER_CONFIGURATION = "rendererConfiguration";
+
+    /** Game Startup time. */
+    private static final String START_TIME = "START_TIME";
+
+    /** Timeout configuration key. Set to -1 for no timeout. */
+    private static final String TIMEOUT = "timeout";
+
+    /** RENDERER key. */
+    private static final String RENDERER = "RENDERER";
 
     /** Players key. */
     private static final String PLAYERS = "PLAYERS";
@@ -54,11 +59,15 @@ public final class GameContext extends Context {
     /** Actions key. */
     private static final String ACTIONS = "ACTIONS";
 
+    /** Events key. */
+    private static final String EVENTS = "EVENTS";
+
     /** Singleton instance. */
     private static GameContext instance;
 
     /**
      * Constructor.
+     *
      * @param configurationFile Configuration file
      */
     private GameContext(String configurationFile) {
@@ -67,14 +76,28 @@ public final class GameContext extends Context {
         Map<GameObjectType, List<IGameObject>> objectsMap = new HashMap<GameObjectType, List<IGameObject>>();
         setObjectProperty(OBJECTS, objectsMap);
 
+        // Force initialize Rules map
+        Map<String, IGameRule> rulesMap = new HashMap<String, IGameRule>();
+        setObjectProperty(RULES, rulesMap);
+
+        // Force initialize Rules map
+        List<IGameEvent> eventsList = new CopyOnWriteArrayList<IGameEvent>();
+        setObjectProperty(EVENTS, eventsList);
+
         if (IOUtils.getInputStream(configurationFile) != null) {
-            GameContextXMLHandler handler = new GameContextXMLHandler(this);
-            handler.parseResource(configurationFile);
+            GameContextXMLHandler contextHandler = new GameContextXMLHandler(this);
+            contextHandler.parseResource(configurationFile);
+            getMap().getMapGenerator().generateMapRepresentation(getMap(), getObjectsList());
+
+            // Get renderer configuration and load renderer definitions:
+            GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
+            rendererHandler.parseResource(getProperty(RENDERER_CONFIGURATION));
         }
     }
 
     /**
      * Creates game context.
+     *
      * @param configurationFile Configuration File
      */
     public static void createGameContext(String configurationFile) {
@@ -93,8 +116,66 @@ public final class GameContext extends Context {
      *
      * @return objects
      */
-    public Map<GameObjectType, List<IGameObject>> getObjects() {
+    public Map<GameObjectType, List<IGameObject>> getObjectsMap() {
         return (Map<GameObjectType, List<IGameObject>>) get(OBJECTS);
+    }
+
+    /**
+     * @return objects
+     */
+    public List<IGameObject> getObjectsList() {
+        return getObjectsList(null);
+    }
+
+    /**
+     * @param typeFilter Filter type. Can be null to return all objects
+     * @return objects
+     */
+    public List<IGameObject> getObjectsList(GameObjectType typeFilter) {
+        List<IGameObject> rto = new ArrayList<IGameObject>();
+        Map<GameObjectType, List<IGameObject>> m = (Map<GameObjectType, List<IGameObject>>) get(OBJECTS);
+        for (List<IGameObject> listGameObject : m.values()) {
+            rto.addAll(listGameObject);
+        }
+
+        if (typeFilter != null) {
+            rto = rto.stream().filter(g -> g.getType().equals(typeFilter)).collect(Collectors.toList());
+        }
+        return rto;
+    }
+
+    /**
+     * @return List of players.
+     */
+    public List<IGameObject> getGamePlayers() {
+        return getObjectsList(GameObjectType.PLAYER);
+    }
+
+    /**
+     * @return Current game player.
+     *         TODO CHECK HOW TO HANDLE THIS
+     */
+    public IGameObject getCurrentGamePlayer() {
+        return getObjectsList(GameObjectType.PLAYER).get(0);
+    }
+
+    /**
+     * @param objectNameFilter Object Name filter. Can be null to return all
+     *        objects
+     * @return objects
+     */
+    public List<IGameObject> getObjectsListByName(String objectNameFilter) {
+        List<IGameObject> rto = new ArrayList<IGameObject>();
+        Map<GameObjectType, List<IGameObject>> m = (Map<GameObjectType, List<IGameObject>>) get(OBJECTS);
+        for (List<IGameObject> listGameObject : m.values()) {
+            rto.addAll(listGameObject);
+        }
+
+        if (objectNameFilter != null) {
+            rto = rto.stream().filter(g -> g.getName().trim().equalsIgnoreCase(objectNameFilter))
+                    .collect(Collectors.toList());
+        }
+        return rto;
     }
 
     /**
@@ -102,12 +183,12 @@ public final class GameContext extends Context {
      * @param object Object to be added
      */
     public void addObject(IGameObject object) {
-        List<IGameObject> currentList = getObjects().get(object.getType());
+        List<IGameObject> currentList = getObjectsMap().get(object.getType());
         if (currentList == null) {
             currentList = new ArrayList<IGameObject>();
         }
         currentList.add(object);
-        getObjects().put(object.getType(), currentList);
+        getObjectsMap().put(object.getType(), currentList);
     }
 
     /**
@@ -136,10 +217,10 @@ public final class GameContext extends Context {
 
     /**
      *
-     * @param rules Rules to set
+     * @param rule Rule to be added
      */
-    public void setRules(Map<String, IGameRule> rules) {
-        setObjectProperty(RULES, rules);
+    public void addRule(IGameRule rule) {
+        getRules().put(rule.getRuleName(), rule);
     }
 
     /**
@@ -174,5 +255,121 @@ public final class GameContext extends Context {
         setObjectProperty(ACTIONS, actions);
     }
 
+    /**
+     *
+     * @param gameRenderer Game Renderer
+     */
+    public void setRenderer(IGameRenderer gameRenderer) {
+        setObjectProperty(RENDERER, gameRenderer);
+    }
 
+    /**
+     *
+     * @return Game Renderer
+     */
+    public IGameRenderer getRenderer() {
+        return (IGameRenderer) getObjectProperty(RENDERER);
+    }
+
+    /**
+     *
+     * @param x X Coordinate
+     * @param y Y Coordinate
+     * @param z Z Coordinate
+     * @return Returns the object at the specified position. Null if no object
+     *         present
+     */
+    public IGameObject getObjectAt(int x, int y, int z) {
+        IGameObject rto = null;
+
+        for (IGameObject go : getObjectsList()) {
+            if (go.getX() == x && go.getY() == y && go.getZ() == 0) {
+                rto = go;
+                break;
+            }
+        }
+        return rto;
+    }
+
+    /**
+     * Removes object from game context.
+     *
+     * @param gameObject Game object to be removed.
+     */
+    public void removeGameObject(IGameObject gameObject) {
+        getObjectsMap().get(gameObject.getType()).removeIf(s -> s.getId().equals(gameObject.getId()));
+    }
+
+    /**
+     *
+     * @param timeout Game Timeout in milliseconds to set
+     */
+    public void setTimeout(long timeout) {
+        put(TIMEOUT, timeout);
+    }
+
+    /**
+     *
+     * @return Game Timeout
+     */
+    public long getTimeout() {
+        return getLongValue(TIMEOUT, -1);
+    }
+
+    /**
+     *
+     * @param startTime Game starttime in milliseconds to set
+     */
+    public void setStartTime(long startTime) {
+        put(START_TIME, startTime);
+    }
+
+    /**
+     *
+     * @return Game Timeout
+     */
+    public long getStartTime() {
+        return getLongValue(START_TIME, 0);
+    }
+
+    /**
+     *
+     * @return True if the timeout condition has been reached.
+     */
+    public boolean checkTimeoutCondition() {
+        boolean rto = false;
+        if (getTimeout() > 0 && getStartTime() > 0) {
+            rto = System.currentTimeMillis() - getStartTime() > getTimeout();
+        }
+        return rto;
+    }
+
+    /**
+     *
+     * @param event Game Event
+     */
+    public void addEvent(IGameEvent event) {
+        List<IGameEvent> events = (List<IGameEvent>) get(EVENTS);
+        events.add(event);
+    }
+
+    /**
+     *
+     * @param event Game Event
+     */
+    public void eventProcessed(IGameEvent event) {
+        List<IGameEvent> events = (List<IGameEvent>) get(EVENTS);
+        events.remove(event);
+    }
+
+    /**
+     *
+     * @return Game Events
+     */
+    public List<IGameEvent> getEvents() {
+
+        List<IGameEvent> eventListCopy = (List<IGameEvent>) get(EVENTS);
+        Comparator<IGameEvent> byTimeStamp = (e1, e2) -> Long.compare(e1.getTimeStamp(), e2.getTimeStamp());
+        return eventListCopy.stream().sorted(byTimeStamp).collect(Collectors.toList());
+    }
 }

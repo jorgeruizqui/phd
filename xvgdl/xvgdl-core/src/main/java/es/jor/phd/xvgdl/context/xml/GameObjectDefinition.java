@@ -1,11 +1,12 @@
 package es.jor.phd.xvgdl.context.xml;
 
-import java.util.UUID;
-
 import es.indra.eplatform.properties.Properties;
+import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.model.object.GameObject;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.IGameObject;
+import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
+import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
  * Game Map XML element Definition
@@ -17,6 +18,9 @@ public class GameObjectDefinition extends Properties {
 
     /** XML main tag. */
     public static final String XMLTAG = "object";
+
+    /** XML Attribute. Name. */
+    public static final String XMLATTR_NAME = "name";
 
     /** XML Attribute. Type. */
     public static final String XMLATTR_TYPE = "type";
@@ -42,8 +46,8 @@ public class GameObjectDefinition extends Properties {
     /** XML Attribute. Instances. */
     public static final String XMLATTR_INSTANCES = "instances";
 
-    /** XML Attribute. Renderer. */
-    public static final String XMLATTR_RENDERER = "renderer";
+    /** XML Attribute. Artificial Intelligence. */
+    public static final String XMLATTR_AI = "ai";
 
     /** XML Attribute. Volatile. */
     public static final String XMLATTR_VOLATILE = "volatile";
@@ -59,23 +63,40 @@ public class GameObjectDefinition extends Properties {
     /**
      *
      * @param objectDefinition Object definition
+     * @param instance Instance of the object
      * @return Game Object completely initialize
      */
-    public static IGameObject convert(GameObjectDefinition objectDefinition) {
-        GameObject gameObject = new GameObject();
-        gameObject.setId(UUID.randomUUID().toString());
-        gameObject.setDynamic(objectDefinition.getBooleanValue(XMLATTR_DYNAMIC, false));
-        gameObject.setVolatile(objectDefinition.getBooleanValue(XMLATTR_VOLATILE, false));
-        gameObject.setX(objectDefinition.getIntegerValue(XMLATTR_POSITION_X, 0));
-        gameObject.setY(objectDefinition.getIntegerValue(XMLATTR_POSITION_Y, 0));
-        gameObject.setZ(objectDefinition.getIntegerValue(XMLATTR_POSITION_Z, 0));
-        gameObject.setSizeX(objectDefinition.getIntegerValue(XMLATTR_SIZE_X, 0));
-        gameObject.setSizeY(objectDefinition.getIntegerValue(XMLATTR_SIZE_Y, 0));
-        gameObject.setSizeZ(objectDefinition.getIntegerValue(XMLATTR_SIZE_Z, 0));
-        gameObject.setIntendedX(gameObject.getX());
-        gameObject.setIntendedY(gameObject.getY());
-        gameObject.setIntendedZ(gameObject.getZ());
-        gameObject.setObjectType(GameObjectType.fromString(objectDefinition.getProperty(XMLATTR_TYPE)));
+    public static IGameObject convert(GameObjectDefinition objectDefinition, int instance) {
+
+        GameObject gameObject = null;
+
+        try {
+            gameObject = new GameObject();
+            gameObject.setName(objectDefinition.getProperty(XMLATTR_NAME));
+            gameObject.setInstance(instance);
+            gameObject.setDynamic(objectDefinition.getBooleanValue(XMLATTR_DYNAMIC, false));
+            gameObject.setVolatile(objectDefinition.getBooleanValue(XMLATTR_VOLATILE, false));
+            gameObject.setX(objectDefinition.getIntegerValue(XMLATTR_POSITION_X, 0));
+            gameObject.setY(objectDefinition.getIntegerValue(XMLATTR_POSITION_Y, 0));
+            gameObject.setZ(objectDefinition.getIntegerValue(XMLATTR_POSITION_Z, 0));
+            gameObject.setSizeX(objectDefinition.getIntegerValue(XMLATTR_SIZE_X, 0));
+            gameObject.setSizeY(objectDefinition.getIntegerValue(XMLATTR_SIZE_Y, 0));
+            gameObject.setSizeZ(objectDefinition.getIntegerValue(XMLATTR_SIZE_Z, 0));
+            gameObject.setIntendedX(gameObject.getX());
+            gameObject.setIntendedY(gameObject.getY());
+            gameObject.setIntendedZ(gameObject.getZ());
+            gameObject.setObjectType(GameObjectType.fromString(objectDefinition.getProperty(XMLATTR_TYPE)));
+
+            if (objectDefinition.getProperty(XMLATTR_AI) != null
+                    && !objectDefinition.getProperty(XMLATTR_AI).trim().equals("")) {
+                gameObject.setAI((IGameObjectAI) Class.forName(objectDefinition.getProperty(XMLATTR_AI)).newInstance());
+            }
+        } catch (Exception e) {
+            ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
+                    "Exception converting GameObjectDefinition to GameObject: " + e.getMessage(), e);
+            gameObject = null;
+        }
+
         return gameObject;
     }
 }

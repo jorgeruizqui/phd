@@ -1,7 +1,10 @@
 package es.jor.phd.xvgdl.model.object;
 
+import es.jor.phd.xvgdl.context.GameContext;
+
 /**
  * Game Object basic interface
+ *
  * @author jrquinones
  *
  */
@@ -12,6 +15,18 @@ public interface IGameObject {
      * @return Object unique indentifier
      */
     String getId();
+
+    /**
+     *
+     * @return Object Name
+     */
+    String getName();
+
+    /**
+     *
+     * @return Game object instance.
+     */
+    int getInstance();
 
     /**
      *
@@ -75,14 +90,32 @@ public interface IGameObject {
 
     /**
      * Is object volatile (can appear/disappear)?
+     *
      * @return Is volatile flag
      */
     boolean isVolatile();
 
     /**
      * Is object dynamic (can move) or fixed?
+     *
      * @return Is dynamic flag
      */
     boolean isDynamic();
+
+    /**
+     * Moves the object to the specified coordinates
+     *
+     * @param x X Coordinate
+     * @param y Y Coordinate
+     * @param z Z Coordinate
+     */
+    void moveTo(int x, int y, int z);
+
+    /**
+     * Applies the Artificial Intelligence configured for this game object
+     * 
+     * @param gameContext Game Context
+     */
+    void applyAI(GameContext gameContext);
 
 }

@@ -5,45 +5,40 @@
 
 <gameDefinition>
 
+    <!-- Renderer configuration -->
+    <property key="rendererConfiguration" value="/context/pacmanAsciiRendererConfiguration.xml"/>
+    <!-- Timeout configuration in milliseconds. Set to -1 for no timeout-->
+    <property key="timeout" value="20000"/>
+
     <layout>
-        <component id="gameInfo" location="TOP">
-            <objectRef id="score" />
-            <objectRef id="hiScore" />
+        <component id="gameInfoTop" location="TOP">
+            <contextProperty id="score" />
+            <contextProperty id="hiScore" />
         </component>
 
-        <component id="gameInfo" location="DOWN">
-            <objectRef id="lives" />
-            <objectRef id="items" />
+        <component id="gameInfoDown" location="DOWN">
+            <contextProperty id="lives" />
+            <contextProperty id="playerItems" />
         </component>
     </layout>
 
+    <!-- Map Definition -->
     <map type="2D" sizeX="25" sizeY="30" toroidal="false" generator="es.jor.phd.xvgdl.model.map.GameMapGenerator">
     </map>
 
+    <!-- Players Definition -->
+    <players number="1" maxNumber="1" minNumber="1">
+        <player name="pacman" score="0" lives="3" livePercentage="100"/>
+    </players>
     <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles,
         structures, collectibles, etc... -->
     <objects>
-        <object id="wall" type="wall" dynamic="false" volatile="false" renderer="wallRenderer" sizeX="1" sizeY="1" instances="100" />
-        <object id="ghost" type="enemy" dynamic="true" volatile="true"
-            renderer="ghostRenderer" size="1,1" instances="4" />
-        <object id="pacman" type="player" dynamic="true" volatile="true"
-            renderer="pacmanRenderer" size="1,1" instances="1" />
-        <object id="smallDot" type="item" dynamic="true" volatile="true"
-            renderer="dotRenderer" size="1,1" instances="100" />
-        <object id="bigDot" type="item" dynamic="true" volatile="true"
-            renderer="bigDotRenderer" size="1,1" instances="10" />
-        <object id="cherry" type="item" dynamic="true" volatile="true"
-            renderer="cherryRenderer" size="1,1" instances="0" />
+        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" instances="10" />
+        <object name="ghost" type="enemy" dynamic="true" volatile="true" size="1,1" instances="4" ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaserAI"/>
+        <object name="smallDot" type="item" dynamic="true" volatile="true" size="1,1" instances="2" />
+        <object name="bigDot" type="item" dynamic="true" volatile="true" size="1,1" instances="2" />
+        <object name="cherry" type="item" dynamic="true" volatile="true" size="1,1" instances="0" />
     </objects>
-
-    <!-- Players Definition -->
-    <players number="1" maxNumber="1" minNumber="1">
-        <player id="Player 1" objectRef="pacman" />
-    </players>
-
-    <!-- Avatars ? -->
-    <avatars>
-    </avatars>
 
     <!-- Defining Game physics. Movements and collisions Define set of possible
         physics action: gravitational pull, friction, repulsion forces, bouncing
@@ -59,20 +54,31 @@
 
     <!-- Defining rules. Events consecuences -->
     <rules>
-        <!-- Rule for pacman eating small dots -->
-        <rule id="eatSmallDot" type="eventual">
-            <objectRef id="pacman" action="scoreUp,100" />
-            <objectRef id="smallDot" action="disappear" />
-        </rule>
-        <!-- Rule for pacman eating big dots -->
-        <rule id="eatBigDot" type="eventual">
-            <objectRef id="pacman" action="scoreUp,500" />
-            <objectRef id="bigDot" action="disappear" />
-        </rule>
 
-        <!-- Rule for pacman eating all dots -->
-        <rule id="dotsCounter" type="permanent">
-            <action condition="0" consequence="????" />
+        <!-- Rule for pacman eating small dots
+        Esto tiene buena pinta. Se cargan las reglas, tienen un tipo (collision/proximidad/distancia) y un valor.
+        Cada regla tiene un array de elementos por nombre de objecto
+        Se cogerá de cada regla la lista de elementos de cada cosa.
+        En función del tipo de regla, se comprueba si las NxM combinaciones se cumple la regla y en ese caso,
+        A cada objeto se le aplica el resultado.
+        -->
+        <rule name="eatSmallDot" type="collision">
+            <ruleAction objectName="pacman" result="scoreUp" value="100" />
+            <ruleAction objectName="smallDot" result="disappear" />
         </rule>
+        <rule name="ghostCatchPacman" type="collision">
+            <ruleAction objectName="pacman" result="teletransport" />
+            <ruleAction objectName="ghost"  result="disappear" />
+        </rule>
+<!--         Rule for pacman eating big dots -->
+<!--         <rule id="eatBigDot" type="eventual"> -->
+<!--             <objectRef id="pacman" action="scoreUp,500" /> -->
+<!--             <objectRef id="bigDot" action="disappear" /> -->
+<!--         </rule> -->
+
+<!--         Rule for pacman eating all dots -->
+<!--         <rule id="dotsCounter" type="permanent"> -->
+<!--             <action condition="0" consequence="????" /> -->
+<!--         </rule> -->
     </rules>
 </gameDefinition>
