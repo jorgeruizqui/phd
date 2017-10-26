@@ -17,9 +17,25 @@
 
     <dependencies>
         <dependency>
-          <groupId>es.jor.phd.xvgdl</groupId>
-          <artifactId>xvgdl-core</artifactId>
+            <groupId>es.jor.phd.xvgdl</groupId>
+            <artifactId>xvgdl-core</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>es.jor.phd.xvgdl.pacman.LaunchPacman</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

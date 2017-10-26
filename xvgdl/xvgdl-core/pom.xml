@@ -20,6 +20,14 @@
             <groupId>com.1stleg</groupId>
             <artifactId>jnativehook</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>es.indra.eplatform</groupId>
+            <artifactId>eplatform-commons</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

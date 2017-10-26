@@ -24,6 +24,12 @@ public enum GameRuleResultType {
     LIVES_DOWN,
     /** Lives reset to initial value. */
     LIVES_RESET,
+    /** Live Percentage up. */
+    LIVES_PERCENTAGE_UP,
+    /** Live Percentage down. */
+    LIVES_PERCENTAGE_DOWN,
+    /** Live Percentage reset to initial value. */
+    LIVES_PERCENTAGE_RESET,
     /** Disappear. */
     DISAPPEAR,
     /** Duplicate. */

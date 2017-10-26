@@ -16,7 +16,9 @@ public enum GameRuleType {
     /** Proximity. */
     PROXIMITY,
     /** Distant. */
-    DISTANT;
+    DISTANT,
+    /** End Condition */
+    END_CONDITION;
 
     /**
      *

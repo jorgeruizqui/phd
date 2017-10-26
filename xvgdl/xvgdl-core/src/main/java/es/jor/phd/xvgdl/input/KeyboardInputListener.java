@@ -5,8 +5,8 @@ import org.jnativehook.keyboard.NativeKeyListener;
 
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
-import es.jor.phd.xvgdl.event.GameEventType;
-import es.jor.phd.xvgdl.event.KeyboardGameEvent;
+import es.jor.phd.xvgdl.model.event.GameEventType;
+import es.jor.phd.xvgdl.model.event.KeyboardGameEvent;
 import es.jor.phd.xvgdl.util.GameConstants;
 
 /**

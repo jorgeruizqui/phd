@@ -1,4 +1,4 @@
-package es.jor.phd.xvgdl.event;
+package es.jor.phd.xvgdl.model.event;
 
 /**
  * Different kind of events
@@ -8,6 +8,8 @@ package es.jor.phd.xvgdl.event;
  */
 public enum GameEventType {
 
+    /** Engine event. */
+    ENGINE,
     /** Mouse */
     MOUSE,
     /** Keyboard */
@@ -25,6 +27,8 @@ public enum GameEventType {
             type = MOUSE;
         } else if (typeSt.trim().equalsIgnoreCase(KEYBOARD.toString())) {
             type = KEYBOARD;
+        } else if (typeSt.trim().equalsIgnoreCase(ENGINE.toString())) {
+            type = ENGINE;
         }
 
         return type;

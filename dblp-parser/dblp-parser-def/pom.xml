@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>es.jor.phd.dblp-parser</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>dblp-parser-def</artifactId>
+    <packaging>pom</packaging>
+
+    <name>dblp-parser-def</name>
+    <description>PHD Doctorate Program University of Malaga: DBLP Parser implementation</description>
+    <inceptionYear>2017</inceptionYear>
+
+
+    <properties>
+
+        <!-- Default Properties. Can be overwritten using -D in maven execution -->
+        <dblp-parser.version>0.0.1-SNAPSHOT</dblp-parser.version>
+
+        <!-- Artifact versions -->
+        <log4j.version>1.2.17</log4j.version>
+        <junit.version>4.12</junit.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <apache.commons.version>3.6</apache.commons.version>
+        <eplatform.commons.version>1.8.13.1</eplatform.commons.version>
+        <!-- Build definitions -->
+
+        <!-- Folder where to send Jar files once they are generated -->
+        <default.build.output.home.dir>../build</default.build.output.home.dir>
+        <build.output.home.dir>${default.build.output.home.dir}</build.output.home.dir>
+
+        <!-- Folder where to send Lib Jar files once they are generated -->
+        <build.output.default.lib.dir>${build.output.home.dir}/jar</build.output.default.lib.dir>
+        <build.output.lib.dir>${build.output.default.lib.dir}</build.output.lib.dir>
+
+        <build.metainf.classpath.default.prefix>./jar/</build.metainf.classpath.default.prefix>
+        <build.metainf.classpath.prefix>${build.metainf.classpath.default.prefix}</build.metainf.classpath.prefix>
+
+        <!-- This property is used in Deployment. By default, classpath will
+            include versions and SNAPSHOTS in their JAR names. If this property is set
+            to "custom", then classpath in MANIFEST will only include JAR names (without
+            versions an SNAPSHOTS -->
+        <default.custom.layout.type>custom</default.custom.layout.type>
+        <custom.layout.type>${default.custom.layout.type}</custom.layout.type>
+
+        <!-- Other properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    </properties>
+
+    <!-- General dependency definition. All dependencies declares within
+        this node can be referenced by this POM or by its child modules' POMs without
+        declaring the version. -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Project dependencies -->
+            <dependency>
+                <groupId>es.jor.phd.dblp-parser</groupId>
+                <artifactId>dblp-parser-core</artifactId>
+                <version>${dblp-parser.version}</version>
+            </dependency>
+
+            <!-- Third-party dependencies -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>es.indra.eplatform</groupId>
+                <artifactId>eplatform-commons</artifactId>
+                <version>${eplatform.commons.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Add here dependencies affecting all modules -->
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <!-- Plugins declared here can be reused by child POM's without taking
+            care of version, if any is reused you may want to configured it. -->
+        <pluginManagement>
+            <plugins>
+
+                <!-- Ignore/Execute plugin execution -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <!-- copy-dependency plugin -->
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[1.0.0,)</versionRange>
+                                        <goals>
+                                            <goal>copy-dependencies</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+
+                <!-- None is declared here because all plugins have to be
+                    configured and reused by child POMs, so they are declared in next sibling
+                    node. -->
+            </plugins>
+        </pluginManagement>
+
+        <!-- Plugins declared here are reused by child POM's. No extra re-config.
+            is needed except to override the behavior defined here. If no version is
+            declared the last one found in repositories is used. This feature is not
+            used to avoid going to codehouse or maven repos, sometimes are no in good
+            shape...Specifying version we ensure to get the one catched at nexus repo. -->
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.8</version>
+            </plugin>
+
+            <!-- Activate help goals -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <!-- your example configuration here -->
+                </configuration>
+            </plugin>
+
+            <!-- Compile specific config -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>ISO-8859-1</encoding>
+                    <meminitial>128m</meminitial>
+                    <maxmem>512m</maxmem>
+                </configuration>
+            </plugin>
+
+            <!-- Allow jar package -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <outputDirectory>${build.output.lib.dir}</outputDirectory>
+                    <jarName>${project.name}</jarName>
+                    <archive>
+                        <index>false</index>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>${build.metainf.classpath.prefix}</classpathPrefix>
+                            <mainClass>${build.metainf.main.class}</mainClass>
+                            <classpathLayoutType>${custom.layout.type}</classpathLayoutType>
+                            <!-- Only used if classpathLayoutType is set
+                                to 'custom' -->
+                            <customClasspathLayout>$${artifact.artifactId}.$${artifact.extension}</customClasspathLayout>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path></Class-Path>
+                            <company>JOR</company>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${build.output.lib.dir}</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <excludeTransitive>false</excludeTransitive>
+                            <excludeScope>provided</excludeScope>
+                            <stripVersion>true</stripVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <!-- Allow execute junits -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <maxmem>512m</maxmem>
+                </configuration>
+            </plugin>
+
+            <!-- Deployment plugin. Just declare version -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+    <!-- Other info, just for documentation purpose -->
+    <organization>
+        <name>JOR</name>
+        <url>https://github.com/jorgeruizqui</url>
+    </organization>
+
+    <!-- Developers -->
+    <developers>
+
+        <developer>
+            <id>jorgeruizqui</id>
+            <name>Jorge Ruiz Quinones</name>
+            <email>jorge.ruiz.qui@gmail.com</email>
+            <organization>Indra</organization>
+            <roles>
+                <role>Senior Software Engineer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+
+    </developers>
+
+    <!-- Contributors -->
+    <contributors>
+    </contributors>
+
+    <issueManagement>
+    </issueManagement>
+
+    <ciManagement>
+    </ciManagement>
+
+    <scm>
+    </scm>
+
+    <profiles>
+
+        <profile>
+
+            <id>DBLPParser</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>../dblp-parser-core</module>
+            </modules>
+
+            <properties>
+            </properties>
+
+            <repositories>
+            </repositories>
+
+            <!-- Allow remote artifact deployment into Nexus repository -->
+            <distributionManagement>
+            </distributionManagement>
+        </profile>
+
+    </profiles>
+
+</project>

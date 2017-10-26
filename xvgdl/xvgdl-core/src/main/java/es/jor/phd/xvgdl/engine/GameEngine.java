@@ -12,10 +12,12 @@ import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.properties.PropertiesParseException;
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
-import es.jor.phd.xvgdl.event.GameEventUtils;
-import es.jor.phd.xvgdl.event.IGameEvent;
 import es.jor.phd.xvgdl.input.KeyboardInputListener;
+import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
+import es.jor.phd.xvgdl.model.event.GameEventUtils;
+import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.object.IGameObject;
+import es.jor.phd.xvgdl.model.rules.GameRuleType;
 import es.jor.phd.xvgdl.model.rules.GameRuleUtils;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
 import es.jor.phd.xvgdl.util.GameConstants;
@@ -45,6 +47,9 @@ public final class GameEngine extends Properties {
      * Singleton instance.
      */
     private static GameEngine instance;
+
+    /** Game Finished Flag. */
+    private boolean gameFinished = false;
 
     /**
      * Constructor.
@@ -130,8 +135,6 @@ public final class GameEngine extends Properties {
      */
     public void gameLoop() {
 
-        boolean gameFinished = false;
-
         ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Launching game loop....");
         getGameContext().setStartTime(System.currentTimeMillis());
 
@@ -146,11 +149,7 @@ public final class GameEngine extends Properties {
                 render();
                 Thread.sleep((long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
                         - start));
-                if (getGameContext().checkTimeoutCondition()) {
-                    gameFinished = true;
-                    ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                            "Game timeout condition reached! Game will end.");
-                }
+                checkEndConditions();
             } catch (Exception e) {
                 ELogger.error(GameEngine.class, "", "Exception in game loop", e);
             }
@@ -163,14 +162,32 @@ public final class GameEngine extends Properties {
 
     }
 
+    private void checkEndConditions() {
+
+//        if (getGameContext().checkTimeoutCondition()) {
+//            gameFinished = true;
+//            ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
+//                    "Game timeout condition reached! Game will end.");
+//        }
+
+        for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
+            if (endCondition.checkCondition()) {
+                gameFinished = true;
+                break;
+            }
+        }
+    }
+
     /**
      * Process all pending events.
      */
     private void processEvents() {
 
         for (IGameEvent event : getGameContext().getEvents()) {
-            GameEventUtils.applyGameEvent(getGameContext(), event);
-            getGameContext().eventProcessed(event);
+            GameEventUtils.processGameEvent(getGameContext(), event);
+            if (event.isConsumable()) {
+                getGameContext().eventProcessed(event);
+            }
         }
 
     }
@@ -182,7 +199,11 @@ public final class GameEngine extends Properties {
 
         // Foreach rule : Rules
         for (IGameRule rule : getGameContext().getRules().values()) {
-            GameRuleUtils.applyGameRule(getGameContext(), rule);
+            boolean ruleResult = GameRuleUtils.applyGameRule(getGameContext(), rule);
+
+            if (ruleResult && rule.getGameRuleType().equals(GameRuleType.END_CONDITION)) {
+                this.gameFinished = true;
+            }
         }
 
     }

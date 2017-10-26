@@ -12,6 +12,8 @@ public enum GameObjectType {
     ENEMY,
     /** Player */
     PLAYER,
+    /** Projectile */
+    PROJECTILE,
     /** Item */
     ITEM;
 
@@ -31,6 +33,8 @@ public enum GameObjectType {
             type = PLAYER;
         } else if (typeSt.trim().equalsIgnoreCase(ITEM.toString())) {
             type = ITEM;
+        } else if (typeSt.trim().equalsIgnoreCase(PROJECTILE.toString())) {
+            type = PROJECTILE;
         }
 
         return type;

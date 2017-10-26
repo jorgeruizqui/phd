@@ -7,6 +7,8 @@ import es.indra.eplatform.util.xml.IgnorableXMLElementParser;
 import es.indra.eplatform.util.xml.XMLException;
 import es.indra.eplatform.util.xml.XMLObjectParser;
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
+import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
@@ -34,6 +36,8 @@ public class GameContextXMLHandler extends BasicXMLHandler {
     private static final String XMLTAG_EVENTS = "events";
     /** Rules tag. */
     private static final String XMLTAG_RULES = "rules";
+    /** End conditions tag. */
+    private static final String XMLTAG_END_CONDITIONS = "endConditions";
 
     /** Instance of game context. */
     private GameContext gameContext;
@@ -55,6 +59,7 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         this.register(new IgnorableXMLElementParser(XMLTAG_PHYSICS));
         this.register(new IgnorableXMLElementParser(XMLTAG_EVENTS));
         this.register(new IgnorableXMLElementParser(XMLTAG_RULES));
+        this.register(new IgnorableXMLElementParser(XMLTAG_END_CONDITIONS));
 
         // Parsing tags:
         this.register(new Properties.PropertyXMLElement());
@@ -65,6 +70,8 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         this.register(new XMLObjectParser(GamePlayerDefinition.XMLTAG, GamePlayerDefinition.class));
         this.register(new XMLObjectParser(GameRuleDefinition.XMLTAG, GameRuleDefinition.class));
         this.register(new XMLObjectParser(GameRuleActionDefinition.XMLTAG, GameRuleActionDefinition.class));
+        this.register(new XMLObjectParser(GameEventDefinition.XMLTAG, GameEventDefinition.class));
+        this.register(new XMLObjectParser(GameEndConditionDefinition.XMLTAG, GameEndConditionDefinition.class));
     }
 
     @Override
@@ -120,6 +127,14 @@ public class GameContextXMLHandler extends BasicXMLHandler {
                 GameRuleDefinition parentRuleDefinition = (GameRuleDefinition) getParent();
                 parentRuleDefinition.addActionDefinition(ruleActionDefinition);
             }
+        } else if (xmlTag.equals(GameEventDefinition.XMLTAG)) {
+            GameEventDefinition eventDefinition = (GameEventDefinition) obj;
+            IGameEvent event = GameEventDefinition.convert(eventDefinition);
+            gameContext.addEvent(event);
+        } else if (xmlTag.equals(GameEndConditionDefinition.XMLTAG)) {
+            GameEndConditionDefinition eventDefinition = (GameEndConditionDefinition) obj;
+            IGameEndCondition endCondition = GameEndConditionDefinition.convert(eventDefinition);
+            gameContext.addEndCondition(endCondition);
         }
     }
 }

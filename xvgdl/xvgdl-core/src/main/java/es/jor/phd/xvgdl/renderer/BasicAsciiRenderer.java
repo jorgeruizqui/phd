@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.SystemUtils;
+
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.GamePlayer;
@@ -29,14 +31,18 @@ public class BasicAsciiRenderer implements IGameRenderer {
     @Override
     public void render() {
 
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (SystemUtils.IS_OS_WINDOWS) {
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        } else if (SystemUtils.IS_OS_LINUX) {
+            try {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // 1- Take Layout
@@ -47,7 +53,8 @@ public class BasicAsciiRenderer implements IGameRenderer {
             GamePlayer gp = (GamePlayer) iGameObject;
             System.out
                     .println("Player : " + gp.getName() + " - Score: " + gp.getScore() + " - Lives: " + gp.getLives());
-            System.out.println("Player Position: [" + gp.getX() + "," + gp.getY() + "," + gp.getZ() + "]");
+            // System.out.println("Player Position: [" + gp.getX() + "," +
+            // gp.getY() + "," + gp.getZ() + "]");
         }
 
         // 2.2 Render the game screen.
@@ -64,7 +71,9 @@ public class BasicAsciiRenderer implements IGameRenderer {
             for (int j = 0; j < array[i].length; j++) {
                 IGameObject gameObject = this.gameContext.getObjectAt(j, i, 0);
                 if (gameObject != null) {
-                    array[i][j] = gameObject.getType().toString().charAt(0);
+                    array[i][j] = gameObject.getName().toString().charAt(0);
+                } else {
+                    array[i][j] = ' ';
                 }
             }
         }

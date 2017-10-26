@@ -26,9 +26,11 @@ public final class GameRuleUtils {
      *
      * @param gameContext Game Context
      * @param gameRule Game Rule to be applied
+     * @return {@link Boolean} <code>true</code> if the rule is applied correctly. <code>false</code> otherwise
      */
-    public static void applyGameRule(GameContext gameContext, IGameRule gameRule) {
+    public static boolean applyGameRule(GameContext gameContext, IGameRule gameRule) {
 
+        boolean rto = true;
         if (GameRuleType.COLLISION.equals(gameRule.getGameRuleType())) {
             // Take rule actions and see objects involved in the rule
             List<String> objectNames = gameRule.getRuleActions().stream().map(IGameRuleAction::getObjectName)
@@ -58,8 +60,13 @@ public final class GameRuleUtils {
                 ELogger.error(GameRuleUtils.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
                         "Error applying Collision Rule " + gameRule.getRuleName()
                                 + ". Two Action objects must be specified for this kind of rules.");
+                rto = false;
             }
+        } else if (GameRuleType.END_CONDITION.equals(gameRule.getGameRuleType())) {
+
         }
+
+        return rto;
     }
 
     /**

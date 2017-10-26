@@ -113,9 +113,15 @@ public interface IGameObject {
 
     /**
      * Applies the Artificial Intelligence configured for this game object
-     * 
+     *
      * @param gameContext Game Context
      */
     void applyAI(GameContext gameContext);
+
+    /**
+     * Clones a game object
+     * @return Game Object Cloned.
+     */
+    IGameObject clone();
 
 }

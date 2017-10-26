@@ -12,8 +12,9 @@ import es.indra.eplatform.context.Context;
 import es.indra.eplatform.util.IOUtils;
 import es.jor.phd.xvgdl.context.xml.GameContextXMLHandler;
 import es.jor.phd.xvgdl.context.xml.GameRendererXMLHandler;
-import es.jor.phd.xvgdl.event.IGameEvent;
 import es.jor.phd.xvgdl.model.actions.IGameAction;
+import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
+import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.IGameObject;
@@ -36,7 +37,7 @@ public final class GameContext extends Context {
     private static final String START_TIME = "START_TIME";
 
     /** Timeout configuration key. Set to -1 for no timeout. */
-    private static final String TIMEOUT = "timeout";
+    private static final String TIMEOUT = "TIMEOUT";
 
     /** RENDERER key. */
     private static final String RENDERER = "RENDERER";
@@ -62,6 +63,9 @@ public final class GameContext extends Context {
     /** Events key. */
     private static final String EVENTS = "EVENTS";
 
+    /** End Conditions key. */
+    private static final String END_CONDITIONS = "END_CONDITIONS";
+
     /** Singleton instance. */
     private static GameContext instance;
 
@@ -80,9 +84,13 @@ public final class GameContext extends Context {
         Map<String, IGameRule> rulesMap = new HashMap<String, IGameRule>();
         setObjectProperty(RULES, rulesMap);
 
-        // Force initialize Rules map
+        // Force initialize Events map
         List<IGameEvent> eventsList = new CopyOnWriteArrayList<IGameEvent>();
         setObjectProperty(EVENTS, eventsList);
+
+        // Force initialize End Conditions map
+        List<IGameEndCondition> endConditions = new CopyOnWriteArrayList<IGameEndCondition>();
+        setObjectProperty(END_CONDITIONS, endConditions);
 
         if (IOUtils.getInputStream(configurationFile) != null) {
             GameContextXMLHandler contextHandler = new GameContextXMLHandler(this);
@@ -334,18 +342,6 @@ public final class GameContext extends Context {
 
     /**
      *
-     * @return True if the timeout condition has been reached.
-     */
-    public boolean checkTimeoutCondition() {
-        boolean rto = false;
-        if (getTimeout() > 0 && getStartTime() > 0) {
-            rto = System.currentTimeMillis() - getStartTime() > getTimeout();
-        }
-        return rto;
-    }
-
-    /**
-     *
      * @param event Game Event
      */
     public void addEvent(IGameEvent event) {
@@ -372,4 +368,23 @@ public final class GameContext extends Context {
         Comparator<IGameEvent> byTimeStamp = (e1, e2) -> Long.compare(e1.getTimeStamp(), e2.getTimeStamp());
         return eventListCopy.stream().sorted(byTimeStamp).collect(Collectors.toList());
     }
+
+    /**
+     * Adds a new End Condition
+     * @param endCondition End condition to add
+     */
+    public void addEndCondition(IGameEndCondition endCondition) {
+        List<IGameEndCondition> endConditions = (List<IGameEndCondition>) get(END_CONDITIONS);
+        endConditions.add(endCondition);
+    }
+
+    /**
+    *
+    * @return Game End Conditions
+    */
+   public List<IGameEndCondition> getEndConditions() {
+
+       List<IGameEndCondition> endConditionsListCopy = (List<IGameEndCondition>) get(END_CONDITIONS);
+       return endConditionsListCopy.stream().collect(Collectors.toList());
+   }
 }

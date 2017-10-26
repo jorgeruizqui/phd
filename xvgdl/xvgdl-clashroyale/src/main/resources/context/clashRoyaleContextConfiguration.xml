@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!--
+    Definition of Clash Royale game
+-->
+
+<gameDefinition>
+
+    <!-- Renderer configuration -->
+    <property key="rendererConfiguration" value="/context/clashRoyaleAsciiRendererConfiguration.xml"/>
+    <!-- Timeout configuration in milliseconds. Set to -1 for no timeout-->
+    <property key="timeout" value="20000"/>
+
+    <layout>
+        <component id="gameInfoTop" location="TOP">
+        </component>
+
+        <component id="gameInfoDown" location="DOWN">
+        </component>
+    </layout>
+
+    <!-- Map Definition -->
+    <map type="2D" sizeX="100" sizeY="300" toroidal="false" generator="es.jor.phd.xvgdl.model.map.clashroyale.ClashRoyaleGameMapGenerator">
+    </map>
+
+    <!-- Players Definition -->
+    <players number="2" maxNumber="2" minNumber="2">
+        <player name="towerUp" score="0" lives="0" livePercentage="100"/>
+        <player name="towerDown" score="0" lives="0" livePercentage="100"/>
+    </players>
+    <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles,
+        structures, collectibles, etc... -->
+    <objects>
+        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" instances="0" />
+        <object name="weapon" type="projectile" dynamic="true" volatile="true" size="1,1" instances="0" ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaserAI"/>
+    </objects>
+
+    <!-- Defining Game physics. Movements and collisions Define set of possible
+        physics action: gravitational pull, friction, repulsion forces, bouncing
+        effects, stickiness, etc Define the -->
+    <physics>
+    </physics>
+
+    <!-- Defining game events. Events sent from the player via input devices,
+        timed or random events, and object collision triggered events that affect
+        the game.
+        May be as an example some item appears randomly.
+        It can use a timer (not before X milliseconds) or a random value to be executed -->
+    <events>
+    </events>
+
+    <!-- Defining rules. Events consecuences -->
+    <rules>
+
+        <!-- Rule for pacman eating small dots
+        Esto tiene buena pinta. Se cargan las reglas, tienen un tipo (collision/proximidad/distancia) y un valor.
+        Cada regla tiene un array de elementos por nombre de objecto
+        Se cogerá de cada regla la lista de elementos de cada cosa.
+        En función del tipo de regla, se comprueba si las NxM combinaciones se cumple la regla y en ese caso,
+        A cada objeto se le aplica el resultado.
+        -->
+        <rule name="fightWeapons" type="collision">
+            <ruleAction objectName="weapon" result="disappear" />
+            <ruleAction objectName="weapon" result="disappear" />
+        </rule>
+        <rule name="weaponImpact" type="collision">
+            <ruleAction objectName="tower" result="livePercentageDown" value="100" />
+            <ruleAction objectName="weapon"  result="disappear" />
+        </rule>
+    </rules>
+</gameDefinition>

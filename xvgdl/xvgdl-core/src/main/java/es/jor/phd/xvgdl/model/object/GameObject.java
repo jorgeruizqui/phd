@@ -1,5 +1,7 @@
 package es.jor.phd.xvgdl.model.object;
 
+import java.util.Random;
+
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
 
@@ -268,5 +270,32 @@ public class GameObject implements IGameObject {
                 + ", sizeX=" + sizeX + ", sizeY=" + sizeY + ", sizeZ=" + sizeZ + ", objectType=" + objectType
                 + ", isDynamic=" + isDynamic + ", isVolatile=" + isVolatile + "]";
     }
+
+    @Override
+    public GameObject clone() {
+        GameObject cloned = new GameObject();
+        try {
+            if (this.objectAI != null) {
+                cloned.setAI(this.objectAI.getClass().newInstance());
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+        }
+        cloned.setDynamic(isDynamic());
+        cloned.setInstance((new Random()).nextInt());
+        cloned.setIntendedX(getIntendedX());
+        cloned.setIntendedY(getIntendedY());
+        cloned.setIntendedZ(getIntendedZ());
+        cloned.setX(getX());
+        cloned.setY(getY());
+        cloned.setZ(getZ());
+        cloned.setName(getName());
+        cloned.setSizeX(getSizeX());
+        cloned.setSizeY(getSizeY());
+        cloned.setSizeZ(getSizeZ());
+        cloned.setObjectType(getType());
+        cloned.setVolatile(isVolatile());
+        return cloned;
+    }
+
 
 }
