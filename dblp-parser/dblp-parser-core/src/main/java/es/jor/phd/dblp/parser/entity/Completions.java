@@ -1,4 +1,4 @@
-package es.jor.phd.dblp.parser;
+package es.jor.phd.dblp.parser.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
