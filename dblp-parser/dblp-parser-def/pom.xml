@@ -62,6 +62,16 @@
 				<artifactId>dblp-parser-core</artifactId>
 				<version>${dblp-parser.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>es.jor.phd.dblp-parser</groupId>
+				<artifactId>dblp-gephi-parser</artifactId>
+				<version>${dblp-parser.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>es.jor.phd.dblp-parser</groupId>
+				<artifactId>dblp-excel-exporter</artifactId>
+				<version>${dblp-parser.version}</version>
+			</dependency>
 
 			<!-- Third-party dependencies -->
 			<dependency>
@@ -300,6 +310,8 @@
 			</activation>
 			<modules>
 				<module>../dblp-parser-core</module>
+				<module>../dblp-gephi-parser</module>
+				<module>../dblp-excel-exporter</module>
 			</modules>
 
 			<properties>

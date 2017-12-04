@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+	<meta lastmodifieddate="2017-01-18">
+		<creator>Carlos Cotta</creator>
+		<description>Word network</description>
+	</meta>
+	<graph mode="static" defaultedgetype="undirected">
+		<nodes>
+			<node id="0" label="envelopment" >
+				<viz:size value="20"/>
+			</node>
+			<node id="46" label="expert" >
+				<viz:size value="20"/>
+			</node>
+			<node id="1" label="optimal" >
+				<viz:size value="50"/>
+			</node>
+			<node id="131" label="software" >
+				<viz:size value="40"/>
+			</node>
+			<node id="47" label="simulation" >
+				<viz:size value="30"/>
+			</node>
+			<node id="132" label="comparative" >
+				<viz:size value="50"/>
+			</node>
+			<node id="2" label="building" >
+				<viz:size value="30"/>
+			</node>
+			<node id="134" label="relation" >
+				<viz:size value="50"/>
+			</node>
+			<node id="3" label="evaluation" >
+				<viz:size value="60"/>
+			</node>
+			<node id="50" label="metaheuristic" >
+				<viz:size value="60"/>
+			</node>
+			<node id="135" label="measures" >
+				<viz:size value="20"/>
+			</node>
+			<node id="136" label="problem" >
+				<viz:size value="320"/>
+			</node>
+			<node id="4" label="manufacturing" >
+				<viz:size value="20"/>
+			</node>
+			<node id="51" label="multiobjective" >
+				<viz:size value="420"/>
+			</node>
+			<node id="52" label="model" >
+				<viz:size value="380"/>
+			</node>
+			<node id="53" label="spatial" >
+				<viz:size value="20"/>
+			</node>
+			<node id="138" label="cash" >
+				<viz:size value="20"/>
+			</node>
+			<node id="139" label="case" >
+				<viz:size value="20"/>
+			</node>
+			<node id="5" label="energy" >
+				<viz:size value="30"/>
+			</node>
+			<node id="140" label="pansharpening" >
+				<viz:size value="50"/>
+			</node>
+			<node id="141" label="method" >
+				<viz:size value="440"/>
+			</node>
+			<node id="6" label="investment" >
+				<viz:size value="540"/>
+			</node>
+			<node id="55" label="index" >
+				<viz:size value="40"/>
+			</node>
+			<node id="7" label="indicators" >
+				<viz:size value="30"/>
+			</node>
+			<node id="8" label="analysis" >
+				<viz:size value="130"/>
+			</node>
+			<node id="142" label="grouping" >
+				<viz:size value="20"/>
+			</node>
+			<node id="56" label="twostage" >
+				<viz:size value="30"/>
+			</node>
+			<node id="10" label="planning" >
+				<viz:size value="40"/>
+			</node>
+			<node id="57" label="mutation" >
+				<viz:size value="20"/>
+			</node>
+			<node id="58" label="system" >
+				<viz:size value="230"/>
+			</node>
+			<node id="11" label="selection" >
+				<viz:size value="580"/>
+			</node>
+			<node id="59" label="renewable" >
+				<viz:size value="20"/>
+			</node>
+			<node id="12" label="returns" >
+				<viz:size value="50"/>
+			</node>
+			<node id="13" label="evaluating" >
+				<viz:size value="20"/>
+			</node>
+			<node id="60" label="trading" >
+				<viz:size value="50"/>
+			</node>
+			<node id="14" label="largescale" >
+				<viz:size value="20"/>
+			</node>
+			<node id="99" label="crossover" >
+				<viz:size value="20"/>
+			</node>
+			<node id="143" label="study" >
+				<viz:size value="60"/>
+			</node>
+			<node id="61" label="proportion" >
+				<viz:size value="20"/>
+			</node>
+			<node id="144" label="methods" >
+				<viz:size value="40"/>
+			</node>
+			<node id="16" label="multitree" >
+				<viz:size value="20"/>
+			</node>
+			<node id="100" label="industry" >
+				<viz:size value="20"/>
+			</node>
+			<node id="17" label="uncertainty" >
+				<viz:size value="20"/>
+			</node>
+			<node id="18" label="investments" >
+				<viz:size value="60"/>
+			</node>
+			<node id="62" label="local" >
+				<viz:size value="30"/>
+			</node>
+			<node id="101" label="extended" >
+				<viz:size value="30"/>
+			</node>
+			<node id="146" label="foreign" >
+				<viz:size value="20"/>
+			</node>
+			<node id="19" label="search" >
+				<viz:size value="90"/>
+			</node>
+			<node id="147" label="computer" >
+				<viz:size value="20"/>
+			</node>
+			<node id="64" label="stochastic" >
+				<viz:size value="70"/>
+			</node>
+			<node id="20" label="particle" >
+				<viz:size value="30"/>
+			</node>
+			<node id="65" label="decisions" >
+				<viz:size value="30"/>
+			</node>
+			<node id="102" label="vector" >
+				<viz:size value="20"/>
+			</node>
+			<node id="148" label="power" >
+				<viz:size value="20"/>
+			</node>
+			<node id="149" label="means" >
+				<viz:size value="40"/>
+			</node>
+			<node id="66" label="product" >
+				<viz:size value="50"/>
+			</node>
+			<node id="67" label="robust" >
+				<viz:size value="60"/>
+			</node>
+			<node id="104" label="decision" >
+				<viz:size value="50"/>
+			</node>
+			<node id="105" label="strategies" >
+				<viz:size value="210"/>
+			</node>
+			<node id="106" label="forecasting" >
+				<viz:size value="30"/>
+			</node>
+			<node id="21" label="i" >
+				<viz:size value="20"/>
+			</node>
+			<node id="107" label="heuristic" >
+				<viz:size value="40"/>
+			</node>
+			<node id="108" label="agentbased" >
+				<viz:size value="20"/>
+			</node>
+			<node id="23" label="constrained" >
+				<viz:size value="200"/>
+			</node>
+			<node id="69" label="computation" >
+				<viz:size value="20"/>
+			</node>
+			<node id="109" label="single" >
+				<viz:size value="20"/>
+			</node>
+			<node id="151" label="lots" >
+				<viz:size value="30"/>
+			</node>
+			<node id="70" label="framework" >
+				<viz:size value="40"/>
+			</node>
+			<node id="71" label="logic" >
+				<viz:size value="20"/>
+			</node>
+			<node id="152" label="asset" >
+				<viz:size value="90"/>
+			</node>
+			<node id="153" label="minimum" >
+				<viz:size value="30"/>
+			</node>
+			<node id="72" label="transaction" >
+				<viz:size value="80"/>
+			</node>
+			<node id="110" label="insurance" >
+				<viz:size value="40"/>
+			</node>
+			<node id="154" label="data" >
+				<viz:size value="60"/>
+			</node>
+			<node id="111" label="project" >
+				<viz:size value="210"/>
+			</node>
+			<node id="24" label="riskoptimal" >
+				<viz:size value="20"/>
+			</node>
+			<node id="112" label="rules" >
+				<viz:size value="50"/>
+			</node>
+			<node id="113" label="guided" >
+				<viz:size value="20"/>
+			</node>
+			<node id="74" label="solution" >
+				<viz:size value="30"/>
+			</node>
+			<node id="114" label="scheduling" >
+				<viz:size value="40"/>
+			</node>
+			<node id="155" label="should" >
+				<viz:size value="20"/>
+			</node>
+			<node id="115" label="dynamic" >
+				<viz:size value="70"/>
+			</node>
+			<node id="75" label="stock" >
+				<viz:size value="190"/>
+			</node>
+			<node id="76" label="credit" >
+				<viz:size value="30"/>
+			</node>
+			<node id="25" label="programming" >
+				<viz:size value="190"/>
+			</node>
+			<node id="26" label="computational" >
+				<viz:size value="20"/>
+			</node>
+			<node id="157" label="group" >
+				<viz:size value="20"/>
+			</node>
+			<node id="27" label="which" >
+				<viz:size value="20"/>
+			</node>
+			<node id="77" label="discounted" >
+				<viz:size value="20"/>
+			</node>
+			<node id="28" label="image" >
+				<viz:size value="40"/>
+			</node>
+			<node id="78" label="new" >
+				<viz:size value="120"/>
+			</node>
+			<node id="29" label="making" >
+				<viz:size value="30"/>
+			</node>
+			<node id="79" label="constructing" >
+				<viz:size value="30"/>
+			</node>
+			<node id="158" label="resource" >
+				<viz:size value="90"/>
+			</node>
+			<node id="159" label="adapting" >
+				<viz:size value="30"/>
+			</node>
+			<node id="116" label="meanvariance" >
+				<viz:size value="40"/>
+			</node>
+			<node id="80" label="real" >
+				<viz:size value="20"/>
+			</node>
+			<node id="160" label="mining" >
+				<viz:size value="40"/>
+			</node>
+			<node id="31" label="encoding" >
+				<viz:size value="20"/>
+			</node>
+			<node id="161" label="multicriteria" >
+				<viz:size value="20"/>
+			</node>
+			<node id="162" label="market" >
+				<viz:size value="50"/>
+			</node>
+			<node id="82" label="hybrid" >
+				<viz:size value="730"/>
+			</node>
+			<node id="117" label="measure" >
+				<viz:size value="20"/>
+			</node>
+			<node id="83" label="improve" >
+				<viz:size value="30"/>
+			</node>
+			<node id="118" label="solve" >
+				<viz:size value="20"/>
+			</node>
+			<node id="163" label="wavelet" >
+				<viz:size value="30"/>
+			</node>
+			<node id="32" label="exchange" >
+				<viz:size value="20"/>
+			</node>
+			<node id="119" label="support" >
+				<viz:size value="60"/>
+			</node>
+			<node id="164" label="solving" >
+				<viz:size value="60"/>
+			</node>
+			<node id="33" label="technical" >
+				<viz:size value="50"/>
+			</node>
+			<node id="34" label="neural" >
+				<viz:size value="30"/>
+			</node>
+			<node id="35" label="parity" >
+				<viz:size value="20"/>
+			</node>
+			<node id="165" label="line" >
+				<viz:size value="20"/>
+			</node>
+			<node id="166" label="partitioned" >
+				<viz:size value="20"/>
+			</node>
+			<node id="37" label="choose" >
+				<viz:size value="20"/>
+			</node>
+			<node id="85" label="best" >
+				<viz:size value="30"/>
+			</node>
+			<node id="120" label="generating" >
+				<viz:size value="30"/>
+			</node>
+			<node id="121" label="learning" >
+				<viz:size value="40"/>
+			</node>
+			<node id="86" label="memetic" >
+				<viz:size value="80"/>
+			</node>
+			<node id="122" label="stocks" >
+				<viz:size value="20"/>
+			</node>
+			<node id="167" label="network" >
+				<viz:size value="130"/>
+			</node>
+			<node id="168" label="security" >
+				<viz:size value="20"/>
+			</node>
+			<node id="169" label="public" >
+				<viz:size value="60"/>
+			</node>
+			<node id="170" label="scenariobased" >
+				<viz:size value="20"/>
+			</node>
+			<node id="39" label="flows" >
+				<viz:size value="20"/>
+			</node>
+			<node id="87" label="design" >
+				<viz:size value="50"/>
+			</node>
+			<node id="123" label="sorting" >
+				<viz:size value="20"/>
+			</node>
+			<node id="88" label="construction" >
+				<viz:size value="70"/>
+			</node>
+			<node id="40" label="satellite" >
+				<viz:size value="20"/>
+			</node>
+			<node id="89" label="beta" >
+				<viz:size value="30"/>
+			</node>
+			<node id="172" label="fuzzy" >
+				<viz:size value="230"/>
+			</node>
+			<node id="124" label="allocation" >
+				<viz:size value="30"/>
+			</node>
+			<node id="173" label="cost" >
+				<viz:size value="60"/>
+			</node>
+			<node id="90" label="social" >
+				<viz:size value="20"/>
+			</node>
+			<node id="91" label="control" >
+				<viz:size value="40"/>
+			</node>
+			<node id="92" label="intelligent" >
+				<viz:size value="60"/>
+			</node>
+			<node id="174" label="cardinality" >
+				<viz:size value="80"/>
+			</node>
+			<node id="125" label="grey" >
+				<viz:size value="30"/>
+			</node>
+			<node id="41" label="environment" >
+				<viz:size value="40"/>
+			</node>
+			<node id="42" label="nodes" >
+				<viz:size value="30"/>
+			</node>
+			<node id="175" label="performance" >
+				<viz:size value="40"/>
+			</node>
+			<node id="176" label="swarm" >
+				<viz:size value="30"/>
+			</node>
+			<node id="43" label="management" >
+				<viz:size value="130"/>
+			</node>
+			<node id="126" label="fund" >
+				<viz:size value="50"/>
+			</node>
+			<node id="44" label="suitable" >
+				<viz:size value="20"/>
+			</node>
+			<node id="127" label="relational" >
+				<viz:size value="30"/>
+			</node>
+			<node id="128" label="risk" >
+				<viz:size value="160"/>
+			</node>
+			<node id="94" label="machines" >
+				<viz:size value="20"/>
+			</node>
+			<node id="129" label="time" >
+				<viz:size value="40"/>
+			</node>
+			<node id="95" label="coevolutionary" >
+				<viz:size value="30"/>
+			</node>
+			<node id="45" label="natureinspired" >
+				<viz:size value="20"/>
+			</node>
+			<node id="178" label="multiagent" >
+				<viz:size value="40"/>
+			</node>
+			<node id="179" label="multidimensional" >
+				<viz:size value="20"/>
+			</node>
+			<node id="130" label="finance" >
+				<viz:size value="120"/>
+			</node>
+			<node id="96" label="rebalancing" >
+				<viz:size value="30"/>
+			</node>
+		</nodes>
+		<edges>
+			<edge id="0" source="0" target="8" weight="2" type="undirected" />
+			<edge id="1" source="0" target="25" weight="2" type="undirected" />
+			<edge id="2" source="0" target="154" weight="2" type="undirected" />
+			<edge id="3" source="1" target="6" weight="3" type="undirected" />
+			<edge id="4" source="1" target="11" weight="2" type="undirected" />
+			<edge id="5" source="1" target="52" weight="2" type="undirected" />
+			<edge id="6" source="1" target="82" weight="2" type="undirected" />
+			<edge id="7" source="1" target="141" weight="2" type="undirected" />
+			<edge id="8" source="1" target="169" weight="2" type="undirected" />
+			<edge id="9" source="2" target="24" weight="2" type="undirected" />
+			<edge id="10" source="2" target="105" weight="2" type="undirected" />
+			<edge id="11" source="3" target="18" weight="2" type="undirected" />
+			<edge id="12" source="3" target="43" weight="2" type="undirected" />
+			<edge id="13" source="3" target="51" weight="2" type="undirected" />
+			<edge id="14" source="3" target="52" weight="3" type="undirected" />
+			<edge id="15" source="3" target="82" weight="5" type="undirected" />
+			<edge id="16" source="3" target="172" weight="3" type="undirected" />
+			<edge id="17" source="4" target="58" weight="2" type="undirected" />
+			<edge id="18" source="5" target="6" weight="2" type="undirected" />
+			<edge id="19" source="5" target="59" weight="2" type="undirected" />
+			<edge id="20" source="5" target="82" weight="3" type="undirected" />
+			<edge id="21" source="6" target="8" weight="2" type="undirected" />
+			<edge id="22" source="6" target="10" weight="2" type="undirected" />
+			<edge id="23" source="6" target="11" weight="4" type="undirected" />
+			<edge id="24" source="6" target="19" weight="2" type="undirected" />
+			<edge id="25" source="6" target="25" weight="3" type="undirected" />
+			<edge id="26" source="6" target="29" weight="3" type="undirected" />
+			<edge id="27" source="6" target="34" weight="2" type="undirected" />
+			<edge id="28" source="6" target="39" weight="2" type="undirected" />
+			<edge id="29" source="6" target="41" weight="2" type="undirected" />
+			<edge id="30" source="6" target="47" weight="2" type="undirected" />
+			<edge id="31" source="6" target="51" weight="7" type="undirected" />
+			<edge id="32" source="6" target="52" weight="8" type="undirected" />
+			<edge id="33" source="6" target="58" weight="8" type="undirected" />
+			<edge id="34" source="6" target="64" weight="2" type="undirected" />
+			<edge id="35" source="6" target="65" weight="2" type="undirected" />
+			<edge id="36" source="6" target="75" weight="4" type="undirected" />
+			<edge id="37" source="6" target="77" weight="2" type="undirected" />
+			<edge id="38" source="6" target="79" weight="2" type="undirected" />
+			<edge id="39" source="6" target="82" weight="10" type="undirected" />
+			<edge id="40" source="6" target="87" weight="2" type="undirected" />
+			<edge id="41" source="6" target="101" weight="2" type="undirected" />
+			<edge id="42" source="6" target="104" weight="5" type="undirected" />
+			<edge id="43" source="6" target="105" weight="12" type="undirected" />
+			<edge id="44" source="6" target="108" weight="2" type="undirected" />
+			<edge id="45" source="6" target="111" weight="9" type="undirected" />
+			<edge id="46" source="6" target="112" weight="2" type="undirected" />
+			<edge id="47" source="6" target="114" weight="4" type="undirected" />
+			<edge id="48" source="6" target="120" weight="2" type="undirected" />
+			<edge id="49" source="6" target="124" weight="2" type="undirected" />
+			<edge id="50" source="6" target="126" weight="2" type="undirected" />
+			<edge id="51" source="6" target="128" weight="3" type="undirected" />
+			<edge id="52" source="6" target="129" weight="2" type="undirected" />
+			<edge id="53" source="6" target="130" weight="2" type="undirected" />
+			<edge id="54" source="6" target="136" weight="7" type="undirected" />
+			<edge id="55" source="6" target="138" weight="2" type="undirected" />
+			<edge id="56" source="6" target="141" weight="7" type="undirected" />
+			<edge id="57" source="6" target="143" weight="2" type="undirected" />
+			<edge id="58" source="6" target="144" weight="3" type="undirected" />
+			<edge id="59" source="6" target="146" weight="2" type="undirected" />
+			<edge id="60" source="6" target="147" weight="2" type="undirected" />
+			<edge id="61" source="6" target="148" weight="2" type="undirected" />
+			<edge id="62" source="6" target="154" weight="2" type="undirected" />
+			<edge id="63" source="6" target="158" weight="8" type="undirected" />
+			<edge id="64" source="6" target="162" weight="2" type="undirected" />
+			<edge id="65" source="6" target="167" weight="3" type="undirected" />
+			<edge id="66" source="6" target="168" weight="2" type="undirected" />
+			<edge id="67" source="6" target="169" weight="2" type="undirected" />
+			<edge id="68" source="6" target="172" weight="5" type="undirected" />
+			<edge id="69" source="6" target="178" weight="2" type="undirected" />
+			<edge id="70" source="7" target="33" weight="2" type="undirected" />
+			<edge id="71" source="7" target="82" weight="2" type="undirected" />
+			<edge id="72" source="7" target="141" weight="2" type="undirected" />
+			<edge id="73" source="8" target="11" weight="3" type="undirected" />
+			<edge id="74" source="8" target="19" weight="2" type="undirected" />
+			<edge id="75" source="8" target="25" weight="3" type="undirected" />
+			<edge id="76" source="8" target="28" weight="2" type="undirected" />
+			<edge id="77" source="8" target="33" weight="2" type="undirected" />
+			<edge id="78" source="8" target="82" weight="7" type="undirected" />
+			<edge id="79" source="8" target="111" weight="2" type="undirected" />
+			<edge id="80" source="8" target="128" weight="2" type="undirected" />
+			<edge id="81" source="8" target="141" weight="4" type="undirected" />
+			<edge id="82" source="8" target="154" weight="2" type="undirected" />
+			<edge id="83" source="8" target="169" weight="2" type="undirected" />
+			<edge id="84" source="8" target="172" weight="2" type="undirected" />
+			<edge id="85" source="10" target="25" weight="2" type="undirected" />
+			<edge id="86" source="10" target="52" weight="2" type="undirected" />
+			<edge id="87" source="11" target="12" weight="3" type="undirected" />
+			<edge id="88" source="11" target="19" weight="3" type="undirected" />
+			<edge id="89" source="11" target="23" weight="11" type="undirected" />
+			<edge id="90" source="11" target="25" weight="3" type="undirected" />
+			<edge id="91" source="11" target="35" weight="2" type="undirected" />
+			<edge id="92" source="11" target="50" weight="3" type="undirected" />
+			<edge id="93" source="11" target="51" weight="9" type="undirected" />
+			<edge id="94" source="11" target="52" weight="13" type="undirected" />
+			<edge id="95" source="11" target="62" weight="2" type="undirected" />
+			<edge id="96" source="11" target="70" weight="2" type="undirected" />
+			<edge id="97" source="11" target="72" weight="3" type="undirected" />
+			<edge id="98" source="11" target="75" weight="3" type="undirected" />
+			<edge id="99" source="11" target="78" weight="4" type="undirected" />
+			<edge id="100" source="11" target="82" weight="28" type="undirected" />
+			<edge id="101" source="11" target="85" weight="2" type="undirected" />
+			<edge id="102" source="11" target="92" weight="2" type="undirected" />
+			<edge id="103" source="11" target="111" weight="8" type="undirected" />
+			<edge id="104" source="11" target="116" weight="2" type="undirected" />
+			<edge id="105" source="11" target="118" weight="2" type="undirected" />
+			<edge id="106" source="11" target="123" weight="2" type="undirected" />
+			<edge id="107" source="11" target="125" weight="3" type="undirected" />
+			<edge id="108" source="11" target="128" weight="2" type="undirected" />
+			<edge id="109" source="11" target="130" weight="2" type="undirected" />
+			<edge id="110" source="11" target="132" weight="2" type="undirected" />
+			<edge id="111" source="11" target="134" weight="2" type="undirected" />
+			<edge id="112" source="11" target="136" weight="10" type="undirected" />
+			<edge id="113" source="11" target="141" weight="14" type="undirected" />
+			<edge id="114" source="11" target="143" weight="2" type="undirected" />
+			<edge id="115" source="11" target="151" weight="2" type="undirected" />
+			<edge id="116" source="11" target="152" weight="2" type="undirected" />
+			<edge id="117" source="11" target="153" weight="2" type="undirected" />
+			<edge id="118" source="11" target="161" weight="2" type="undirected" />
+			<edge id="119" source="11" target="172" weight="12" type="undirected" />
+			<edge id="120" source="11" target="174" weight="5" type="undirected" />
+			<edge id="121" source="12" target="52" weight="3" type="undirected" />
+			<edge id="122" source="12" target="75" weight="2" type="undirected" />
+			<edge id="123" source="12" target="82" weight="2" type="undirected" />
+			<edge id="124" source="12" target="172" weight="4" type="undirected" />
+			<edge id="125" source="13" target="82" weight="2" type="undirected" />
+			<edge id="126" source="14" target="57" weight="2" type="undirected" />
+			<edge id="127" source="14" target="113" weight="2" type="undirected" />
+			<edge id="128" source="14" target="134" weight="2" type="undirected" />
+			<edge id="129" source="16" target="25" weight="2" type="undirected" />
+			<edge id="130" source="16" target="58" weight="2" type="undirected" />
+			<edge id="131" source="16" target="60" weight="2" type="undirected" />
+			<edge id="132" source="16" target="115" weight="2" type="undirected" />
+			<edge id="133" source="17" target="82" weight="2" type="undirected" />
+			<edge id="134" source="18" target="52" weight="2" type="undirected" />
+			<edge id="135" source="18" target="82" weight="5" type="undirected" />
+			<edge id="136" source="19" target="23" weight="3" type="undirected" />
+			<edge id="137" source="19" target="62" weight="3" type="undirected" />
+			<edge id="138" source="19" target="82" weight="3" type="undirected" />
+			<edge id="139" source="19" target="111" weight="2" type="undirected" />
+			<edge id="140" source="19" target="136" weight="4" type="undirected" />
+			<edge id="141" source="20" target="82" weight="2" type="undirected" />
+			<edge id="142" source="20" target="176" weight="3" type="undirected" />
+			<edge id="143" source="21" target="27" weight="2" type="undirected" />
+			<edge id="144" source="21" target="37" weight="2" type="undirected" />
+			<edge id="145" source="21" target="141" weight="2" type="undirected" />
+			<edge id="146" source="21" target="155" weight="2" type="undirected" />
+			<edge id="147" source="23" target="51" weight="5" type="undirected" />
+			<edge id="148" source="23" target="62" weight="2" type="undirected" />
+			<edge id="149" source="23" target="72" weight="3" type="undirected" />
+			<edge id="150" source="23" target="82" weight="7" type="undirected" />
+			<edge id="151" source="23" target="116" weight="2" type="undirected" />
+			<edge id="152" source="23" target="130" weight="2" type="undirected" />
+			<edge id="153" source="23" target="136" weight="6" type="undirected" />
+			<edge id="154" source="23" target="152" weight="2" type="undirected" />
+			<edge id="155" source="23" target="163" weight="2" type="undirected" />
+			<edge id="156" source="23" target="167" weight="2" type="undirected" />
+			<edge id="157" source="23" target="174" weight="7" type="undirected" />
+			<edge id="158" source="24" target="105" weight="2" type="undirected" />
+			<edge id="159" source="25" target="42" weight="3" type="undirected" />
+			<edge id="160" source="25" target="52" weight="6" type="undirected" />
+			<edge id="161" source="25" target="58" weight="3" type="undirected" />
+			<edge id="162" source="25" target="60" weight="3" type="undirected" />
+			<edge id="163" source="25" target="61" weight="2" type="undirected" />
+			<edge id="164" source="25" target="88" weight="2" type="undirected" />
+			<edge id="165" source="25" target="91" weight="3" type="undirected" />
+			<edge id="166" source="25" target="105" weight="2" type="undirected" />
+			<edge id="167" source="25" target="110" weight="2" type="undirected" />
+			<edge id="168" source="25" target="115" weight="4" type="undirected" />
+			<edge id="169" source="25" target="129" weight="2" type="undirected" />
+			<edge id="170" source="25" target="141" weight="3" type="undirected" />
+			<edge id="171" source="25" target="154" weight="2" type="undirected" />
+			<edge id="172" source="25" target="159" weight="2" type="undirected" />
+			<edge id="173" source="25" target="167" weight="7" type="undirected" />
+			<edge id="174" source="26" target="75" weight="2" type="undirected" />
+			<edge id="175" source="27" target="37" weight="2" type="undirected" />
+			<edge id="176" source="27" target="141" weight="2" type="undirected" />
+			<edge id="177" source="27" target="155" weight="2" type="undirected" />
+			<edge id="178" source="28" target="40" weight="3" type="undirected" />
+			<edge id="179" source="28" target="53" weight="2" type="undirected" />
+			<edge id="180" source="28" target="82" weight="3" type="undirected" />
+			<edge id="181" source="28" target="140" weight="3" type="undirected" />
+			<edge id="182" source="28" target="141" weight="2" type="undirected" />
+			<edge id="183" source="29" target="104" weight="3" type="undirected" />
+			<edge id="184" source="29" target="172" weight="2" type="undirected" />
+			<edge id="185" source="31" target="99" weight="2" type="undirected" />
+			<edge id="186" source="32" target="52" weight="2" type="undirected" />
+			<edge id="187" source="32" target="75" weight="2" type="undirected" />
+			<edge id="188" source="33" target="82" weight="2" type="undirected" />
+			<edge id="189" source="33" target="112" weight="2" type="undirected" />
+			<edge id="190" source="34" target="75" weight="2" type="undirected" />
+			<edge id="191" source="34" target="167" weight="3" type="undirected" />
+			<edge id="192" source="35" target="128" weight="2" type="undirected" />
+			<edge id="193" source="35" target="141" weight="2" type="undirected" />
+			<edge id="194" source="37" target="141" weight="2" type="undirected" />
+			<edge id="195" source="37" target="155" weight="2" type="undirected" />
+			<edge id="196" source="39" target="77" weight="2" type="undirected" />
+			<edge id="197" source="39" target="136" weight="2" type="undirected" />
+			<edge id="198" source="39" target="138" weight="2" type="undirected" />
+			<edge id="199" source="39" target="158" weight="2" type="undirected" />
+			<edge id="200" source="40" target="53" weight="2" type="undirected" />
+			<edge id="201" source="40" target="82" weight="2" type="undirected" />
+			<edge id="202" source="40" target="140" weight="2" type="undirected" />
+			<edge id="203" source="41" target="51" weight="2" type="undirected" />
+			<edge id="204" source="42" target="88" weight="2" type="undirected" />
+			<edge id="205" source="42" target="91" weight="3" type="undirected" />
+			<edge id="206" source="42" target="167" weight="3" type="undirected" />
+			<edge id="207" source="43" target="51" weight="2" type="undirected" />
+			<edge id="208" source="43" target="52" weight="3" type="undirected" />
+			<edge id="209" source="43" target="58" weight="3" type="undirected" />
+			<edge id="210" source="43" target="70" weight="2" type="undirected" />
+			<edge id="211" source="43" target="75" weight="2" type="undirected" />
+			<edge id="212" source="43" target="78" weight="2" type="undirected" />
+			<edge id="213" source="43" target="82" weight="5" type="undirected" />
+			<edge id="214" source="43" target="128" weight="3" type="undirected" />
+			<edge id="215" source="43" target="130" weight="2" type="undirected" />
+			<edge id="216" source="43" target="132" weight="2" type="undirected" />
+			<edge id="217" source="43" target="141" weight="3" type="undirected" />
+			<edge id="218" source="43" target="172" weight="3" type="undirected" />
+			<edge id="219" source="44" target="51" weight="2" type="undirected" />
+			<edge id="220" source="45" target="82" weight="2" type="undirected" />
+			<edge id="221" source="45" target="130" weight="2" type="undirected" />
+			<edge id="222" source="46" target="58" weight="2" type="undirected" />
+			<edge id="223" source="50" target="82" weight="6" type="undirected" />
+			<edge id="224" source="50" target="118" weight="2" type="undirected" />
+			<edge id="225" source="51" target="52" weight="5" type="undirected" />
+			<edge id="226" source="51" target="64" weight="2" type="undirected" />
+			<edge id="227" source="51" target="75" weight="3" type="undirected" />
+			<edge id="228" source="51" target="78" weight="2" type="undirected" />
+			<edge id="229" source="51" target="82" weight="4" type="undirected" />
+			<edge id="230" source="51" target="85" weight="3" type="undirected" />
+			<edge id="231" source="51" target="87" weight="2" type="undirected" />
+			<edge id="232" source="51" target="101" weight="2" type="undirected" />
+			<edge id="233" source="51" target="111" weight="4" type="undirected" />
+			<edge id="234" source="51" target="114" weight="2" type="undirected" />
+			<edge id="235" source="51" target="116" weight="2" type="undirected" />
+			<edge id="236" source="51" target="130" weight="4" type="undirected" />
+			<edge id="237" source="51" target="131" weight="2" type="undirected" />
+			<edge id="238" source="51" target="132" weight="2" type="undirected" />
+			<edge id="239" source="51" target="136" weight="9" type="undirected" />
+			<edge id="240" source="51" target="141" weight="10" type="undirected" />
+			<edge id="241" source="51" target="143" weight="2" type="undirected" />
+			<edge id="242" source="51" target="158" weight="2" type="undirected" />
+			<edge id="243" source="51" target="172" weight="4" type="undirected" />
+			<edge id="244" source="51" target="174" weight="3" type="undirected" />
+			<edge id="245" source="52" target="58" weight="4" type="undirected" />
+			<edge id="246" source="52" target="64" weight="2" type="undirected" />
+			<edge id="247" source="52" target="66" weight="2" type="undirected" />
+			<edge id="248" source="52" target="75" weight="5" type="undirected" />
+			<edge id="249" source="52" target="78" weight="3" type="undirected" />
+			<edge id="250" source="52" target="82" weight="13" type="undirected" />
+			<edge id="251" source="52" target="91" weight="2" type="undirected" />
+			<edge id="252" source="52" target="101" weight="2" type="undirected" />
+			<edge id="253" source="52" target="111" weight="3" type="undirected" />
+			<edge id="254" source="52" target="116" weight="3" type="undirected" />
+			<edge id="255" source="52" target="125" weight="2" type="undirected" />
+			<edge id="256" source="52" target="128" weight="3" type="undirected" />
+			<edge id="257" source="52" target="136" weight="3" type="undirected" />
+			<edge id="258" source="52" target="141" weight="2" type="undirected" />
+			<edge id="259" source="52" target="152" weight="2" type="undirected" />
+			<edge id="260" source="52" target="162" weight="3" type="undirected" />
+			<edge id="261" source="52" target="167" weight="3" type="undirected" />
+			<edge id="262" source="52" target="169" weight="3" type="undirected" />
+			<edge id="263" source="52" target="172" weight="8" type="undirected" />
+			<edge id="264" source="52" target="179" weight="3" type="undirected" />
+			<edge id="265" source="53" target="82" weight="2" type="undirected" />
+			<edge id="266" source="53" target="83" weight="2" type="undirected" />
+			<edge id="267" source="53" target="140" weight="2" type="undirected" />
+			<edge id="268" source="55" target="119" weight="2" type="undirected" />
+			<edge id="269" source="55" target="126" weight="3" type="undirected" />
+			<edge id="270" source="56" target="64" weight="2" type="undirected" />
+			<edge id="271" source="56" target="82" weight="2" type="undirected" />
+			<edge id="272" source="57" target="113" weight="2" type="undirected" />
+			<edge id="273" source="57" target="134" weight="2" type="undirected" />
+			<edge id="274" source="58" target="60" weight="3" type="undirected" />
+			<edge id="275" source="58" target="75" weight="3" type="undirected" />
+			<edge id="276" source="58" target="78" weight="2" type="undirected" />
+			<edge id="277" source="58" target="82" weight="7" type="undirected" />
+			<edge id="278" source="58" target="92" weight="2" type="undirected" />
+			<edge id="279" source="58" target="95" weight="2" type="undirected" />
+			<edge id="280" source="58" target="105" weight="3" type="undirected" />
+			<edge id="281" source="58" target="108" weight="2" type="undirected" />
+			<edge id="282" source="58" target="111" weight="2" type="undirected" />
+			<edge id="283" source="58" target="115" weight="2" type="undirected" />
+			<edge id="284" source="58" target="120" weight="2" type="undirected" />
+			<edge id="285" source="58" target="130" weight="2" type="undirected" />
+			<edge id="286" source="58" target="141" weight="2" type="undirected" />
+			<edge id="287" source="58" target="172" weight="2" type="undirected" />
+			<edge id="288" source="59" target="82" weight="2" type="undirected" />
+			<edge id="289" source="60" target="75" weight="2" type="undirected" />
+			<edge id="290" source="60" target="89" weight="2" type="undirected" />
+			<edge id="291" source="60" target="115" weight="3" type="undirected" />
+			<edge id="292" source="61" target="110" weight="2" type="undirected" />
+			<edge id="293" source="62" target="136" weight="2" type="undirected" />
+			<edge id="294" source="64" target="82" weight="2" type="undirected" />
+			<edge id="295" source="64" target="111" weight="2" type="undirected" />
+			<edge id="296" source="64" target="114" weight="2" type="undirected" />
+			<edge id="297" source="64" target="136" weight="2" type="undirected" />
+			<edge id="298" source="64" target="141" weight="3" type="undirected" />
+			<edge id="299" source="64" target="158" weight="3" type="undirected" />
+			<edge id="300" source="66" target="78" weight="2" type="undirected" />
+			<edge id="301" source="66" target="82" weight="4" type="undirected" />
+			<edge id="302" source="66" target="131" weight="2" type="undirected" />
+			<edge id="303" source="66" target="141" weight="3" type="undirected" />
+			<edge id="304" source="66" target="165" weight="2" type="undirected" />
+			<edge id="305" source="67" target="82" weight="2" type="undirected" />
+			<edge id="306" source="67" target="120" weight="2" type="undirected" />
+			<edge id="307" source="69" target="128" weight="2" type="undirected" />
+			<edge id="308" source="70" target="82" weight="4" type="undirected" />
+			<edge id="309" source="70" target="111" weight="2" type="undirected" />
+			<edge id="310" source="71" target="75" weight="2" type="undirected" />
+			<edge id="311" source="71" target="141" weight="2" type="undirected" />
+			<edge id="312" source="71" target="172" weight="2" type="undirected" />
+			<edge id="313" source="72" target="136" weight="3" type="undirected" />
+			<edge id="314" source="72" target="151" weight="4" type="undirected" />
+			<edge id="315" source="72" target="153" weight="4" type="undirected" />
+			<edge id="316" source="72" target="164" weight="2" type="undirected" />
+			<edge id="317" source="72" target="173" weight="5" type="undirected" />
+			<edge id="318" source="72" target="174" weight="2" type="undirected" />
+			<edge id="319" source="74" target="136" weight="3" type="undirected" />
+			<edge id="320" source="75" target="82" weight="3" type="undirected" />
+			<edge id="321" source="75" target="89" weight="2" type="undirected" />
+			<edge id="322" source="75" target="106" weight="3" type="undirected" />
+			<edge id="323" source="75" target="141" weight="4" type="undirected" />
+			<edge id="324" source="75" target="142" weight="2" type="undirected" />
+			<edge id="325" source="75" target="157" weight="2" type="undirected" />
+			<edge id="326" source="75" target="160" weight="4" type="undirected" />
+			<edge id="327" source="75" target="162" weight="3" type="undirected" />
+			<edge id="328" source="75" target="167" weight="3" type="undirected" />
+			<edge id="329" source="75" target="172" weight="2" type="undirected" />
+			<edge id="330" source="76" target="141" weight="2" type="undirected" />
+			<edge id="331" source="77" target="136" weight="2" type="undirected" />
+			<edge id="332" source="77" target="138" weight="2" type="undirected" />
+			<edge id="333" source="77" target="158" weight="2" type="undirected" />
+			<edge id="334" source="78" target="82" weight="6" type="undirected" />
+			<edge id="335" source="78" target="141" weight="4" type="undirected" />
+			<edge id="336" source="78" target="172" weight="2" type="undirected" />
+			<edge id="337" source="79" target="105" weight="2" type="undirected" />
+			<edge id="338" source="80" target="82" weight="2" type="undirected" />
+			<edge id="339" source="80" target="128" weight="2" type="undirected" />
+			<edge id="340" source="80" target="172" weight="2" type="undirected" />
+			<edge id="341" source="82" target="88" weight="2" type="undirected" />
+			<edge id="342" source="82" target="92" weight="6" type="undirected" />
+			<edge id="343" source="82" target="100" weight="2" type="undirected" />
+			<edge id="344" source="82" target="104" weight="2" type="undirected" />
+			<edge id="345" source="82" target="106" weight="2" type="undirected" />
+			<edge id="346" source="82" target="107" weight="2" type="undirected" />
+			<edge id="347" source="82" target="111" weight="8" type="undirected" />
+			<edge id="348" source="82" target="117" weight="2" type="undirected" />
+			<edge id="349" source="82" target="118" weight="2" type="undirected" />
+			<edge id="350" source="82" target="119" weight="3" type="undirected" />
+			<edge id="351" source="82" target="125" weight="3" type="undirected" />
+			<edge id="352" source="82" target="128" weight="4" type="undirected" />
+			<edge id="353" source="82" target="130" weight="6" type="undirected" />
+			<edge id="354" source="82" target="131" weight="2" type="undirected" />
+			<edge id="355" source="82" target="132" weight="2" type="undirected" />
+			<edge id="356" source="82" target="136" weight="10" type="undirected" />
+			<edge id="357" source="82" target="140" weight="4" type="undirected" />
+			<edge id="358" source="82" target="141" weight="19" type="undirected" />
+			<edge id="359" source="82" target="143" weight="2" type="undirected" />
+			<edge id="360" source="82" target="146" weight="2" type="undirected" />
+			<edge id="361" source="82" target="154" weight="2" type="undirected" />
+			<edge id="362" source="82" target="162" weight="2" type="undirected" />
+			<edge id="363" source="82" target="164" weight="3" type="undirected" />
+			<edge id="364" source="82" target="165" weight="2" type="undirected" />
+			<edge id="365" source="82" target="169" weight="2" type="undirected" />
+			<edge id="366" source="82" target="172" weight="9" type="undirected" />
+			<edge id="367" source="82" target="174" weight="2" type="undirected" />
+			<edge id="368" source="82" target="175" weight="2" type="undirected" />
+			<edge id="369" source="82" target="176" weight="2" type="undirected" />
+			<edge id="370" source="86" target="136" weight="2" type="undirected" />
+			<edge id="371" source="87" target="130" weight="2" type="undirected" />
+			<edge id="372" source="88" target="91" weight="2" type="undirected" />
+			<edge id="373" source="88" target="122" weight="2" type="undirected" />
+			<edge id="374" source="88" target="167" weight="2" type="undirected" />
+			<edge id="375" source="90" target="136" weight="2" type="undirected" />
+			<edge id="376" source="91" target="167" weight="3" type="undirected" />
+			<edge id="377" source="92" target="130" weight="2" type="undirected" />
+			<edge id="378" source="92" target="136" weight="2" type="undirected" />
+			<edge id="379" source="92" target="172" weight="2" type="undirected" />
+			<edge id="380" source="94" target="102" weight="2" type="undirected" />
+			<edge id="381" source="94" target="119" weight="2" type="undirected" />
+			<edge id="382" source="95" target="178" weight="2" type="undirected" />
+			<edge id="383" source="96" target="163" weight="2" type="undirected" />
+			<edge id="384" source="96" target="167" weight="2" type="undirected" />
+			<edge id="385" source="102" target="119" weight="2" type="undirected" />
+			<edge id="386" source="104" target="172" weight="2" type="undirected" />
+			<edge id="387" source="105" target="110" weight="2" type="undirected" />
+			<edge id="388" source="105" target="119" weight="2" type="undirected" />
+			<edge id="389" source="105" target="120" weight="2" type="undirected" />
+			<edge id="390" source="105" target="127" weight="2" type="undirected" />
+			<edge id="391" source="105" target="141" weight="2" type="undirected" />
+			<edge id="392" source="105" target="166" weight="2" type="undirected" />
+			<edge id="393" source="105" target="167" weight="3" type="undirected" />
+			<edge id="394" source="109" target="147" weight="2" type="undirected" />
+			<edge id="395" source="110" target="127" weight="2" type="undirected" />
+			<edge id="396" source="110" target="166" weight="2" type="undirected" />
+			<edge id="397" source="111" target="114" weight="4" type="undirected" />
+			<edge id="398" source="111" target="123" weight="2" type="undirected" />
+			<edge id="399" source="111" target="125" weight="2" type="undirected" />
+			<edge id="400" source="111" target="131" weight="2" type="undirected" />
+			<edge id="401" source="111" target="136" weight="5" type="undirected" />
+			<edge id="402" source="111" target="141" weight="5" type="undirected" />
+			<edge id="403" source="111" target="148" weight="2" type="undirected" />
+			<edge id="404" source="111" target="158" weight="5" type="undirected" />
+			<edge id="405" source="111" target="161" weight="2" type="undirected" />
+			<edge id="406" source="111" target="169" weight="2" type="undirected" />
+			<edge id="407" source="111" target="172" weight="4" type="undirected" />
+			<edge id="408" source="112" target="144" weight="2" type="undirected" />
+			<edge id="409" source="113" target="134" weight="2" type="undirected" />
+			<edge id="410" source="114" target="136" weight="3" type="undirected" />
+			<edge id="411" source="114" target="141" weight="2" type="undirected" />
+			<edge id="412" source="114" target="158" weight="4" type="undirected" />
+			<edge id="413" source="115" target="121" weight="2" type="undirected" />
+			<edge id="414" source="119" target="126" weight="2" type="undirected" />
+			<edge id="415" source="119" target="141" weight="2" type="undirected" />
+			<edge id="416" source="124" target="147" weight="2" type="undirected" />
+			<edge id="417" source="124" target="152" weight="2" type="undirected" />
+			<edge id="418" source="127" target="166" weight="2" type="undirected" />
+			<edge id="419" source="128" target="132" weight="2" type="undirected" />
+			<edge id="420" source="128" target="135" weight="3" type="undirected" />
+			<edge id="421" source="128" target="141" weight="6" type="undirected" />
+			<edge id="422" source="128" target="170" weight="2" type="undirected" />
+			<edge id="423" source="128" target="172" weight="2" type="undirected" />
+			<edge id="424" source="129" target="159" weight="2" type="undirected" />
+			<edge id="425" source="129" target="167" weight="2" type="undirected" />
+			<edge id="426" source="130" target="136" weight="3" type="undirected" />
+			<edge id="427" source="130" target="167" weight="2" type="undirected" />
+			<edge id="428" source="131" target="141" weight="2" type="undirected" />
+			<edge id="429" source="131" target="165" weight="2" type="undirected" />
+			<edge id="430" source="136" target="138" weight="2" type="undirected" />
+			<edge id="431" source="136" target="141" weight="4" type="undirected" />
+			<edge id="432" source="136" target="151" weight="2" type="undirected" />
+			<edge id="433" source="136" target="153" weight="2" type="undirected" />
+			<edge id="434" source="136" target="158" weight="6" type="undirected" />
+			<edge id="435" source="136" target="164" weight="6" type="undirected" />
+			<edge id="436" source="136" target="172" weight="2" type="undirected" />
+			<edge id="437" source="136" target="174" weight="2" type="undirected" />
+			<edge id="438" source="138" target="158" weight="2" type="undirected" />
+			<edge id="439" source="139" target="143" weight="2" type="undirected" />
+			<edge id="440" source="140" target="141" weight="2" type="undirected" />
+			<edge id="441" source="141" target="152" weight="2" type="undirected" />
+			<edge id="442" source="141" target="154" weight="2" type="undirected" />
+			<edge id="443" source="141" target="155" weight="2" type="undirected" />
+			<edge id="444" source="141" target="158" weight="2" type="undirected" />
+			<edge id="445" source="141" target="160" weight="2" type="undirected" />
+			<edge id="446" source="141" target="165" weight="2" type="undirected" />
+			<edge id="447" source="141" target="170" weight="2" type="undirected" />
+			<edge id="448" source="141" target="172" weight="5" type="undirected" />
+			<edge id="449" source="142" target="157" weight="2" type="undirected" />
+			<edge id="450" source="147" target="158" weight="2" type="undirected" />
+			<edge id="451" source="149" target="152" weight="2" type="undirected" />
+			<edge id="452" source="151" target="153" weight="3" type="undirected" />
+			<edge id="453" source="159" target="167" weight="2" type="undirected" />
+			<edge id="454" source="163" target="167" weight="3" type="undirected" />
+			<edge id="455" source="172" target="179" weight="2" type="undirected" />
+		</edges>
+	</graph>
+</gexf>
