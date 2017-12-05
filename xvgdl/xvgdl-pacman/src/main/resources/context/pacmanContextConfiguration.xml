@@ -59,6 +59,11 @@
 
     <!-- Defining rules. Events consecuences -->
     <rules>
+    	<!-- Rule for object collision with wall -->
+    	<rule name="wallCollision" type="collision">
+            <ruleAction objectName="pacman" result="cantMove"/>
+            <ruleAction objectName="wall"/>
+        </rule>
 
         <!-- Rule for pacman eating small dots Esto tiene buena pinta. Se
             cargan las reglas, tienen un tipo (collision/proximidad/distancia) y un valor.

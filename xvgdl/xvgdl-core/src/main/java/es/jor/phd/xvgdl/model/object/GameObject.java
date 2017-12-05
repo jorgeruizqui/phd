@@ -242,9 +242,16 @@ public class GameObject implements IGameObject {
 
     @Override
     public void moveTo(int x, int y, int z) {
-        setX(x);
-        setY(y);
-        setZ(z);
+        setIntendedX(x);
+        setIntendedY(y);
+        setIntendedZ(z);
+    }
+
+    @Override
+    public void resetMove() {
+        setIntendedX(getX());
+        setIntendedY(getY());
+        setIntendedZ(getZ());
     }
 
     /**
@@ -260,7 +267,13 @@ public class GameObject implements IGameObject {
         if (objectAI != null) {
             objectAI.applyAIonObject(gameContext, this);
         }
+    }
 
+    @Override
+    public void update() {
+    	setX(getIntendedX());
+    	setY(getIntendedY());
+    	setZ(getIntendedZ());
     }
 
     @Override

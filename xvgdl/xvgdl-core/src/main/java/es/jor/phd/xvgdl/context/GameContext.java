@@ -66,6 +66,9 @@ public final class GameContext extends Context {
     /** End Conditions key. */
     private static final String END_CONDITIONS = "END_CONDITIONS";
 
+    /** Player AI Enabled key. */
+    private static final String PLAYER_AI_ENABLED = "PLAYER_AI_ENABLED";
+
     /** Singleton instance. */
     private static GameContext instance;
 
@@ -324,6 +327,21 @@ public final class GameContext extends Context {
         return getLongValue(TIMEOUT, -1);
     }
 
+    /**
+    *
+    * @param Player AI enabled to set
+    */
+   public void setPlayerAiEnabled(boolean playerAiEnabled) {
+       put(PLAYER_AI_ENABLED, playerAiEnabled);
+   }
+
+   /**
+    *
+    * @return Game Timeout
+    */
+   public boolean isPlayerAiEnabled() {
+       return getBooleanValue(PLAYER_AI_ENABLED, false);
+   }
     /**
      *
      * @param startTime Game starttime in milliseconds to set

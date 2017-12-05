@@ -112,11 +112,21 @@ public interface IGameObject {
     void moveTo(int x, int y, int z);
 
     /**
+     * Reset the intended values and restore to current values, so the element can't move.
+     */
+    void resetMove();
+
+    /**
      * Applies the Artificial Intelligence configured for this game object
      *
      * @param gameContext Game Context
      */
     void applyAI(GameContext gameContext);
+
+    /**
+     * Updates intended positions to consolided positions.
+     */
+    void update();
 
     /**
      * Clones a game object

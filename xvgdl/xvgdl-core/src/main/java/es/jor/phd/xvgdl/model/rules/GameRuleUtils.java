@@ -83,6 +83,8 @@ public final class GameRuleUtils {
                         r.nextInt(gameContext.getMap().getSizeY()), 0);
             } else if (GameRuleResultType.DISAPPEAR.equals(gameRuleAction.getResultType())) {
                 gameContext.removeGameObject(gameObject);
+            } else if (GameRuleResultType.CANT_MOVE.equals(gameRuleAction.getResultType())) {
+                gameObject.resetMove();
             } else if (GameRuleResultType.BOUNCE.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.DUPLICATE.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.FREEZE.equals(gameRuleAction.getResultType())) {

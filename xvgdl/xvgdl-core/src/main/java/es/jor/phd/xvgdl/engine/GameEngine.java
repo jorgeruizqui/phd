@@ -214,16 +214,14 @@ public final class GameEngine extends Properties {
     private void processAI() {
 
         // Apply Artificial Intelligence to all elements that have AI configured
-        List<IGameObject> enemies = getGameContext().getObjectsList();
-        for (IGameObject enemy : enemies) {
-            enemy.applyAI(getGameContext());
-        }
+        getGameContext().getObjectsList().forEach(go -> go.applyAI(getGameContext()));
     }
 
     /**
      * Updates context state.
      */
     private void updateState() {
+    	getGameContext().getObjectsList().forEach(IGameObject::update);
     }
 
     /**

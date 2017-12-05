@@ -10,6 +10,8 @@ import java.util.Arrays;
  */
 public enum GameRuleResultType {
 
+    /** Can't move. */
+    CANT_MOVE,
     /** Score Up. */
     SCORE_UP,
     /** Score Down. */
