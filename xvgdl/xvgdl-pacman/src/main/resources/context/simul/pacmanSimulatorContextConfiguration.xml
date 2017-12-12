@@ -3,25 +3,10 @@
 
 <gameDefinition>
 
-    <!-- Renderer configuration -->
-    <property key="rendererConfiguration"
-        value="/context/pacmanAsciiRendererConfiguration.xml" />
-    <!-- Timeout configuration in milliseconds. Set to -1 for no timeout -->
-    <property key="TIMEOUT" value="20000" />
+    <!-- Renderer configuration not needed for simulation -->
+    <!-- Timeout configuration in milliseconds. Generated randomly -->
 
-    <layout>
-        <component id="gameInfoTop" location="TOP">
-            <contextProperty id="score" />
-            <contextProperty id="hiScore" />
-        </component>
-
-        <component id="gameInfoDown" location="DOWN">
-            <contextProperty id="lives" />
-            <contextProperty id="playerItems" />
-        </component>
-    </layout>
-
-    <!-- Map Definition -->
+    <!-- Map Definition. Generated randomly -->
     <map type="2D" sizeX="25" sizeY="30" toroidal="false"
         generator="es.jor.phd.xvgdl.model.map.GameMapGenerator">
     </map>

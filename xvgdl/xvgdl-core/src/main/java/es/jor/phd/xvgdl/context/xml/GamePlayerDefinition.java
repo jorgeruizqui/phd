@@ -4,6 +4,7 @@ import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.GamePlayer;
 import es.jor.phd.xvgdl.model.object.IGameObject;
+import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
 import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
@@ -64,6 +65,11 @@ public class GamePlayerDefinition extends GameObjectDefinition {
             gameObject.setLivePercentage(playerDefinition.getIntegerValue(XMLATTR_LIVE_PERCENTAGE, N_100));
             gameObject.setScore(playerDefinition.getIntegerValue(XMLATTR_SCORE, 0));
 
+            if (playerDefinition.getProperty(XMLATTR_AI) != null
+                    && !playerDefinition.getProperty(XMLATTR_AI).trim().equals("")) {
+                gameObject.setAI((IGameObjectAI) Class.forName(playerDefinition.getProperty(XMLATTR_AI)).newInstance());
+            }
+            
         } catch (Exception e) {
             ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
                     "Exception converting GameObjectDefinition to GameObject: " + e.getMessage(), e);

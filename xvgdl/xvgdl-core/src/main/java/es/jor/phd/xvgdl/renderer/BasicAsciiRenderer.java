@@ -48,9 +48,10 @@ public class BasicAsciiRenderer implements IGameRenderer {
         // 1- Take Layout
         // 2. Rendering:
         // 2.1 Render the Top|Right|Left|bottom components
+        GamePlayer gp = null;
         List<IGameObject> listOfPlayers = this.gameContext.getGamePlayers();
         for (IGameObject iGameObject : listOfPlayers) {
-            GamePlayer gp = (GamePlayer) iGameObject;
+            gp = (GamePlayer) iGameObject;
             System.out
                     .println("Player : " + gp.getName() + " - Score: " + gp.getScore() + " - Lives: " + gp.getLives());
             // System.out.println("Player Position: [" + gp.getX() + "," +
@@ -59,7 +60,7 @@ public class BasicAsciiRenderer implements IGameRenderer {
 
         // 2.2 Render the game screen.
 
-        char[][] array = new char[this.gameContext.getMap().getSizeX() + 2][this.gameContext.getMap().getSizeY() + 2];
+        char[][] array = new char[this.gameContext.getMap().getSizeX() + 3][this.gameContext.getMap().getSizeY() + 3];
         // 2.2.1 Render Map Walls
         // 2.2.2 Render Map Items
         // 2.2.3 Render Map Enemies
@@ -77,9 +78,10 @@ public class BasicAsciiRenderer implements IGameRenderer {
                 }
             }
         }
+        array[gp.getY()][gp.getX()] = gp.getName().toString().charAt(0); 
 
         // Print the array in reverse order
-        for (int i = array.length - 1; i > 0; i--) {
+        for (int i = array.length - 1; i >= 0; i--) {
             System.out.println(array[i]);
         }
 

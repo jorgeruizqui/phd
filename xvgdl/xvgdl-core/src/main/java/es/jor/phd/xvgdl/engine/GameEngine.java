@@ -12,8 +12,10 @@ import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.properties.PropertiesParseException;
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.context.generator.IGameContextGenerator;
 import es.jor.phd.xvgdl.input.KeyboardInputListener;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
+import es.jor.phd.xvgdl.model.event.GameEventType;
 import es.jor.phd.xvgdl.model.event.GameEventUtils;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.object.IGameObject;
@@ -44,12 +46,28 @@ public final class GameEngine extends Properties {
     private static final String GAME_CONTEXT_CONFIG_KEY = "gameContextConfiguration";
 
     /**
+     * Game Context generator configuration class key.
+     */
+    private static final String GAME_CONTEXT_GENERATOR_KEY = "gameContextGenerator";
+
+    /**
+     * Simulation mode configuration key.
+     */
+    private static final String SIMULATION_MODE_KEY = "simulationMode";
+
+    /**
      * Singleton instance.
      */
     private static GameEngine instance;
 
     /** Game Finished Flag. */
     private boolean gameFinished = false;
+
+    /** Game Running in simulation mode Flag. */
+    private boolean simulationMode = false;
+
+    /** Game Running current turn. */
+    private int turns = 0;
 
     /**
      * Constructor.
@@ -60,36 +78,57 @@ public final class GameEngine extends Properties {
         try {
             // Load Game Engine properties
             loadPropertiesFromXML(configFile);
+            this.simulationMode = getBooleanValue(SIMULATION_MODE_KEY, false);
 
             if (getProperty(GAME_CONTEXT_CONFIG_KEY) != null) {
                 ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
                         "Context to be created with file " + getProperty(GAME_CONTEXT_CONFIG_KEY));
                 GameContext.createGameContext(getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
+            
+            gameContextGeneratorClass();
 
-            try {
-                // Get the logger for "org.jnativehook" and set the level to
-                // off.
-                Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-                logger.setLevel(Level.OFF);
+            addKeyListener();
 
-                // Change the level for all handlers attached to the default
-                // logger.
-                Handler[] handlers = Logger.getLogger("").getHandlers();
-                for (int i = 0; i < handlers.length; i++) {
-                    handlers[i].setLevel(Level.OFF);
-                }
-                GlobalScreen.registerNativeHook();
-            } catch (NativeHookException ex) {
-                ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                        "Exception registering hooks", ex);
-            }
-
-            GlobalScreen.addNativeKeyListener(new KeyboardInputListener(getGameContext()));
 
         } catch (PropertiesParseException e) {
             ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception parsing properties",
                     e);
+        }
+    }
+
+    private void gameContextGeneratorClass() {
+        if (getProperty(GAME_CONTEXT_GENERATOR_KEY) != null) {
+            try {
+                ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
+                        "Context to be created generated with class" + getProperty(GAME_CONTEXT_GENERATOR_KEY));
+                IGameContextGenerator gameContextGenerator = 
+                        (IGameContextGenerator) Class.forName(getProperty(GAME_CONTEXT_GENERATOR_KEY)).newInstance();
+                gameContextGenerator.generateContext(getGameContext());
+            } catch (Exception e) {
+                ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Error generating context using class " + getProperty(GAME_CONTEXT_GENERATOR_KEY));
+            }
+        }
+    }
+
+    private void addKeyListener() {
+        try {
+            // Get the logger for "org.jnativehook" and set the level to
+            // off.
+            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+            logger.setLevel(Level.OFF);
+
+            // Change the level for all handlers attached to the default
+            // logger.
+            Handler[] handlers = Logger.getLogger("").getHandlers();
+            for (int i = 0; i < handlers.length; i++) {
+                handlers[i].setLevel(Level.OFF);
+            }
+            GlobalScreen.registerNativeHook();
+            GlobalScreen.addNativeKeyListener(new KeyboardInputListener(getGameContext()));
+        } catch (NativeHookException ex) {
+            ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
+                    "Exception registering hooks", ex);
         }
     }
 
@@ -137,7 +176,8 @@ public final class GameEngine extends Properties {
 
         ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Launching game loop....");
         getGameContext().setStartTime(System.currentTimeMillis());
-
+        
+        updateState();
         // TODO Check also 'pause' option
         while (!gameFinished) {
             try {
@@ -149,6 +189,7 @@ public final class GameEngine extends Properties {
                 render();
                 Thread.sleep((long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
                         - start));
+                this.turns++;
                 checkEndConditions();
             } catch (Exception e) {
                 ELogger.error(GameEngine.class, "", "Exception in game loop", e);
@@ -161,14 +202,12 @@ public final class GameEngine extends Properties {
         }
 
     }
+    
+    public int getTurns() {
+        return turns;
+    }
 
     private void checkEndConditions() {
-
-//        if (getGameContext().checkTimeoutCondition()) {
-//            gameFinished = true;
-//            ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-//                    "Game timeout condition reached! Game will end.");
-//        }
 
         for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
             if (endCondition.checkCondition()) {
@@ -184,10 +223,16 @@ public final class GameEngine extends Properties {
     private void processEvents() {
 
         for (IGameEvent event : getGameContext().getEvents()) {
-            GameEventUtils.processGameEvent(getGameContext(), event);
+            if (simulationMode && GameEventType.KEYBOARD.equals(event.getEventType())) {
+                ELogger.debug(this, "", "Keyboard Event not processed. Simulation Mode enabled");
+            } else {
+                GameEventUtils.processGameEvent(getGameContext(), event);
+            }
+            
             if (event.isConsumable()) {
                 getGameContext().eventProcessed(event);
             }
+            
         }
 
     }
@@ -228,6 +273,8 @@ public final class GameEngine extends Properties {
      * Render current state.
      */
     private void render() {
-        GameContext.getInstance().getRenderer().render();
+        if (GameContext.getInstance().getRenderer() != null) {
+            GameContext.getInstance().getRenderer().render();
+        }
     }
 }

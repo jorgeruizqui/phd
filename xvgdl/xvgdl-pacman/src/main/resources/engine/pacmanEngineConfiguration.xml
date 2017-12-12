@@ -4,4 +4,5 @@
 <properties>
     <entry key="gameContextConfiguration">/context/pacmanContextConfiguration.xml</entry>
     <entry key="msPerFrame">1000</entry>
+    <entry key="simulationMode">false</entry>
 </properties>

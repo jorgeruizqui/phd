@@ -22,34 +22,34 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
         IGameObject shortestDistanceItem = null;
 
         for (IGameObject item : items) {
-			int distance = distanceTo(player, item);
-			if (distance < shortestDinstance) {
-				shortestDistanceItem = item;
-				shortestDinstance = distance;
-			}
-		}
+            int distance = distanceTo(player, item);
+            if (distance < shortestDinstance) {
+                shortestDistanceItem = item;
+                shortestDinstance = distance;
+            }
+        }
 
         if (shortestDistanceItem != null) {
-	        int newX = 0;
-	        if (player.getX() > shortestDistanceItem.getX()) {
-	            newX = shortestDistanceItem.getX() + 1;
-	        } else if (player.getX() < shortestDistanceItem.getX()) {
-	            newX = shortestDistanceItem.getX() - 1;
-	        } else {
-	            newX = shortestDistanceItem.getX();
-	        }
+            int newX = 0;
+            if (player.getX() < shortestDistanceItem.getX()) {
+                newX = player.getX() + 1;
+            } else if (player.getX() > shortestDistanceItem.getX()) {
+                newX = player.getX() - 1;
+            } else {
+                newX = player.getX();
+            }
 
-	        int newY = 0;
-	        if (player.getY() > shortestDistanceItem.getY()) {
-	            newY = shortestDistanceItem.getY() + 1;
-	        } else if (player.getY() < shortestDistanceItem.getY()) {
-	            newY = shortestDistanceItem.getY() - 1;
-	        } else {
-	            newY = shortestDistanceItem.getY();
-	        }
+            int newY = 0;
+            if (player.getY() < shortestDistanceItem.getY()) {
+                newY = player.getY() + 1;
+            } else if (player.getY() > shortestDistanceItem.getY()) {
+                newY = player.getY() - 1;
+            } else {
+                newY = player.getY();
+            }
 
-	        player.moveTo(newX, newY, 0);
-       }
+            player.moveTo(newX, newY, 0);
+        }
     }
 
     /**
@@ -58,11 +58,11 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
      * @param item Item
      * @return Distance between two game objects
      */
-	private int distanceTo(IGameObject player, IGameObject item) {
-		int distX = Math.abs(player.getX() - item.getX());
-		int distY = Math.abs(player.getY() - item.getY());
-		int distZ = Math.abs(player.getZ() - item.getZ());
-		return distX + distY + distZ;
-	}
+    private int distanceTo(IGameObject player, IGameObject item) {
+        int distX = Math.abs(player.getX() - item.getX());
+        int distY = Math.abs(player.getY() - item.getY());
+        int distZ = Math.abs(player.getZ() - item.getZ());
+        return distX + distY + distZ;
+    }
 
 }
