@@ -1,6 +1,5 @@
 package es.jor.phd.xvgdl.engine;
 
-import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,7 +84,8 @@ public final class GameEngine extends Properties {
                         "Context to be created with file " + getProperty(GAME_CONTEXT_CONFIG_KEY));
                 GameContext.createGameContext(getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
-            
+
+            // Update context with configured (if any) a context class generator
             gameContextGeneratorClass();
 
             addKeyListener();
@@ -102,7 +102,7 @@ public final class GameEngine extends Properties {
             try {
                 ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
                         "Context to be created generated with class" + getProperty(GAME_CONTEXT_GENERATOR_KEY));
-                IGameContextGenerator gameContextGenerator = 
+                IGameContextGenerator gameContextGenerator =
                         (IGameContextGenerator) Class.forName(getProperty(GAME_CONTEXT_GENERATOR_KEY)).newInstance();
                 gameContextGenerator.generateContext(getGameContext());
             } catch (Exception e) {
@@ -176,7 +176,7 @@ public final class GameEngine extends Properties {
 
         ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Launching game loop....");
         getGameContext().setStartTime(System.currentTimeMillis());
-        
+
         updateState();
         // TODO Check also 'pause' option
         while (!gameFinished) {
@@ -202,7 +202,7 @@ public final class GameEngine extends Properties {
         }
 
     }
-    
+
     public int getTurns() {
         return turns;
     }
@@ -211,6 +211,8 @@ public final class GameEngine extends Properties {
 
         for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
             if (endCondition.checkCondition()) {
+            	ELogger.info(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
+            			"Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 break;
             }
@@ -228,11 +230,11 @@ public final class GameEngine extends Properties {
             } else {
                 GameEventUtils.processGameEvent(getGameContext(), event);
             }
-            
+
             if (event.isConsumable()) {
                 getGameContext().eventProcessed(event);
             }
-            
+
         }
 
     }

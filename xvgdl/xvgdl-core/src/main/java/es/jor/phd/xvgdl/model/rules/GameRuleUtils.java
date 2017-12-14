@@ -89,12 +89,17 @@ public final class GameRuleUtils {
             } else if (GameRuleResultType.DUPLICATE.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.FREEZE.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.LIVES_DOWN.equals(gameRuleAction.getResultType())) {
+            	gameContext.getCurrentGamePlayer().livesDown();
             } else if (GameRuleResultType.LIVES_RESET.equals(gameRuleAction.getResultType())) {
+            	gameContext.getCurrentGamePlayer().liveReset();
             } else if (GameRuleResultType.LIVES_UP.equals(gameRuleAction.getResultType())) {
+            	gameContext.getCurrentGamePlayer().livesUp();
             } else if (GameRuleResultType.SCORE_DOWN.equals(gameRuleAction.getResultType())) {
+            	gameContext.getCurrentGamePlayer().scoreDown();
             } else if (GameRuleResultType.SCORE_RESET.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.SCORE_SET_TO.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.SCORE_UP.equals(gameRuleAction.getResultType())) {
+            	gameContext.getCurrentGamePlayer().scoreDown();
             } else if (GameRuleResultType.TIME_DOWN.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.TIME_RESET.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.TIME_UP.equals(gameRuleAction.getResultType())) {

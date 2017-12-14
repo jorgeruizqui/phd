@@ -1,5 +1,9 @@
 package es.jor.phd.xvgdl.context;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,6 +14,7 @@ import java.util.stream.Collectors;
 
 import es.indra.eplatform.context.Context;
 import es.indra.eplatform.util.IOUtils;
+import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.xml.GameContextXMLHandler;
 import es.jor.phd.xvgdl.context.xml.GameRendererXMLHandler;
 import es.jor.phd.xvgdl.model.actions.IGameAction;
@@ -17,10 +22,12 @@ import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
+import es.jor.phd.xvgdl.model.object.GamePlayer;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 import es.jor.phd.xvgdl.model.physics.IGamePhysic;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
 import es.jor.phd.xvgdl.renderer.IGameRenderer;
+import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
  * Game context
@@ -69,6 +76,9 @@ public final class GameContext extends Context {
     /** Player AI Enabled key. */
     private static final String PLAYER_AI_ENABLED = "PLAYER_AI_ENABLED";
 
+    /** Game Paused key. */
+    private static final String GAME_PAUSED = "GAME_PAUSED";
+
     /** Singleton instance. */
     private static GameContext instance;
 
@@ -95,15 +105,22 @@ public final class GameContext extends Context {
         List<IGameEndCondition> endConditions = new CopyOnWriteArrayList<IGameEndCondition>();
         setObjectProperty(END_CONDITIONS, endConditions);
 
-        if (IOUtils.getInputStream(configurationFile) != null) {
-            GameContextXMLHandler contextHandler = new GameContextXMLHandler(this);
-            contextHandler.parseResource(configurationFile);
-            getMap().getMapGenerator().generateMapRepresentation(getMap(), getObjectsList());
+        try (InputStream f = IOUtils.getInputStream(configurationFile)) {
 
-            // Get renderer configuration and load renderer definitions:
-            GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
-            rendererHandler.parseResource(getProperty(RENDERER_CONFIGURATION));
-        }
+        	// Read and parse configuration file. This will create all elements needed
+        	GameContextXMLHandler contextHandler = new GameContextXMLHandler(this);
+        	contextHandler.parseResource(configurationFile);
+
+        	// Generate map position for all elements
+        	getMap().getMapGenerator().generateMapRepresentation(getMap(), getObjectsList());
+
+        	// Get renderer configuration and load renderer definitions:
+        	GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
+        	rendererHandler.parseResource(getProperty(RENDERER_CONFIGURATION));
+        } catch (IOException e) {
+			ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Game context configuration file not found: " + configurationFile);
+		}
+
     }
 
     /**
@@ -150,7 +167,7 @@ public final class GameContext extends Context {
         }
 
         if (typeFilter != null) {
-            rto = rto.stream().filter(g -> g.getType().equals(typeFilter)).collect(Collectors.toList());
+            rto = rto.stream().filter(g -> g.getObjectType().equals(typeFilter)).collect(Collectors.toList());
         }
         return rto;
     }
@@ -164,10 +181,10 @@ public final class GameContext extends Context {
 
     /**
      * @return Current game player.
-     *         TODO CHECK HOW TO HANDLE THIS
+     *         TODO CHECK HOW TO HANDLE THIS. At the moment, just one player is available for simulations
      */
-    public IGameObject getCurrentGamePlayer() {
-        return getObjectsList(GameObjectType.PLAYER).get(0);
+    public GamePlayer getCurrentGamePlayer() {
+        return (GamePlayer) getObjectsList(GameObjectType.PLAYER).get(0);
     }
 
     /**
@@ -194,12 +211,12 @@ public final class GameContext extends Context {
      * @param object Object to be added
      */
     public void addObject(IGameObject object) {
-        List<IGameObject> currentList = getObjectsMap().get(object.getType());
+        List<IGameObject> currentList = getObjectsMap().get(object.getObjectType());
         if (currentList == null) {
             currentList = new ArrayList<IGameObject>();
         }
         currentList.add(object);
-        getObjectsMap().put(object.getType(), currentList);
+        getObjectsMap().put(object.getObjectType(), currentList);
     }
 
     /**
@@ -308,7 +325,7 @@ public final class GameContext extends Context {
      * @param gameObject Game object to be removed.
      */
     public void removeGameObject(IGameObject gameObject) {
-        getObjectsMap().get(gameObject.getType()).removeIf(s -> s.getId().equals(gameObject.getId()));
+        getObjectsMap().get(gameObject.getObjectType()).removeIf(s -> s.getId().equals(gameObject.getId()));
     }
 
     /**
@@ -404,5 +421,21 @@ public final class GameContext extends Context {
 
        List<IGameEndCondition> endConditionsListCopy = (List<IGameEndCondition>) get(END_CONDITIONS);
        return endConditionsListCopy.stream().collect(Collectors.toList());
+   }
+
+   /**
+    *
+    * @return Game paused state. Default is false
+    */
+   public boolean getPaused() {
+	   return getBooleanValue(GAME_PAUSED, false);
+   }
+
+   /**
+    *
+    * @param pause Game pause state
+    */
+   public void setPaused(boolean pause) {
+	   put(GAME_PAUSED, new Boolean(pause));
    }
 }

@@ -68,7 +68,7 @@ public interface IGameObject {
      *
      * @return Game Type
      */
-    GameObjectType getType();
+    GameObjectType getObjectType();
 
     /**
      *
@@ -132,6 +132,6 @@ public interface IGameObject {
      * Clones a game object
      * @return Game Object Cloned.
      */
-    IGameObject clone();
+    IGameObject copy();
 
 }

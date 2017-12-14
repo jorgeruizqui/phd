@@ -89,7 +89,7 @@ public class GameObjectDefinition extends Properties {
 
             if (objectDefinition.getProperty(XMLATTR_AI) != null
                     && !objectDefinition.getProperty(XMLATTR_AI).trim().equals("")) {
-                gameObject.setAI((IGameObjectAI) Class.forName(objectDefinition.getProperty(XMLATTR_AI)).newInstance());
+                gameObject.setObjectAI((IGameObjectAI) Class.forName(objectDefinition.getProperty(XMLATTR_AI)).newInstance());
             }
         } catch (Exception e) {
             ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,

@@ -29,7 +29,7 @@ public class SpawnItemEvent extends AGameEvent {
             List<IGameObject> list = context.getObjectsListByName(objectName);
             if (list != null && list.size() > 0) {
                 IGameObject go = list.get(0);
-                IGameObject goCloned = go.clone();
+                IGameObject goCloned = go.copy();
 
                 // Set the cloned object in a random situation
                 Random r = new Random();

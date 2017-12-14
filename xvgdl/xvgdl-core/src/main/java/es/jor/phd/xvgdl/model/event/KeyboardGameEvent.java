@@ -55,19 +55,28 @@ public class KeyboardGameEvent extends AGameEvent {
             if (event.getEventType().equals(GameEventType.KEYBOARD)) {
                 KeyboardGameEvent kbGe = (KeyboardGameEvent) event;
                 IGameObject player = context.getCurrentGamePlayer();
-                if (kbGe.getKeyCode() == NativeKeyEvent.VC_LEFT) {
-                    player.moveTo(player.getX() - 1, player.getY(), player.getZ());
-                } else if (kbGe.getKeyCode() == NativeKeyEvent.VC_RIGHT) {
-                    player.moveTo(player.getX() + 1, player.getY(), player.getZ());
-                } else if (kbGe.getKeyCode() == NativeKeyEvent.VC_UP) {
-                    player.moveTo(player.getX(), player.getY() + 1, player.getZ());
-                } else if (kbGe.getKeyCode() == NativeKeyEvent.VC_DOWN) {
-                    player.moveTo(player.getX(), player.getY() + -1, player.getZ());
+
+                switch (kbGe.getKeyCode()) {
+                	case NativeKeyEvent.VC_LEFT:
+                		player.moveTo(player.getX() - 1, player.getY(), player.getZ());
+                		break;
+                	case NativeKeyEvent.VC_RIGHT:
+                		player.moveTo(player.getX() + 1, player.getY(), player.getZ());
+                		break;
+                	case NativeKeyEvent.VC_UP:
+                		player.moveTo(player.getX(), player.getY() + 1, player.getZ());
+                		break;
+                	case NativeKeyEvent.VC_DOWN:
+                		player.moveTo(player.getX(), player.getY() + -1, player.getZ());
+                		break;
+                	case NativeKeyEvent.VC_P:
+                		context.setPaused(true);
+                		break;
+                	default:
+                		break;
                 }
             }
-
         }
-
     }
 
 }

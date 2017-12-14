@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-    <entry key="gameContextConfiguration">/context/pacmanSimulatorContextConfiguration.xml</entry>
+    <entry key="gameContextConfiguration">/context/simul/pacmanSimulatorContextConfiguration.xml</entry>
     <entry key="gameContextGenerator">es.jor.phd.xvgdl.pacman.context.PacmanSimulatorContextGenerator</entry>
     <entry key="msPerFrame">1000</entry>
     <entry key="simulationMode">true</entry>

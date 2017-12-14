@@ -80,7 +80,7 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         try {
             super.parseResource(resource);
         } catch (XMLException e) {
-            e.printStackTrace();
+            ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "XML Exception parsing context resource file.", e);
         }
     }
 

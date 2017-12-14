@@ -1,12 +1,14 @@
 package es.jor.phd.xvgdl.context.xml;
 
 import es.indra.eplatform.properties.Properties;
+import es.indra.eplatform.util.log.ELogger;
 import es.indra.eplatform.util.xml.BasicXMLHandler;
 import es.indra.eplatform.util.xml.IgnorableXMLElementParser;
 import es.indra.eplatform.util.xml.XMLException;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.renderer.BasicAsciiRenderer;
 import es.jor.phd.xvgdl.renderer.IGameRenderer;
+import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
  * XML Handler for Context configuration
@@ -47,7 +49,7 @@ public class GameRendererXMLHandler extends BasicXMLHandler {
         try {
             super.parseResource(resource);
         } catch (XMLException e) {
-            e.printStackTrace();
+        	ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "XML Exception parsing renderer resource file.", e);
         }
     }
 

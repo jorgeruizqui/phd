@@ -88,7 +88,5 @@
 
     </rules>
     <!-- Game End Conditions -->
-    <endConditions>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition" property="timeout" value="0"/>
-    </endConditions>
+    <!--  To be generated automatically by the Pacman simulator context generator. -->
 </gameDefinition>

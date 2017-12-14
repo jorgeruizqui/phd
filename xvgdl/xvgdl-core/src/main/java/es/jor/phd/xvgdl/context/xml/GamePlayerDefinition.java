@@ -62,14 +62,15 @@ public class GamePlayerDefinition extends GameObjectDefinition {
             gameObject.setObjectType(GameObjectType.PLAYER);
 
             gameObject.setLives(playerDefinition.getIntegerValue(XMLATTR_LIVES, 1));
+            gameObject.setInitialLives(playerDefinition.getIntegerValue(XMLATTR_LIVES, 1));
             gameObject.setLivePercentage(playerDefinition.getIntegerValue(XMLATTR_LIVE_PERCENTAGE, N_100));
             gameObject.setScore(playerDefinition.getIntegerValue(XMLATTR_SCORE, 0));
 
             if (playerDefinition.getProperty(XMLATTR_AI) != null
                     && !playerDefinition.getProperty(XMLATTR_AI).trim().equals("")) {
-                gameObject.setAI((IGameObjectAI) Class.forName(playerDefinition.getProperty(XMLATTR_AI)).newInstance());
+                gameObject.setObjectAI((IGameObjectAI) Class.forName(playerDefinition.getProperty(XMLATTR_AI)).newInstance());
             }
-            
+
         } catch (Exception e) {
             ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
                     "Exception converting GameObjectDefinition to GameObject: " + e.getMessage(), e);

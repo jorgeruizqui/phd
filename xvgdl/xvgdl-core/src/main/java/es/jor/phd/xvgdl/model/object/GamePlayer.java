@@ -1,13 +1,22 @@
 package es.jor.phd.xvgdl.model.object;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Game player object
  *
  * @author jrquinones
  *
  */
+@Getter
+@Setter
+@ToString
 public class GamePlayer extends GameObject {
 
+    /** Initial number of lives. */
+    private int initialLives;
     /** Current number of lives. */
     private int lives;
     /** Current live percentage. */
@@ -16,45 +25,24 @@ public class GamePlayer extends GameObject {
     private double score;
 
     /**
-     * @return the lives
+     * Increment player lives.
      */
-    public int getLives() {
-        return lives;
+    public void livesUp() {
+    	this.lives++;
     }
 
     /**
-     * @param lives the lives to set
+     * Decrement player lives.
      */
-    public void setLives(int lives) {
-        this.lives = lives;
+    public void livesDown() {
+    	this.lives--;
     }
 
     /**
-     * @return the livePercentage
+     * Reset to initial lives.
      */
-    public int getLivePercentage() {
-        return livePercentage;
-    }
-
-    /**
-     * @param livePercentage the livePercentage to set
-     */
-    public void setLivePercentage(int livePercentage) {
-        this.livePercentage = livePercentage;
-    }
-
-    /**
-     * @return the score
-     */
-    public double getScore() {
-        return score;
-    }
-
-    /**
-     * @param score the score to set
-     */
-    public void setScore(double score) {
-        this.score = score;
-    }
+	public void liveReset() {
+		this.lives = this.initialLives;
+	}
 
 }
