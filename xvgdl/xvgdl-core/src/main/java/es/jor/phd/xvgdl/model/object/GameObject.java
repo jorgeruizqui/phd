@@ -54,6 +54,9 @@ public class GameObject implements IGameObject {
      */
     private boolean isVolatile;
 
+    /** Flag indicating if the object is frozen. */
+    private boolean isFrozen;
+
     /**
      * Artificial Intelligence associated with this object.
      */
@@ -67,9 +70,11 @@ public class GameObject implements IGameObject {
 
     @Override
     public void moveTo(int x, int y, int z) {
-        setIntendedX(x);
-        setIntendedY(y);
-        setIntendedZ(z);
+    	if (!isFrozen()) {
+	        setIntendedX(x);
+	        setIntendedY(y);
+	        setIntendedZ(z);
+    	}
     }
 
     @Override
@@ -105,6 +110,7 @@ public class GameObject implements IGameObject {
         cloned.setDynamic(isDynamic());
         cloned.setInstance((new Random()).nextInt());
         cloned.setIntendedX(getIntendedX());
+        cloned.setFrozen(false);
         cloned.setIntendedY(getIntendedY());
         cloned.setIntendedZ(getIntendedZ());
         cloned.setX(getX());

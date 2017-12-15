@@ -45,4 +45,28 @@ public class GamePlayer extends GameObject {
 		this.lives = this.initialLives;
 	}
 
+	/**
+	 * Set score to a concrete value
+	 * @param score
+	 */
+	public void scoreSetTo(int score) {
+		this.score = score;
+	}
+
+	/**
+	 * Scores up
+	 * @param score
+	 */
+	public void scoreUp(int score) {
+		this.score += score;
+	}
+
+	/**
+	 * Scores down
+	 * @param score
+	 */
+	public void scoreDown(int score) {
+		this.score -= score;
+	}
+
 }

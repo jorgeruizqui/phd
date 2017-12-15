@@ -134,4 +134,18 @@ public interface IGameObject {
      */
     IGameObject copy();
 
+    /**
+     * Sets the frozen flag
+     * @param frozen
+     */
+    void setFrozen(boolean frozen);
+
+    /**
+     * Is frozen flag
+     * @return
+     */
+    boolean isFrozen();
+
+
+
 }

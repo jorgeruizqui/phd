@@ -1,5 +1,8 @@
 package es.jor.phd.xvgdl.engine;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +58,11 @@ public final class GameEngine extends Properties {
     private static final String SIMULATION_MODE_KEY = "simulationMode";
 
     /**
+     * Game engine scheduler executor.
+     */
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+
+    /**
      * Singleton instance.
      */
     private static GameEngine instance;
@@ -73,7 +81,7 @@ public final class GameEngine extends Properties {
      *
      * @param configFile Configuration File
      */
-    private GameEngine(String configFile) {
+    private GameEngine(GameContext gc, String configFile) {
         try {
             // Load Game Engine properties
             loadPropertiesFromXML(configFile);
@@ -82,10 +90,11 @@ public final class GameEngine extends Properties {
             if (getProperty(GAME_CONTEXT_CONFIG_KEY) != null) {
                 ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
                         "Context to be created with file " + getProperty(GAME_CONTEXT_CONFIG_KEY));
-                GameContext.createGameContext(getProperty(GAME_CONTEXT_CONFIG_KEY));
+                GameContext.createGameContext(gc, getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
 
             // Update context with configured (if any) a context class generator
+            // If context is already passed, may be the generator should be used before, not now...
             gameContextGeneratorClass();
 
             addKeyListener();
@@ -133,14 +142,25 @@ public final class GameEngine extends Properties {
     }
 
     /**
+     * Creates the game engine using a game context
+     *
+     * @param configFile Configuration file
+     * @param cg Game Context
+     * @return The game engine instance
+     */
+    public static GameEngine createGameEngine(GameContext cg, String configFile) {
+        instance = new GameEngine(cg, configFile);
+        return instance;
+    }
+
+    /**
      * Creates the game engine
      *
      * @param configFile Configuration file
      * @return The game engine instance
      */
     public static GameEngine createGameEngine(String configFile) {
-        instance = new GameEngine(configFile);
-        return instance;
+        return createGameEngine(null, configFile);
     }
 
     /**
@@ -278,5 +298,15 @@ public final class GameEngine extends Properties {
         if (GameContext.getInstance().getRenderer() != null) {
             GameContext.getInstance().getRenderer().render();
         }
+    }
+
+    /**
+     * Freeze a game object for a concrete amount of milliseconds
+     * @param o Object
+     * @param milliseconds Time to be frozen
+     */
+    public void freezeObject(IGameObject o, long milliseconds) {
+    	o.setFrozen(true);
+    	scheduler.schedule(() -> o.setFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
     }
 }

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +88,7 @@ public final class GameContext extends Context {
      *
      * @param configurationFile Configuration file
      */
-    private GameContext(String configurationFile) {
+    private GameContext(GameContext gc, String configurationFile) {
 
         // Force initialize Objects map
         Map<GameObjectType, List<IGameObject>> objectsMap = new HashMap<GameObjectType, List<IGameObject>>();
@@ -121,6 +122,14 @@ public final class GameContext extends Context {
 			ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Game context configuration file not found: " + configurationFile);
 		}
 
+        if (gc != null) {
+        	this.addObjectProperties(gc.entrySet());
+        	this.addEndConditions(gc.getEndConditions());
+        	this.addEvents(gc.getEvents());
+        	this.addRules(gc.getRules());
+        	this.addObjects(gc.getObjectsList());
+        }
+
     }
 
     /**
@@ -128,8 +137,8 @@ public final class GameContext extends Context {
      *
      * @param configurationFile Configuration File
      */
-    public static void createGameContext(String configurationFile) {
-        instance = new GameContext(configurationFile);
+    public static void createGameContext(GameContext gc, String configurationFile) {
+        instance = new GameContext(gc, configurationFile);
     }
 
     /**
@@ -220,6 +229,14 @@ public final class GameContext extends Context {
     }
 
     /**
+    *
+    * @param object Object to be added
+    */
+   public void addObjects(Collection<IGameObject> objects) {
+	   objects.stream().forEach(this::addObject);
+   }
+
+   /**
      *
      * @return the Map
      */
@@ -250,6 +267,14 @@ public final class GameContext extends Context {
     public void addRule(IGameRule rule) {
         getRules().put(rule.getRuleName(), rule);
     }
+
+    /**
+    *
+    * @param rules Rules to be added
+    */
+   public void addRules(Map<String, IGameRule> rules) {
+	   getRules().putAll(rules);
+   }
 
     /**
      *
@@ -385,6 +410,14 @@ public final class GameContext extends Context {
     }
 
     /**
+    *
+    * @param events Game Event collections
+    */
+   public void addEvents(Collection<IGameEvent> events) {
+       events.addAll(events);
+   }
+
+   /**
      *
      * @param event Game Event
      */
@@ -411,6 +444,14 @@ public final class GameContext extends Context {
     public void addEndCondition(IGameEndCondition endCondition) {
         List<IGameEndCondition> endConditions = (List<IGameEndCondition>) get(END_CONDITIONS);
         endConditions.add(endCondition);
+    }
+
+    /**
+     * Adds a collection of End Conditions
+     * @param endConditions List of End conditions to add
+     */
+    public void addEndConditions(Collection<IGameEndCondition> endConditions) {
+        endConditions.addAll(endConditions);
     }
 
     /**

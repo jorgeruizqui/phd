@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.engine.GameEngine;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 import es.jor.phd.xvgdl.util.GameConstants;
 
@@ -88,6 +89,7 @@ public final class GameRuleUtils {
             } else if (GameRuleResultType.BOUNCE.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.DUPLICATE.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.FREEZE.equals(gameRuleAction.getResultType())) {
+            	GameEngine.getInstance().freezeObject(gameObject, Long.parseLong(gameRuleAction.getValue()));
             } else if (GameRuleResultType.LIVES_DOWN.equals(gameRuleAction.getResultType())) {
             	gameContext.getCurrentGamePlayer().livesDown();
             } else if (GameRuleResultType.LIVES_RESET.equals(gameRuleAction.getResultType())) {
@@ -95,11 +97,13 @@ public final class GameRuleUtils {
             } else if (GameRuleResultType.LIVES_UP.equals(gameRuleAction.getResultType())) {
             	gameContext.getCurrentGamePlayer().livesUp();
             } else if (GameRuleResultType.SCORE_DOWN.equals(gameRuleAction.getResultType())) {
-            	gameContext.getCurrentGamePlayer().scoreDown();
+            	gameContext.getCurrentGamePlayer().scoreDown(Integer.parseInt(gameRuleAction.getValue()));
             } else if (GameRuleResultType.SCORE_RESET.equals(gameRuleAction.getResultType())) {
+            	gameContext.getCurrentGamePlayer().scoreSetTo(0);
             } else if (GameRuleResultType.SCORE_SET_TO.equals(gameRuleAction.getResultType())) {
+            	gameContext.getCurrentGamePlayer().scoreSetTo(Integer.parseInt(gameRuleAction.getValue()));
             } else if (GameRuleResultType.SCORE_UP.equals(gameRuleAction.getResultType())) {
-            	gameContext.getCurrentGamePlayer().scoreDown();
+            	gameContext.getCurrentGamePlayer().scoreUp(Integer.parseInt(gameRuleAction.getValue()));
             } else if (GameRuleResultType.TIME_DOWN.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.TIME_RESET.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.TIME_UP.equals(gameRuleAction.getResultType())) {
