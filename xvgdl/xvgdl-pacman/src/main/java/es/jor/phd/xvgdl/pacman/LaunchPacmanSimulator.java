@@ -1,7 +1,6 @@
 package es.jor.phd.xvgdl.pacman;
 
-import es.jor.phd.xvgdl.app.GameApp;
-import es.jor.phd.xvgdl.engine.GameEngine;
+import es.jor.phd.xvgdl.pacman.genetic.PacmanGeneticAlg;
 
 /**
  * Launcher
@@ -15,9 +14,8 @@ public class LaunchPacmanSimulator {
      * @param args Arguments
      */
     public static void main(String[] args) {
-
-        GameEngine ge = GameApp.launchGameApp("/engine/simul/pacmanSimulatorEngineConfiguration.xml");
-        ge.start();
+        PacmanGeneticAlg alg = new PacmanGeneticAlg(5);
+        alg.startSimulation();
     }
 
 }

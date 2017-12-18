@@ -40,5 +40,10 @@ public class GameEndCondition implements IGameEndCondition {
     public GameEndConditionDefinition getGameEndConditionDefinition() {
         return this.definition;
     }
+    
+    @Override
+    public String toString() {
+        return checker.toString();
+    }
 
 }

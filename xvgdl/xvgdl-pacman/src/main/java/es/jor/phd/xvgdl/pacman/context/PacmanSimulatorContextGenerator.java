@@ -13,15 +13,15 @@ import es.jor.phd.xvgdl.util.GameConstants;
 
 public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
 
-	// Game Engine properties
+    // Game Engine properties
     private static final long MIN_TIMEOUT = 30000;
     private static final long MAX_TIMEOUT = 300000;
     private static final int MAX_TURNS = 100;
 
-    // Map properties
-
     @Override
-    public void generateContext(GameContext gc) {
+    public GameContext generateContext(String contextConfigFile) {
+        
+        GameContext gc = GameContext.createGameContext(contextConfigFile);
 
         generateContextProperties(gc);
         generateMap(gc);
@@ -31,7 +31,8 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
         generateRules(gc);
         generateEvents(gc);
         generateEndConditions(gc);
-
+        
+        return gc;
     }
 
     private void generateEndConditions(GameContext gc) {
@@ -46,7 +47,6 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
                 "Generated game max number of turns for " + maxTurns + ".");
         turnsEndCondition.setGameEndConditionChecker(new TurnsGameEndCondition(maxTurns));
         gc.addEndCondition(turnsEndCondition);
-
 
     }
 
@@ -73,8 +73,7 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
     private void generateContextProperties(GameContext gc) {
         Long to = ThreadLocalRandom.current().nextLong(MIN_TIMEOUT, MAX_TIMEOUT);
         gc.setTimeout(to);
-        ELogger.info(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                "Generated game timout for " + to + "ms.");
+        ELogger.info(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Generated game timout for " + to + "ms.");
     }
 
 }

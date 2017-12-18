@@ -4,6 +4,6 @@ import es.jor.phd.xvgdl.context.GameContext;
 
 public interface IGameContextGenerator {
     
-    void generateContext(GameContext gc);
+    GameContext generateContext(String contextConfigFile);
 
 }

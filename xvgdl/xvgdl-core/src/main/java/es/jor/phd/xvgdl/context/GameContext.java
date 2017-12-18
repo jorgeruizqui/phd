@@ -106,28 +106,32 @@ public final class GameContext extends Context {
         List<IGameEndCondition> endConditions = new CopyOnWriteArrayList<IGameEndCondition>();
         setObjectProperty(END_CONDITIONS, endConditions);
 
-        try (InputStream f = IOUtils.getInputStream(configurationFile)) {
-
-        	// Read and parse configuration file. This will create all elements needed
-        	GameContextXMLHandler contextHandler = new GameContextXMLHandler(this);
-        	contextHandler.parseResource(configurationFile);
-
-        	// Generate map position for all elements
-        	getMap().getMapGenerator().generateMapRepresentation(getMap(), getObjectsList());
-
-        	// Get renderer configuration and load renderer definitions:
-        	GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
-        	rendererHandler.parseResource(getProperty(RENDERER_CONFIGURATION));
-        } catch (IOException e) {
-			ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Game context configuration file not found: " + configurationFile);
-		}
+        if (configurationFile != null) {
+            try (InputStream f = IOUtils.getInputStream(configurationFile)) {
+    
+                // Read and parse configuration file. This will create all elements
+                // needed
+                GameContextXMLHandler contextHandler = new GameContextXMLHandler(this);
+                contextHandler.parseResource(configurationFile);
+    
+                // Generate map position for all elements
+                getMap().getMapGenerator().generateMapRepresentation(getMap(), getObjectsList());
+    
+                // Get renderer configuration and load renderer definitions:
+                GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
+                rendererHandler.parseResource(getProperty(RENDERER_CONFIGURATION));
+            } catch (IOException e) {
+                ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
+                        "Game context configuration file not found: " + configurationFile);
+            }
+        }
 
         if (gc != null) {
-        	this.addObjectProperties(gc.entrySet());
-        	this.addEndConditions(gc.getEndConditions());
-        	this.addEvents(gc.getEvents());
-        	this.addRules(gc.getRules());
-        	this.addObjects(gc.getObjectsList());
+            this.addObjectProperties(gc.entrySet());
+            this.addEndConditions(gc.getEndConditions());
+            this.addEvents(gc.getEvents());
+            this.addRules(gc.getRules());
+            this.addObjects(gc.getObjectsList());
         }
 
     }
@@ -137,8 +141,27 @@ public final class GameContext extends Context {
      *
      * @param configurationFile Configuration File
      */
+    public static GameContext createGameContext(String configurationFile) {
+        instance = new GameContext(null, configurationFile);
+        return instance;
+    }
+
+    /**
+     * Creates game context.
+     *
+     * @param configurationFile Configuration File
+     */
     public static void createGameContext(GameContext gc, String configurationFile) {
         instance = new GameContext(gc, configurationFile);
+    }
+
+    /**
+     * Creates game context.
+     *
+     * @param configurationFile Configuration File
+     */
+    public static void createEmptyGameContext() {
+        instance = new GameContext(null, null);
     }
 
     /**
@@ -190,7 +213,8 @@ public final class GameContext extends Context {
 
     /**
      * @return Current game player.
-     *         TODO CHECK HOW TO HANDLE THIS. At the moment, just one player is available for simulations
+     *         TODO CHECK HOW TO HANDLE THIS. At the moment, just one player is
+     *         available for simulations
      */
     public GamePlayer getCurrentGamePlayer() {
         return (GamePlayer) getObjectsList(GameObjectType.PLAYER).get(0);
@@ -229,14 +253,14 @@ public final class GameContext extends Context {
     }
 
     /**
-    *
-    * @param object Object to be added
-    */
-   public void addObjects(Collection<IGameObject> objects) {
-	   objects.stream().forEach(this::addObject);
-   }
+     *
+     * @param object Object to be added
+     */
+    public void addObjects(Collection<IGameObject> objects) {
+        objects.stream().forEach(this::addObject);
+    }
 
-   /**
+    /**
      *
      * @return the Map
      */
@@ -269,12 +293,12 @@ public final class GameContext extends Context {
     }
 
     /**
-    *
-    * @param rules Rules to be added
-    */
-   public void addRules(Map<String, IGameRule> rules) {
-	   getRules().putAll(rules);
-   }
+     *
+     * @param rules Rules to be added
+     */
+    public void addRules(Map<String, IGameRule> rules) {
+        getRules().putAll(rules);
+    }
 
     /**
      *
@@ -370,20 +394,21 @@ public final class GameContext extends Context {
     }
 
     /**
-    *
-    * @param Player AI enabled to set
-    */
-   public void setPlayerAiEnabled(boolean playerAiEnabled) {
-       put(PLAYER_AI_ENABLED, playerAiEnabled);
-   }
+     *
+     * @param Player AI enabled to set
+     */
+    public void setPlayerAiEnabled(boolean playerAiEnabled) {
+        put(PLAYER_AI_ENABLED, playerAiEnabled);
+    }
 
-   /**
-    *
-    * @return Game Timeout
-    */
-   public boolean isPlayerAiEnabled() {
-       return getBooleanValue(PLAYER_AI_ENABLED, false);
-   }
+    /**
+     *
+     * @return Game Timeout
+     */
+    public boolean isPlayerAiEnabled() {
+        return getBooleanValue(PLAYER_AI_ENABLED, false);
+    }
+
     /**
      *
      * @param startTime Game starttime in milliseconds to set
@@ -410,14 +435,14 @@ public final class GameContext extends Context {
     }
 
     /**
-    *
-    * @param events Game Event collections
-    */
-   public void addEvents(Collection<IGameEvent> events) {
-       events.addAll(events);
-   }
+     *
+     * @param events Game Event collections
+     */
+    public void addEvents(Collection<IGameEvent> events) {
+        events.addAll(events);
+    }
 
-   /**
+    /**
      *
      * @param event Game Event
      */
@@ -439,6 +464,7 @@ public final class GameContext extends Context {
 
     /**
      * Adds a new End Condition
+     * 
      * @param endCondition End condition to add
      */
     public void addEndCondition(IGameEndCondition endCondition) {
@@ -448,6 +474,7 @@ public final class GameContext extends Context {
 
     /**
      * Adds a collection of End Conditions
+     * 
      * @param endConditions List of End conditions to add
      */
     public void addEndConditions(Collection<IGameEndCondition> endConditions) {
@@ -455,28 +482,28 @@ public final class GameContext extends Context {
     }
 
     /**
-    *
-    * @return Game End Conditions
-    */
-   public List<IGameEndCondition> getEndConditions() {
+     *
+     * @return Game End Conditions
+     */
+    public List<IGameEndCondition> getEndConditions() {
 
-       List<IGameEndCondition> endConditionsListCopy = (List<IGameEndCondition>) get(END_CONDITIONS);
-       return endConditionsListCopy.stream().collect(Collectors.toList());
-   }
+        List<IGameEndCondition> endConditionsListCopy = (List<IGameEndCondition>) get(END_CONDITIONS);
+        return endConditionsListCopy.stream().collect(Collectors.toList());
+    }
 
-   /**
-    *
-    * @return Game paused state. Default is false
-    */
-   public boolean getPaused() {
-	   return getBooleanValue(GAME_PAUSED, false);
-   }
+    /**
+     *
+     * @return Game paused state. Default is false
+     */
+    public boolean getPaused() {
+        return getBooleanValue(GAME_PAUSED, false);
+    }
 
-   /**
-    *
-    * @param pause Game pause state
-    */
-   public void setPaused(boolean pause) {
-	   put(GAME_PAUSED, new Boolean(pause));
-   }
+    /**
+     *
+     * @param pause Game pause state
+     */
+    public void setPaused(boolean pause) {
+        put(GAME_PAUSED, new Boolean(pause));
+    }
 }

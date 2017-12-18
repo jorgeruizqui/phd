@@ -1,5 +1,6 @@
 package es.jor.phd.xvgdl.app;
 
+import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.engine.GameEngine;
 
 /**
@@ -28,4 +29,14 @@ public final class GameApp {
         return gameEngine;
     }
 
+    /**
+     * Launches the Game Engine.
+     * @param configFile Configuration File
+     * @param gameContext Already created game context
+     * @return the created game engine
+     */
+    public static GameEngine launchGameApp(GameContext gameContext, String configFile) {
+        gameEngine = GameEngine.createGameEngine(gameContext, configFile);
+        return gameEngine;
+    }
 }

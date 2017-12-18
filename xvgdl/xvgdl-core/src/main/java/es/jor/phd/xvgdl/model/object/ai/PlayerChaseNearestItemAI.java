@@ -30,22 +30,31 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
         }
 
         if (shortestDistanceItem != null) {
-            int newX = 0;
+            boolean moved = false;
+            int newX = player.getX();
             if (player.getX() < shortestDistanceItem.getX()) {
-                newX = player.getX() + 1;
+                if (canMove(gameContext, player.getX() + 1, player.getY(), player.getZ())) {
+                    newX = player.getX() + 1;
+                    moved = true;
+                }
             } else if (player.getX() > shortestDistanceItem.getX()) {
-                newX = player.getX() - 1;
-            } else {
-                newX = player.getX();
-            }
+                if (canMove(gameContext, player.getX() - 1, player.getY(), player.getZ())) {
+                    newX = player.getX() - 1;
+                    moved = true;
+                }
+            } 
 
-            int newY = 0;
-            if (player.getY() < shortestDistanceItem.getY()) {
-                newY = player.getY() + 1;
-            } else if (player.getY() > shortestDistanceItem.getY()) {
-                newY = player.getY() - 1;
-            } else {
-                newY = player.getY();
+            int newY = player.getY();
+            if (!moved) {
+                if (player.getY() < shortestDistanceItem.getY()) {
+                    if (canMove(gameContext, player.getX(), player.getY() + 1, player.getZ())) {
+                        newY = player.getY() + 1;
+                    }
+                } else if (player.getY() > shortestDistanceItem.getY()) {
+                    if (canMove(gameContext, player.getX(), player.getY() - 1, player.getZ())) {
+                        newY = player.getY() - 1;
+                    }
+                } 
             }
 
             player.moveTo(newX, newY, 0);
@@ -64,5 +73,19 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
         int distZ = Math.abs(player.getZ() - item.getZ());
         return distX + distY + distZ;
     }
+    
+    /**
+     * Check if an object can move to a concrete square
+     * @param gc
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    private boolean canMove(GameContext gc, int x, int y, int z) {
+        IGameObject elementAt = gc.getObjectAt(x, y, z);
+        return (elementAt == null || !GameObjectType.WALL.equals(elementAt.getObjectType()));
+    }
+
 
 }

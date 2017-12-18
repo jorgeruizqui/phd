@@ -14,7 +14,6 @@ import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.properties.PropertiesParseException;
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
-import es.jor.phd.xvgdl.context.generator.IGameContextGenerator;
 import es.jor.phd.xvgdl.input.KeyboardInputListener;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
 import es.jor.phd.xvgdl.model.event.GameEventType;
@@ -93,30 +92,11 @@ public final class GameEngine extends Properties {
                 GameContext.createGameContext(gc, getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
 
-            // Update context with configured (if any) a context class generator
-            // If context is already passed, may be the generator should be used before, not now...
-            gameContextGeneratorClass();
-
             addKeyListener();
-
 
         } catch (PropertiesParseException e) {
             ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception parsing properties",
                     e);
-        }
-    }
-
-    private void gameContextGeneratorClass() {
-        if (getProperty(GAME_CONTEXT_GENERATOR_KEY) != null) {
-            try {
-                ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                        "Context to be created generated with class" + getProperty(GAME_CONTEXT_GENERATOR_KEY));
-                IGameContextGenerator gameContextGenerator =
-                        (IGameContextGenerator) Class.forName(getProperty(GAME_CONTEXT_GENERATOR_KEY)).newInstance();
-                gameContextGenerator.generateContext(getGameContext());
-            } catch (Exception e) {
-                ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Error generating context using class " + getProperty(GAME_CONTEXT_GENERATOR_KEY));
-            }
         }
     }
 
@@ -136,8 +116,8 @@ public final class GameEngine extends Properties {
             GlobalScreen.registerNativeHook();
             GlobalScreen.addNativeKeyListener(new KeyboardInputListener(getGameContext()));
         } catch (NativeHookException ex) {
-            ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                    "Exception registering hooks", ex);
+            ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception registering hooks",
+                    ex);
         }
     }
 
@@ -231,8 +211,8 @@ public final class GameEngine extends Properties {
 
         for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
             if (endCondition.checkCondition()) {
-            	ELogger.info(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-            			"Game end condition reached: " + endCondition.toString());
+                ELogger.info(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
+                        "Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 break;
             }
@@ -288,7 +268,7 @@ public final class GameEngine extends Properties {
      * Updates context state.
      */
     private void updateState() {
-    	getGameContext().getObjectsList().forEach(IGameObject::update);
+        getGameContext().getObjectsList().forEach(IGameObject::update);
     }
 
     /**
@@ -302,11 +282,12 @@ public final class GameEngine extends Properties {
 
     /**
      * Freeze a game object for a concrete amount of milliseconds
+     * 
      * @param o Object
      * @param milliseconds Time to be frozen
      */
     public void freezeObject(IGameObject o, long milliseconds) {
-    	o.setFrozen(true);
-    	scheduler.schedule(() -> o.setFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
+        o.setFrozen(true);
+        scheduler.schedule(() -> o.setFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
     }
 }
