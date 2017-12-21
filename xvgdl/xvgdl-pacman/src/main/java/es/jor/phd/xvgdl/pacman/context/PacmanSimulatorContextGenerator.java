@@ -7,6 +7,7 @@ import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.context.generator.IGameContextGenerator;
 import es.jor.phd.xvgdl.model.endcondition.GameEndCondition;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
+import es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition;
 import es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition;
 import es.jor.phd.xvgdl.model.endcondition.TurnsGameEndCondition;
 import es.jor.phd.xvgdl.util.GameConstants;
@@ -20,7 +21,7 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
 
     @Override
     public GameContext generateContext(String contextConfigFile) {
-        
+
         GameContext gc = GameContext.createGameContext(contextConfigFile);
 
         generateContextProperties(gc);
@@ -31,7 +32,7 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
         generateRules(gc);
         generateEvents(gc);
         generateEndConditions(gc);
-        
+
         return gc;
     }
 
@@ -47,7 +48,6 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
                 "Generated game max number of turns for " + maxTurns + ".");
         turnsEndCondition.setGameEndConditionChecker(new TurnsGameEndCondition(maxTurns));
         gc.addEndCondition(turnsEndCondition);
-
     }
 
     private void generateMap(GameContext gc) {

@@ -1,24 +1,18 @@
 package es.jor.phd.xvgdl.model.endcondition;
 
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.engine.GameEngine;
 
 /**
  * Timeout End condition.
  *
  */
-public class TurnsGameEndCondition implements IGameEndConditionChecker {
-
-    private int numberOfTurns = 0;
-
-
-    public TurnsGameEndCondition(int turns) {
-        this.numberOfTurns = turns;
-    }
+public class LivesZeroGameEndCondition implements IGameEndConditionChecker {
 
     @Override
     public boolean checkCondition(GameContext c, IGameEndCondition gameEndCondition) {
         boolean rto = false;
-        if (c.getTurns() > this.numberOfTurns) {
+        if (GameEngine.getInstance().getGameContext().getCurrentGamePlayer().getLives() <= 0) {
             rto = true;
         }
         return rto;

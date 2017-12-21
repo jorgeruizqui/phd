@@ -2,6 +2,7 @@ package es.jor.phd.xvgdl.model.event;
 
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.context.xml.GameEventDefinition;
+import lombok.Data;
 
 /**
  * Abstract class representing the superclass of all game events
@@ -9,6 +10,7 @@ import es.jor.phd.xvgdl.context.xml.GameEventDefinition;
  * @author jrquinones
  *
  */
+@Data
 public abstract class AGameEvent implements IGameEvent {
 
     /** Game Event Type. */
@@ -31,34 +33,8 @@ public abstract class AGameEvent implements IGameEvent {
     private GameEventDefinition gameEventDefinition;
 
     @Override
-    public GameEventType getEventType() {
-        return eventType;
-    }
-
-    /**
-     *
-     * @param eventType The event type
-     */
-    public void setEventType(GameEventType eventType) {
-        this.eventType = eventType;
-    }
-
-    @Override
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    /**
-     *
-     * @param timeStamp the Time stamp
-     */
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    @Override
     public void executeEvent() {
-        timeStamp = System.currentTimeMillis();
+        setTimeStamp(System.currentTimeMillis());
         executor.executeEvent(this, GameContext.getInstance());;
     }
 
@@ -77,22 +53,5 @@ public abstract class AGameEvent implements IGameEvent {
     public GameEventDefinition getGameEventDefinition() {
         return gameEventDefinition;
     }
-
-    @Override
-    public long getTimer() {
-        return timer;
-    }
-
-    /**
-     * @param timer the timer to set
-     */
-    public void setTimer(long timer) {
-        this.timer = timer;
-    }
-
-    /**
-     * Is consumible flag.
-     */
-    public abstract boolean isConsumable();
 
 }

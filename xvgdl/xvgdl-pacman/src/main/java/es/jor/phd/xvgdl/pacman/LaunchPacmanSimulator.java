@@ -14,7 +14,7 @@ public class LaunchPacmanSimulator {
      * @param args Arguments
      */
     public static void main(String[] args) {
-        PacmanGeneticAlg alg = new PacmanGeneticAlg(5);
+        PacmanGeneticAlg alg = new PacmanGeneticAlg(1);
         alg.startSimulation();
     }
 

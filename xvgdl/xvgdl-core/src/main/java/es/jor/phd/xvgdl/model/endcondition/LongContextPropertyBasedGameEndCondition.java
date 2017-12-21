@@ -1,7 +1,6 @@
 package es.jor.phd.xvgdl.model.endcondition;
 
 import es.jor.phd.xvgdl.context.GameContext;
-import es.jor.phd.xvgdl.context.xml.GameEndConditionDefinition;
 
 /**
  * End condition based on Context properties values.

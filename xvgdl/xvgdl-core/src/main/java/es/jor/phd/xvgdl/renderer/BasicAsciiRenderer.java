@@ -48,29 +48,25 @@ public class BasicAsciiRenderer implements IGameRenderer {
         // 1- Take Layout
         // 2. Rendering:
         // 2.1 Render the Top|Right|Left|bottom components
-        GamePlayer gp = null;
-        List<IGameObject> listOfPlayers = this.gameContext.getGamePlayers();
-        for (IGameObject iGameObject : listOfPlayers) {
-            gp = (GamePlayer) iGameObject;
-            System.out
-                    .println("Player : " + gp.getName() + " - Score: " + gp.getScore() + " - Lives: " + gp.getLives());
-            // System.out.println("Player Position: [" + gp.getX() + "," +
-            // gp.getY() + "," + gp.getZ() + "]");
-        }
+        GamePlayer gp = this.gameContext.getCurrentGamePlayer();
+        System.out.println("Player : " + gp.getName() + " - Score: " + gp.getScore() + " - Lives: " + gp.getLives());
 
         // 2.2 Render the game screen.
 
-        char[][] array = new char[this.gameContext.getMap().getSizeX() + 3][this.gameContext.getMap().getSizeY() + 3];
+        char[] arraySlash = new char[this.gameContext.getMap().getSizeX()];
+        Arrays.fill(arraySlash, 0, arraySlash.length, '-');
+        System.out.println(arraySlash);
+
+        char[][] array = new char[this.gameContext.getMap().getSizeX()][this.gameContext.getMap().getSizeY()];
+
         // 2.2.1 Render Map Walls
         // 2.2.2 Render Map Items
         // 2.2.3 Render Map Enemies
         // 2.2.4 Render Map Player
-        Arrays.fill(array[0], 0, array[0].length, '-');
-        System.out.println(array[0]);
-        Arrays.fill(array[array.length - 1], 0, array[0].length, '-');
-        for (int i = 1; i < array.length - 1; i++) {
+
+        for (int i = 0; i < array.length - 1; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                IGameObject gameObject = this.gameContext.getObjectAt(j, i, 0);
+                IGameObject gameObject = this.gameContext.getObjectAt(i, j, 0);
                 if (gameObject != null) {
                     array[i][j] = gameObject.getName().toString().charAt(0);
                 } else {
@@ -78,14 +74,15 @@ public class BasicAsciiRenderer implements IGameRenderer {
                 }
             }
         }
-        array[gp.getY()][gp.getX()] = gp.getName().toString().charAt(0); 
+        array[gp.getX()][gp.getY()] = gp.getName().toString().charAt(0);
 
         // Print the array in reverse order
         for (int i = array.length - 1; i >= 0; i--) {
             System.out.println(array[i]);
         }
 
-        System.out.println(array[array.length - 1]);
+        // Print latest row with slashes
+        System.out.println(arraySlash);
 
     }
 

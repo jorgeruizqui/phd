@@ -47,11 +47,6 @@ public final class GameEngine extends Properties {
     private static final String GAME_CONTEXT_CONFIG_KEY = "gameContextConfiguration";
 
     /**
-     * Game Context generator configuration class key.
-     */
-    private static final String GAME_CONTEXT_GENERATOR_KEY = "gameContextGenerator";
-
-    /**
      * Simulation mode configuration key.
      */
     private static final String SIMULATION_MODE_KEY = "simulationMode";
@@ -69,11 +64,11 @@ public final class GameEngine extends Properties {
     /** Game Finished Flag. */
     private boolean gameFinished = false;
 
+    /** Game Winning Flag. */
+    private boolean gameWinning = false;
+
     /** Game Running in simulation mode Flag. */
     private boolean simulationMode = false;
-
-    /** Game Running current turn. */
-    private int turns = 0;
 
     /**
      * Constructor.
@@ -189,7 +184,7 @@ public final class GameEngine extends Properties {
                 render();
                 Thread.sleep((long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
                         - start));
-                this.turns++;
+                getGameContext().nextTurn();
                 checkEndConditions();
             } catch (Exception e) {
                 ELogger.error(GameEngine.class, "", "Exception in game loop", e);
@@ -203,10 +198,6 @@ public final class GameEngine extends Properties {
 
     }
 
-    public int getTurns() {
-        return turns;
-    }
-
     private void checkEndConditions() {
 
         for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
@@ -214,6 +205,9 @@ public final class GameEngine extends Properties {
                 ELogger.info(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
                         "Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
+                if (endCondition.isWinningCondition()) {
+                	gameWinning = true;
+                }
                 break;
             }
         }
@@ -282,12 +276,20 @@ public final class GameEngine extends Properties {
 
     /**
      * Freeze a game object for a concrete amount of milliseconds
-     * 
+     *
      * @param o Object
      * @param milliseconds Time to be frozen
      */
     public void freezeObject(IGameObject o, long milliseconds) {
         o.setFrozen(true);
         scheduler.schedule(() -> o.setFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * If the game is won or not.
+     * @return
+     */
+    public boolean gameWinning() {
+    	return gameWinning;
     }
 }

@@ -32,4 +32,10 @@ public interface IGameEndCondition {
      * @return End condition definition
      */
     GameEndConditionDefinition getGameEndConditionDefinition();
+
+    /**
+     *
+     * @return If the condition is a winning condition
+     */
+    boolean isWinningCondition();
 }

@@ -2,48 +2,36 @@ package es.jor.phd.xvgdl.model.endcondition;
 
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.context.xml.GameEndConditionDefinition;
+import lombok.Data;
 
 /**
  * Basic implementation for an End Game Condition.
  * @author Jor
  *
  */
+@Data
 public class GameEndCondition implements IGameEndCondition {
 
-    /** Game End condition defintion. */
-    private GameEndConditionDefinition definition;
+    private static final String XML_WINNING_CONDITION = "winningCondition";
+
+	/** Game End condition defintion. */
+    private GameEndConditionDefinition gameEndConditionDefinition;
 
     /** Game End condition checker. */
-    private IGameEndConditionChecker checker;
-
-    @Override
-    public void setGameEndConditionDefinition(GameEndConditionDefinition def) {
-        this.definition = def;
-    }
-
-    @Override
-    public void setGameEndConditionChecker(IGameEndConditionChecker checker) {
-        this.checker = checker;
-    }
+    private IGameEndConditionChecker gameEndConditionChecker;
 
     @Override
     public boolean checkCondition() {
 
         boolean rto = true;
-        if (checker != null) {
-            rto = checker.checkCondition(GameContext.getInstance(), this);
+        if (gameEndConditionChecker != null) {
+            rto = gameEndConditionChecker.checkCondition(GameContext.getInstance(), this);
         }
         return rto;
     }
 
-    @Override
-    public GameEndConditionDefinition getGameEndConditionDefinition() {
-        return this.definition;
-    }
-    
-    @Override
-    public String toString() {
-        return checker.toString();
+    public boolean isWinningCondition() {
+    	return gameEndConditionDefinition.getBooleanValue(XML_WINNING_CONDITION, Boolean.FALSE);
     }
 
 }

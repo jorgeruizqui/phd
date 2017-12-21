@@ -38,8 +38,6 @@
     <events>
         <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
             objectName="cherry" timer="5000" />
-        <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
-            objectName="ghost" timer="1000" />
     </events>
 
     <!-- Defining rules. Events consecuences -->
@@ -73,20 +71,18 @@
         </rule>
         <rule name="ghostCatchPacman" type="collision">
             <ruleAction objectName="pacman" result="teletransport" />
-            <ruleAction objectName="ghost" result="disappear" />
+            <ruleAction objectName="ghost" result="" value=""/>
         </rule>
-        <!-- Rule for pacman eating big dots -->
-        <!-- <rule id="eatBigDot" type="eventual"> -->
-        <!-- <objectRef id="pacman" action="scoreUp,500" /> -->
-        <!-- <objectRef id="bigDot" action="disappear" /> -->
-        <!-- </rule> -->
-
-        <!-- Rule for pacman eating all dots -->
-        <!-- <rule id="dotsCounter" type="permanent"> -->
-        <!-- <action condition="0" consequence="????" /> -->
-        <!-- </rule> -->
+        <rule name="ghostCatchPacmanLivesDown" type="collision">
+            <ruleAction objectName="pacman" result="livesDown" />
+            <ruleAction objectName="ghost" result="" value=""/>
+        </rule>
 
     </rules>
     <!-- Game End Conditions -->
     <!--  To be generated automatically by the Pacman simulator context generator. -->
+    <endConditions>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" winningCondition="true" objectNames="smallDot,bigDot"/>
+    </endConditions>
 </gameDefinition>
