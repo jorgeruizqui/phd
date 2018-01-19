@@ -41,4 +41,9 @@ public interface IGameRule {
      *         exits
      */
     IGameRuleAction getRuleActionByName(String objectName);
+
+    /**
+     * Evolve game Rule
+     */
+	void evolution();
 }

@@ -85,4 +85,21 @@
         <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
         <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" winningCondition="true" objectNames="smallDot,bigDot"/>
     </endConditions>
+
+
+    <!-- Game Objectives -->
+    <!--
+    	Weight should be a double value, and can be even negative to penalize a concrete property.
+    	Default weight would be 1.0d if no specific value is set
+    	Some objectives can have a score to calculate the objective final score in the fitness function.
+    	Default score will be 0 for all objectives if no specific value is set
+    -->
+    <objectives>
+        <objective objectiveCheckerClass="es.jor.phd.xvgdl.model.objectives.MaximizeScoreObjective" weight="1.0"/>
+        <objective objectiveCheckerClass="es.jor.phd.xvgdl.model.objectives.MaximizeTurnsObjective" weight="0.5"/>
+        <objective objectiveCheckerClass="es.jor.phd.xvgdl.model.objectives.MaximizeTimeObjective" weight="0.75"/>
+        <objective objectiveCheckerClass="es.jor.phd.xvgdl.model.objectives.PlayerWinsObjective" score="200" weight="1.0"/>
+        <objective objectiveCheckerClass="es.jor.phd.xvgdl.model.objectives.DifferenceBetweenInitialAndFinalLives" score="200" weight="1.0"/>
+    </objectives>
 </gameDefinition>
+

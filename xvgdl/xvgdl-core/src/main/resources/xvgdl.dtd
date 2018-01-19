@@ -1,0 +1,103 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT gameDefinition (map,players,objects,physics,events,rules,
+                          endConditions,objectives)>
+<!ATTLIST gameDefinition
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT map EMPTY>
+<!ATTLIST map
+  xmlns CDATA #FIXED ''
+  generator CDATA #REQUIRED
+  sizeX CDATA #REQUIRED
+  sizeY CDATA #REQUIRED
+  toroidal NMTOKEN #REQUIRED
+  type NMTOKEN #REQUIRED>
+
+<!ELEMENT players (player)>
+<!ATTLIST players
+  xmlns CDATA #FIXED ''
+  maxNumber CDATA #REQUIRED
+  minNumber CDATA #REQUIRED
+  number CDATA #REQUIRED>
+
+<!ELEMENT objects (object)+>
+<!ATTLIST objects
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT physics EMPTY>
+<!ATTLIST physics
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT events (event)>
+<!ATTLIST events
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT rules (rule)+>
+<!ATTLIST rules
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT endConditions (endCondition)+>
+<!ATTLIST endConditions
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT objectives (objective)+>
+<!ATTLIST objectives
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT player EMPTY>
+<!ATTLIST player
+  xmlns CDATA #FIXED ''
+  ai CDATA #REQUIRED
+  livePercentage CDATA #REQUIRED
+  lives CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  score CDATA #REQUIRED>
+
+<!ELEMENT object EMPTY>
+<!ATTLIST object
+  xmlns CDATA #FIXED ''
+  ai CDATA #IMPLIED
+  dynamic NMTOKEN #REQUIRED
+  instances CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  size CDATA #IMPLIED
+  sizeX CDATA #IMPLIED
+  sizeY CDATA #IMPLIED
+  type NMTOKEN #REQUIRED
+  volatile NMTOKEN #REQUIRED>
+
+<!ELEMENT event EMPTY>
+<!ATTLIST event
+  xmlns CDATA #FIXED ''
+  className CDATA #REQUIRED
+  objectName NMTOKEN #REQUIRED
+  timer CDATA #REQUIRED
+  type NMTOKEN #REQUIRED>
+
+<!ELEMENT rule (ruleAction)+>
+<!ATTLIST rule
+  xmlns CDATA #FIXED ''
+  name NMTOKEN #REQUIRED
+  type NMTOKEN #REQUIRED>
+
+<!ELEMENT endCondition EMPTY>
+<!ATTLIST endCondition
+  xmlns CDATA #FIXED ''
+  checkerClass CDATA #REQUIRED
+  objectNames CDATA #IMPLIED
+  winningCondition NMTOKEN #IMPLIED>
+
+<!ELEMENT objective EMPTY>
+<!ATTLIST objective
+  xmlns CDATA #FIXED ''
+  objectiveCheckerClass CDATA #REQUIRED
+  score CDATA #IMPLIED
+  weight CDATA #REQUIRED>
+
+<!ELEMENT ruleAction EMPTY>
+<!ATTLIST ruleAction
+  xmlns CDATA #FIXED ''
+  objectName NMTOKEN #REQUIRED
+  result CDATA #REQUIRED
+  value CDATA #IMPLIED>

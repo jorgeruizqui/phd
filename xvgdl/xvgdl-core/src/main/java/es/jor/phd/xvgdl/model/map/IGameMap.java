@@ -48,4 +48,12 @@ public interface IGameMap {
      * @return Map generator
      */
     IGameMapGenerator getMapGenerator();
+
+    /**
+     * Resize Map to new values.
+     * @param x X Size
+     * @param y Y Size
+     * @param z Z Size
+     */
+    void resize(int x, int y, int z);
 }

@@ -40,7 +40,7 @@ public class GameRendererXMLHandler extends BasicXMLHandler {
         this.register(new Properties.PropertyXMLElement());
         IGameRenderer gameRenderer = new BasicAsciiRenderer();
         gameRenderer.initializeRenderer(gameContext);
-        this.gameContext.setRenderer(gameRenderer);
+        this.gameContext.setGameRenderer(gameRenderer);
     }
 
     @Override

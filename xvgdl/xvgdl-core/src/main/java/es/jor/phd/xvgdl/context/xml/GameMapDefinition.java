@@ -60,7 +60,7 @@ public class GameMapDefinition extends Properties implements IIdentificableObjec
             gameMap.setSizeX(definition.getIntegerValue(XMLATTR_SIZE_X, 0));
             gameMap.setSizeY(definition.getIntegerValue(XMLATTR_SIZE_Y, 0));
             gameMap.setSizeZ(definition.getIntegerValue(XMLATTR_SIZE_Z, 0));
-            gameMap.setGenerator((IGameMapGenerator) Class.forName(
+            gameMap.setMapGenerator((IGameMapGenerator) Class.forName(
                     definition.getProperty(XMLATTR_GENERATOR)).newInstance());
             gameMap.setMapRepresentation(
                     new IGameObject[gameMap.getSizeX()][gameMap.getSizeY()][gameMap.getSizeZ()]);

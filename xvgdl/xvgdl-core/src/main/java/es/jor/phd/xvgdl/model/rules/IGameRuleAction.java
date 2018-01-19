@@ -24,6 +24,6 @@ public interface IGameRuleAction {
      *
      * @return Result Value
      */
-    String getValue();
+    Double getValue();
 
 }

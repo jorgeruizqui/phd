@@ -1,5 +1,6 @@
 package es.jor.phd.xvgdl.model.endcondition;
 
+import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.context.xml.GameEndConditionDefinition;
 
 /**
@@ -15,17 +16,11 @@ public interface IGameEndCondition {
     void setGameEndConditionDefinition(GameEndConditionDefinition def);
 
     /**
-     *
-     * @param checker Condition checker
-     */
-    void setGameEndConditionChecker(IGameEndConditionChecker checker);
-
-    /**
      * Checks the condition.
      * @return <code>true</code> if the condition is accomplished. Otherwise <code>false</code>
      *
      */
-    boolean checkCondition();
+    boolean checkCondition(GameContext c);
 
     /**
      *
@@ -38,4 +33,9 @@ public interface IGameEndCondition {
      * @return If the condition is a winning condition
      */
     boolean isWinningCondition();
+
+    /**
+     * Evolves the game condition according the implementation.
+     */
+    void evolution();
 }

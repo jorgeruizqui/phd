@@ -11,6 +11,7 @@ import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.object.IGameObject;
+import es.jor.phd.xvgdl.model.objectives.IGameObjective;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
 import es.jor.phd.xvgdl.util.GameConstants;
 
@@ -38,6 +39,8 @@ public class GameContextXMLHandler extends BasicXMLHandler {
     private static final String XMLTAG_RULES = "rules";
     /** End conditions tag. */
     private static final String XMLTAG_END_CONDITIONS = "endConditions";
+    /** Objectives tag. */
+    private static final String XMLTAG_OBJECTIVES = "objectives";
 
     /** Instance of game context. */
     private GameContext gameContext;
@@ -60,11 +63,10 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         this.register(new IgnorableXMLElementParser(XMLTAG_EVENTS));
         this.register(new IgnorableXMLElementParser(XMLTAG_RULES));
         this.register(new IgnorableXMLElementParser(XMLTAG_END_CONDITIONS));
+        this.register(new IgnorableXMLElementParser(XMLTAG_OBJECTIVES));
 
         // Parsing tags:
         this.register(new Properties.PropertyXMLElement());
-        // this.register(new XMLObjectParser(GameLayoutDefinition.XMLTAG,
-        // GameLayoutDefinition.class));
         this.register(new XMLObjectParser(GameMapDefinition.XMLTAG, GameMapDefinition.class));
         this.register(new XMLObjectParser(GameObjectDefinition.XMLTAG, GameObjectDefinition.class));
         this.register(new XMLObjectParser(GamePlayerDefinition.XMLTAG, GamePlayerDefinition.class));
@@ -72,6 +74,7 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         this.register(new XMLObjectParser(GameRuleActionDefinition.XMLTAG, GameRuleActionDefinition.class));
         this.register(new XMLObjectParser(GameEventDefinition.XMLTAG, GameEventDefinition.class));
         this.register(new XMLObjectParser(GameEndConditionDefinition.XMLTAG, GameEndConditionDefinition.class));
+        this.register(new XMLObjectParser(GameObjectiveDefinition.XMLTAG, GameObjectiveDefinition.class));
     }
 
     @Override
@@ -88,14 +91,14 @@ public class GameContextXMLHandler extends BasicXMLHandler {
     public void onElementFinished(String xmlTag, Object obj) {
 
         if (xmlTag.equals(Properties.XMLTAG_PROPERTY)) {
-            String key = obj.toString().substring(0, obj.toString().indexOf(":"));
-            String value = obj.toString().substring(obj.toString().indexOf(":") + 1);
+            String key = obj.toString().substring(0, obj.toString().indexOf(':'));
+            String value = obj.toString().substring(obj.toString().indexOf(':') + 1);
             ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Added property: " + key + " - " + value);
             gameContext.put(key, value);
         } else if (xmlTag.equals(GameMapDefinition.XMLTAG)) {
             IGameMap gameMap = GameMapDefinition.convert((GameMapDefinition) obj);
             ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Created Game Map: " + gameMap.toString());
-            gameContext.setMap(gameMap);
+            gameContext.setGameMap(gameMap);
 
         } else if (xmlTag.equals(GameObjectDefinition.XMLTAG)) {
             GameObjectDefinition objectDefinition = (GameObjectDefinition) obj;
@@ -132,9 +135,13 @@ public class GameContextXMLHandler extends BasicXMLHandler {
             IGameEvent event = GameEventDefinition.convert(eventDefinition);
             gameContext.addEvent(event);
         } else if (xmlTag.equals(GameEndConditionDefinition.XMLTAG)) {
-            GameEndConditionDefinition eventDefinition = (GameEndConditionDefinition) obj;
-            IGameEndCondition endCondition = GameEndConditionDefinition.convert(eventDefinition);
+            GameEndConditionDefinition endConditionDefinition = (GameEndConditionDefinition) obj;
+            IGameEndCondition endCondition = GameEndConditionDefinition.convert(endConditionDefinition);
             gameContext.addEndCondition(endCondition);
+        } else if (xmlTag.equals(GameObjectiveDefinition.XMLTAG)) {
+        	GameObjectiveDefinition gameObjectiveDefinition = (GameObjectiveDefinition) obj;
+            IGameObjective gameObjective = GameObjectiveDefinition.convert(gameObjectiveDefinition);
+            gameContext.addGameObjective(gameObjective);
         }
     }
 }

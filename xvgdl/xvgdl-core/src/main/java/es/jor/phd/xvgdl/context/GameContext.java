@@ -1,15 +1,12 @@
 package es.jor.phd.xvgdl.context;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -25,10 +22,14 @@ import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.GamePlayer;
 import es.jor.phd.xvgdl.model.object.IGameObject;
+import es.jor.phd.xvgdl.model.objectives.IGameObjective;
 import es.jor.phd.xvgdl.model.physics.IGamePhysic;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
 import es.jor.phd.xvgdl.renderer.IGameRenderer;
 import es.jor.phd.xvgdl.util.GameConstants;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Game context
@@ -36,52 +37,64 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
+@Getter
+@ToString
 public final class GameContext extends Context {
 
 	/** Renderer configuration key. */
 	private static final String RENDERER_CONFIGURATION = "rendererConfiguration";
 
+	/** Objects map. */
+	private EnumMap<GameObjectType, List<IGameObject>> objectsMap = new EnumMap<>(GameObjectType.class);
+
+	/** Game Events. */
+	private Collection<IGameEvent> gameEvents = new CopyOnWriteArrayList<>();
+
+	/** Game End Conditions. */
+	private Collection<IGameEndCondition> gameEndConditions = new CopyOnWriteArrayList<>();
+
+	/** Game Action. */
+	private Collection<IGameAction> gameActions = new CopyOnWriteArrayList<>();
+
+	/** Game Map. */
+	@Setter
+	private IGameMap gameMap;
+
+	/** Game Rules. */
+	private Collection<IGameRule> gameRules = new CopyOnWriteArrayList<>();
+
+	/** Game Objectives. */
+	private Collection<IGameObjective> gameObjectives = new CopyOnWriteArrayList<>();
+
 	/** Game Startup time. */
-	private static final String START_TIME = "START_TIME";
+	@Setter
+	private Long startTime;
+
+	/** Game End time. */
+	@Setter
+	private Long endTime;
 
 	/** Timeout configuration key. Set to -1 for no timeout. */
-	private static final String TIMEOUT = "TIMEOUT";
+	@Setter
+	private Long timeout = -1L;
 
-	/** RENDERER key. */
-	private static final String RENDERER = "RENDERER";
-
-	/** Players key. */
-	private static final String PLAYERS = "PLAYERS";
-
-	/** Objects key. */
-	private static final String OBJECTS = "OBJECTS";
-
-	/** Map key. */
-	private static final String MAP = "MAP";
-
-	/** Rules key. */
-	private static final String RULES = "RULES";
+	/** Game Renderer. */
+	@Setter
+	private IGameRenderer gameRenderer;
 
 	/** Physics key. */
-	private static final String PHYSICS = "PHYSICS";
+	private Collection<IGamePhysic> gamePhysics = new CopyOnWriteArrayList<>();
 
-	/** Actions key. */
-	private static final String ACTIONS = "ACTIONS";
+	/** Player AI Enabled. */
+	@Setter
+	private boolean playerAiEnabled = false;
 
-	/** Events key. */
-	private static final String EVENTS = "EVENTS";
+	/** Game Paused flag. */
+	@Setter
+	private boolean gamePaused = false;
 
-	/** End Conditions key. */
-	private static final String END_CONDITIONS = "END_CONDITIONS";
-
-	/** Player AI Enabled key. */
-	private static final String PLAYER_AI_ENABLED = "PLAYER_AI_ENABLED";
-
-	/** Game Paused key. */
-	private static final String GAME_PAUSED = "GAME_PAUSED";
-
-	/** Game Turns key. */
-	private static final String TURNS = "TURNS";
+	/** Game Turns. */
+	private int turns = 0;
 
 	/** Singleton instance. */
 	private static GameContext instance;
@@ -94,22 +107,6 @@ public final class GameContext extends Context {
 	 */
 	private GameContext(GameContext gc, String configurationFile) {
 
-		// Force initialize Objects map
-		Map<GameObjectType, List<IGameObject>> objectsMap = new HashMap<GameObjectType, List<IGameObject>>();
-		setObjectProperty(OBJECTS, objectsMap);
-
-		// Force initialize Rules map
-		Map<String, IGameRule> rulesMap = new HashMap<String, IGameRule>();
-		setObjectProperty(RULES, rulesMap);
-
-		// Force initialize Events map
-		List<IGameEvent> eventsList = new CopyOnWriteArrayList<IGameEvent>();
-		setObjectProperty(EVENTS, eventsList);
-
-		// Force initialize End Conditions map
-		List<IGameEndCondition> endConditions = new CopyOnWriteArrayList<IGameEndCondition>();
-		setObjectProperty(END_CONDITIONS, endConditions);
-
 		if (configurationFile != null) {
 			try (InputStream f = IOUtils.getInputStream(configurationFile)) {
 
@@ -120,7 +117,7 @@ public final class GameContext extends Context {
 				contextHandler.parseResource(configurationFile);
 
 				// Generate map position for all elements
-				getMap().getMapGenerator().generateMapRepresentation(getMap(), getObjectsList());
+				this.gameMap.getMapGenerator().generateMapRepresentation(this.gameMap, getObjectsAsList());
 
 				// Get renderer configuration and load renderer definitions:
 				GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
@@ -134,9 +131,9 @@ public final class GameContext extends Context {
 		if (gc != null) {
 			this.addObjectProperties(gc.entrySet());
 			this.addEndConditions(gc.getEndConditions());
-			this.addEvents(gc.getEvents());
-			this.addRules(gc.getRules());
-			this.addObjects(gc.getObjectsList());
+			this.addEvents(gc.getGameEvents());
+			this.addRules(gc.getGameRules());
+			this.addObjects(gc.getObjectsAsList());
 		}
 
 	}
@@ -181,18 +178,10 @@ public final class GameContext extends Context {
 	}
 
 	/**
-	 *
 	 * @return objects
 	 */
-	public Map<GameObjectType, List<IGameObject>> getObjectsMap() {
-		return (Map<GameObjectType, List<IGameObject>>) get(OBJECTS);
-	}
-
-	/**
-	 * @return objects
-	 */
-	public List<IGameObject> getObjectsList() {
-		return getObjectsList(null);
+	public List<IGameObject> getObjectsAsList() {
+		return getObjectsListByType(null);
 	}
 
 	/**
@@ -200,10 +189,10 @@ public final class GameContext extends Context {
 	 *            Filter type. Can be null to return all objects
 	 * @return objects
 	 */
-	public List<IGameObject> getObjectsList(GameObjectType typeFilter) {
-		List<IGameObject> rto = new ArrayList<IGameObject>();
-		Map<GameObjectType, List<IGameObject>> m = (Map<GameObjectType, List<IGameObject>>) get(OBJECTS);
-		for (List<IGameObject> listGameObject : m.values()) {
+	public List<IGameObject> getObjectsListByType(GameObjectType typeFilter) {
+		List<IGameObject> rto = new ArrayList<>();
+
+		for (List<IGameObject> listGameObject : objectsMap.values()) {
 			rto.addAll(listGameObject);
 		}
 
@@ -217,7 +206,7 @@ public final class GameContext extends Context {
 	 * @return List of players.
 	 */
 	public List<IGameObject> getGamePlayers() {
-		return getObjectsList(GameObjectType.PLAYER);
+		return getObjectsListByType(GameObjectType.PLAYER);
 	}
 
 	/**
@@ -225,7 +214,7 @@ public final class GameContext extends Context {
 	 *         moment, just one player is available for simulations
 	 */
 	public GamePlayer getCurrentGamePlayer() {
-		return (GamePlayer) getObjectsList(GameObjectType.PLAYER).get(0);
+		return (GamePlayer) getObjectsListByType(GameObjectType.PLAYER).get(0);
 	}
 
 	/**
@@ -234,9 +223,9 @@ public final class GameContext extends Context {
 	 * @return objects
 	 */
 	public List<IGameObject> getObjectsListByName(String objectNameFilter) {
-		List<IGameObject> rto = new ArrayList<IGameObject>();
-		Map<GameObjectType, List<IGameObject>> m = (Map<GameObjectType, List<IGameObject>>) get(OBJECTS);
-		for (List<IGameObject> listGameObject : m.values()) {
+		List<IGameObject> rto = new ArrayList<>();
+
+		for (List<IGameObject> listGameObject : this.objectsMap.values()) {
 			rto.addAll(listGameObject);
 		}
 
@@ -255,7 +244,7 @@ public final class GameContext extends Context {
 	public void addObject(IGameObject object) {
 		List<IGameObject> currentList = getObjectsMap().get(object.getObjectType());
 		if (currentList == null) {
-			currentList = new ArrayList<IGameObject>();
+			currentList = new ArrayList<>();
 		}
 		currentList.add(object);
 		getObjectsMap().put(object.getObjectType(), currentList);
@@ -272,36 +261,11 @@ public final class GameContext extends Context {
 
 	/**
 	 *
-	 * @return the Map
-	 */
-	public IGameMap getMap() {
-		return (IGameMap) get(MAP);
-	}
-
-	/**
-	 *
-	 * @param map
-	 *            Map to set
-	 */
-	public void setMap(IGameMap map) {
-		setObjectProperty(MAP, map);
-	}
-
-	/**
-	 *
-	 * @return the rules
-	 */
-	public Map<String, IGameRule> getRules() {
-		return (Map<String, IGameRule>) get(RULES);
-	}
-
-	/**
-	 *
 	 * @param rule
 	 *            Rule to be added
 	 */
 	public void addRule(IGameRule rule) {
-		getRules().put(rule.getRuleName(), rule);
+		getGameRules().add(rule);
 	}
 
 	/**
@@ -309,59 +273,8 @@ public final class GameContext extends Context {
 	 * @param rules
 	 *            Rules to be added
 	 */
-	public void addRules(Map<String, IGameRule> rules) {
-		getRules().putAll(rules);
-	}
-
-	/**
-	 *
-	 * @return the Physics
-	 */
-	public Map<String, IGamePhysic> getPhysics() {
-		return (Map<String, IGamePhysic>) get(PHYSICS);
-	}
-
-	/**
-	 *
-	 * @param physics
-	 *            Physics to set
-	 */
-	public void setPhysics(Map<String, IGamePhysic> physics) {
-		setObjectProperty(PHYSICS, physics);
-	}
-
-	/**
-	 *
-	 * @return the actions
-	 */
-	public Map<String, IGameAction> getActions() {
-		return (Map<String, IGameAction>) get(ACTIONS);
-	}
-
-	/**
-	 *
-	 * @param actions
-	 *            Actions to set
-	 */
-	public void setActions(Map<String, IGameAction> actions) {
-		setObjectProperty(ACTIONS, actions);
-	}
-
-	/**
-	 *
-	 * @param gameRenderer
-	 *            Game Renderer
-	 */
-	public void setRenderer(IGameRenderer gameRenderer) {
-		setObjectProperty(RENDERER, gameRenderer);
-	}
-
-	/**
-	 *
-	 * @return Game Renderer
-	 */
-	public IGameRenderer getRenderer() {
-		return (IGameRenderer) getObjectProperty(RENDERER);
+	public void addRules(Collection<IGameRule> rules) {
+		getGameRules().addAll(rules);
 	}
 
 	/**
@@ -378,8 +291,8 @@ public final class GameContext extends Context {
 	public IGameObject getObjectAt(int x, int y, int z) {
 		IGameObject rto = null;
 
-		for (IGameObject go : getObjectsList()) {
-			if (go.getX() == x && go.getY() == y && go.getZ() == 0) {
+		for (IGameObject go : getObjectsAsList()) {
+			if (go.getX() == x && go.getY() == y && go.getZ() == z) {
 				rto = go;
 				break;
 			}
@@ -399,88 +312,18 @@ public final class GameContext extends Context {
 
 	/**
 	 *
-	 * @param timeout
-	 *            Game Timeout in milliseconds to set
-	 */
-	public void setTimeout(long timeout) {
-		put(TIMEOUT, timeout);
-	}
-
-	/**
-	 *
-	 * @return Game Timeout
-	 */
-	public long getTimeout() {
-		return getLongValue(TIMEOUT, -1);
-	}
-
-	/**
-	 *
-	 * @param turns
-	 *            Game Turns to set
-	 */
-	public void setTurns(long turns) {
-		put(TURNS, turns);
-	}
-
-	/**
-	 *
 	 * @param turns update to next turn
 	 */
 	public void nextTurn() {
-		put(TURNS, getTurns() + 1);
+		this.turns++;
 	}
 
 	/**
 	 *
-	 * @return Game Turns
-	 */
-	public long getTurns() {
-		return getLongValue(TURNS, 0);
-	}
-
-	/**
-	 *
-	 * @param Player
-	 *            AI enabled to set
-	 */
-	public void setPlayerAiEnabled(boolean playerAiEnabled) {
-		put(PLAYER_AI_ENABLED, playerAiEnabled);
-	}
-
-	/**
-	 *
-	 * @return Game Timeout
-	 */
-	public boolean isPlayerAiEnabled() {
-		return getBooleanValue(PLAYER_AI_ENABLED, false);
-	}
-
-	/**
-	 *
-	 * @param startTime
-	 *            Game start time in milliseconds to set
-	 */
-	public void setStartTime(long startTime) {
-		put(START_TIME, startTime);
-	}
-
-	/**
-	 *
-	 * @return Game Timeout
-	 */
-	public long getStartTime() {
-		return getLongValue(START_TIME, 0);
-	}
-
-	/**
-	 *
-	 * @param event
-	 *            Game Event
+	 * @param event Game Event
 	 */
 	public void addEvent(IGameEvent event) {
-		List<IGameEvent> events = (List<IGameEvent>) get(EVENTS);
-		events.add(event);
+		this.gameEvents.add(event);
 	}
 
 	/**
@@ -498,19 +341,16 @@ public final class GameContext extends Context {
 	 *            Game Event
 	 */
 	public void eventProcessed(IGameEvent event) {
-		List<IGameEvent> events = (List<IGameEvent>) get(EVENTS);
-		events.remove(event);
+		this.gameEvents.remove(event);
 	}
 
 	/**
 	 *
-	 * @return Game Events
+	 * @return Game Events sorted by timestamp
 	 */
-	public List<IGameEvent> getEvents() {
-
-		List<IGameEvent> eventListCopy = (List<IGameEvent>) get(EVENTS);
+	public Collection<IGameEvent> getGameSortedEvents() {
 		Comparator<IGameEvent> byTimeStamp = (e1, e2) -> Long.compare(e1.getTimeStamp(), e2.getTimeStamp());
-		return eventListCopy.stream().sorted(byTimeStamp).collect(Collectors.toList());
+		return this.gameEvents.stream().sorted(byTimeStamp).collect(Collectors.toList());
 	}
 
 	/**
@@ -520,8 +360,7 @@ public final class GameContext extends Context {
 	 *            End condition to add
 	 */
 	public void addEndCondition(IGameEndCondition endCondition) {
-		List<IGameEndCondition> endConditions = (List<IGameEndCondition>) get(END_CONDITIONS);
-		endConditions.add(endCondition);
+		this.gameEndConditions.add(endCondition);
 	}
 
 	/**
@@ -538,26 +377,31 @@ public final class GameContext extends Context {
 	 *
 	 * @return Game End Conditions
 	 */
-	public List<IGameEndCondition> getEndConditions() {
-
-		List<IGameEndCondition> endConditionsListCopy = (List<IGameEndCondition>) get(END_CONDITIONS);
-		return endConditionsListCopy.stream().collect(Collectors.toList());
+	public Collection<IGameEndCondition> getEndConditions() {
+		return this.gameEndConditions;
 	}
 
 	/**
 	 *
-	 * @return Game paused state. Default is false
+	 * @return Game Objectives
 	 */
-	public boolean getPaused() {
-		return getBooleanValue(GAME_PAUSED, false);
+	public Collection<IGameObjective> getGameObjectives() {
+		return this.gameObjectives;
 	}
 
 	/**
 	 *
-	 * @param pause
-	 *            Game pause state
+	 * @param go Game Objective
 	 */
-	public void setPaused(boolean pause) {
-		put(GAME_PAUSED, new Boolean(pause));
+	public void addGameObjective(IGameObjective go) {
+		this.gameObjectives.add(go);
+	}
+
+	/**
+	 *
+	 * @return The total time played
+	 */
+	public long getTimePlayed() {
+		return getEndTime() - getStartTime();
 	}
 }

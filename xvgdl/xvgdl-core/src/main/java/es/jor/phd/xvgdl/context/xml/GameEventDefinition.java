@@ -1,16 +1,10 @@
 package es.jor.phd.xvgdl.context.xml;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.model.event.AGameEvent;
 import es.jor.phd.xvgdl.model.event.GameEventType;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
-import es.jor.phd.xvgdl.model.map.IGameMapGenerator;
-import es.jor.phd.xvgdl.model.rules.GameRule;
-import es.jor.phd.xvgdl.model.rules.GameRuleType;
 import es.jor.phd.xvgdl.util.GameConstants;
 
 /**

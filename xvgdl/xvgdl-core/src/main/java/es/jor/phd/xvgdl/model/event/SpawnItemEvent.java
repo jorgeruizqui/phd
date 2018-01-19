@@ -49,8 +49,8 @@ public class SpawnItemEvent extends AGameEvent {
 
     			// Set the cloned object in a random situation
     			Random r = new Random();
-    			goCloned.moveTo(r.nextInt(context.getMap().getSizeX()),
-    					r.nextInt(context.getMap().getSizeY()),
+    			goCloned.moveTo(r.nextInt(context.getGameMap().getSizeX()),
+    					r.nextInt(context.getGameMap().getSizeY()),
     					0);
     			// Add to game context
     			context.addObject(goCloned);

@@ -70,7 +70,7 @@ public class KeyboardGameEvent extends AGameEvent {
                 		player.moveTo(player.getX(), player.getY() + -1, player.getZ());
                 		break;
                 	case NativeKeyEvent.VC_P:
-                		context.setPaused(true);
+                		context.setGamePaused(true);
                 		break;
                 	default:
                 		break;

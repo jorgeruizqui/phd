@@ -201,13 +201,14 @@ public final class GameEngine extends Properties {
     private void checkEndConditions() {
 
         for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
-            if (endCondition.checkCondition()) {
+            if (endCondition.checkCondition(getGameContext())) {
                 ELogger.info(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
                         "Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 if (endCondition.isWinningCondition()) {
                 	gameWinning = true;
                 }
+                getGameContext().setEndTime(System.currentTimeMillis());
                 break;
             }
         }
@@ -218,7 +219,7 @@ public final class GameEngine extends Properties {
      */
     private void processEvents() {
 
-        for (IGameEvent event : getGameContext().getEvents()) {
+        for (IGameEvent event : getGameContext().getGameSortedEvents()) {
             if (simulationMode && GameEventType.KEYBOARD.equals(event.getEventType())) {
                 ELogger.debug(this, "", "Keyboard Event not processed. Simulation Mode enabled");
             } else {
@@ -239,7 +240,7 @@ public final class GameEngine extends Properties {
     private void processRules() {
 
         // Foreach rule : Rules
-        for (IGameRule rule : getGameContext().getRules().values()) {
+        for (IGameRule rule : getGameContext().getGameRules()) {
             boolean ruleResult = GameRuleUtils.applyGameRule(getGameContext(), rule);
 
             if (ruleResult && rule.getGameRuleType().equals(GameRuleType.END_CONDITION)) {
@@ -255,22 +256,22 @@ public final class GameEngine extends Properties {
     private void processAI() {
 
         // Apply Artificial Intelligence to all elements that have AI configured
-        getGameContext().getObjectsList().forEach(go -> go.applyAI(getGameContext()));
+        getGameContext().getObjectsAsList().forEach(go -> go.applyAI(getGameContext()));
     }
 
     /**
      * Updates context state.
      */
     private void updateState() {
-        getGameContext().getObjectsList().forEach(IGameObject::update);
+        getGameContext().getObjectsAsList().forEach(IGameObject::update);
     }
 
     /**
      * Render current state.
      */
     private void render() {
-        if (GameContext.getInstance().getRenderer() != null) {
-            GameContext.getInstance().getRenderer().render();
+        if (GameContext.getInstance().getGameRenderer() != null) {
+            GameContext.getInstance().getGameRenderer().render();
         }
     }
 

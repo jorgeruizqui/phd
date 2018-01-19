@@ -10,14 +10,14 @@ import es.jor.phd.xvgdl.context.GameContext;
  * Timeout End condition.
  *
  */
-public class NoObjectsPresentGameEndCondition implements IGameEndConditionChecker {
+public class NoObjectsPresentGameEndCondition extends AGameEndCondition {
 
 
 	private static final String XML_OBJECT_NAMES = "objectNames";
 
     @Override
-    public boolean checkCondition(GameContext c, IGameEndCondition gameEndCondition) {
-        String objectNames = gameEndCondition.getGameEndConditionDefinition().getProperty(XML_OBJECT_NAMES, "");
+    public boolean checkCondition(GameContext c) {
+        String objectNames = getGameEndConditionDefinition().getProperty(XML_OBJECT_NAMES, "");
         List<String> objectList = new ArrayList<>();
 
         if (!objectNames.isEmpty()) {

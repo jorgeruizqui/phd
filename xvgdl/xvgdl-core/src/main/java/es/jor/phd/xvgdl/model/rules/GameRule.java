@@ -2,6 +2,7 @@ package es.jor.phd.xvgdl.model.rules;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Game Rule
@@ -24,7 +25,7 @@ public class GameRule implements IGameRule {
      * Constructor.
      */
     public GameRule() {
-        ruleActions = new ArrayList<IGameRuleAction>();
+        ruleActions = new ArrayList<>();
     }
 
     @Override
@@ -65,6 +66,17 @@ public class GameRule implements IGameRule {
     public IGameRuleAction getRuleActionByName(String objectName) {
         return ruleActions.stream().filter(s -> s.getObjectName().equalsIgnoreCase(objectName)).findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public void evolution() {
+        ruleActions.stream().forEach(this::evolveRuleAction);
+    }
+
+    private void evolveRuleAction(IGameRuleAction gameRuleAction) {
+    	if (ThreadLocalRandom.current().nextDouble() >= 0.95d) {
+    		GameRuleUtils.evolutionOfRuleAction(gameRuleAction);
+    	}
     }
 
 }

@@ -2,9 +2,7 @@ package es.jor.phd.xvgdl.context.xml;
 
 import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.util.log.ELogger;
-import es.jor.phd.xvgdl.model.endcondition.GameEndCondition;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
-import es.jor.phd.xvgdl.model.endcondition.IGameEndConditionChecker;
 import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
@@ -33,19 +31,16 @@ public class GameEndConditionDefinition extends Properties {
      */
     public static IGameEndCondition convert(GameEndConditionDefinition endConditionDefinition) {
 
-        GameEndCondition gameEndCondition = null;
+    	IGameEndCondition gameEndCondition = null;
 
         try {
-            gameEndCondition = new GameEndCondition();
-
-            IGameEndConditionChecker gameEndConditionChecker = (IGameEndConditionChecker) Class.forName(
+        	gameEndCondition = (IGameEndCondition) Class.forName(
                     endConditionDefinition.getProperty(XMLATTR_CHECKER_CLASS)).newInstance();
-            gameEndCondition.setGameEndConditionChecker(gameEndConditionChecker);
             gameEndCondition.setGameEndConditionDefinition(endConditionDefinition);
 
         } catch (Exception e) {
             ELogger.error(GameEndConditionDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                    "Exception converting GameEventDefinition to GameEvent: " + e.getMessage(), e);
+                    "Exception converting GameEndConditionDefinition to IGameEndCondition: " + e.getMessage(), e);
             gameEndCondition = null;
         }
 

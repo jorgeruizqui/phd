@@ -53,11 +53,11 @@ public class BasicAsciiRenderer implements IGameRenderer {
 
         // 2.2 Render the game screen.
 
-        char[] arraySlash = new char[this.gameContext.getMap().getSizeX()];
+        char[] arraySlash = new char[this.gameContext.getGameMap().getSizeX()];
         Arrays.fill(arraySlash, 0, arraySlash.length, '-');
         System.out.println(arraySlash);
 
-        char[][] array = new char[this.gameContext.getMap().getSizeX()][this.gameContext.getMap().getSizeY()];
+        char[][] array = new char[this.gameContext.getGameMap().getSizeX()][this.gameContext.getGameMap().getSizeY()];
 
         // 2.2.1 Render Map Walls
         // 2.2.2 Render Map Items
@@ -68,13 +68,13 @@ public class BasicAsciiRenderer implements IGameRenderer {
             for (int j = 0; j < array[i].length; j++) {
                 IGameObject gameObject = this.gameContext.getObjectAt(i, j, 0);
                 if (gameObject != null) {
-                    array[i][j] = gameObject.getName().toString().charAt(0);
+                    array[i][j] = gameObject.getName().charAt(0);
                 } else {
                     array[i][j] = ' ';
                 }
             }
         }
-        array[gp.getX()][gp.getY()] = gp.getName().toString().charAt(0);
+        array[gp.getX()][gp.getY()] = gp.getName().charAt(0);
 
         // Print the array in reverse order
         for (int i = array.length - 1; i >= 0; i--) {
