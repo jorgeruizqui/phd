@@ -30,6 +30,7 @@ public class BasicAsciiRenderer implements IGameRenderer {
 
     @Override
     public void render() {
+    	/*
 
         if (SystemUtils.IS_OS_WINDOWS) {
             try {
@@ -68,7 +69,11 @@ public class BasicAsciiRenderer implements IGameRenderer {
             for (int j = 0; j < array[i].length; j++) {
                 IGameObject gameObject = this.gameContext.getObjectAt(i, j, 0);
                 if (gameObject != null) {
-                    array[i][j] = gameObject.getName().charAt(0);
+                	if (gameObject.getObjectType().equals(GameObjectType.WALL)) {
+                        array[i][j] = '#';
+                	} else {
+                		array[i][j] = gameObject.getName().charAt(0);
+                	}
                 } else {
                     array[i][j] = ' ';
                 }
@@ -83,7 +88,7 @@ public class BasicAsciiRenderer implements IGameRenderer {
 
         // Print latest row with slashes
         System.out.println(arraySlash);
-
+*/
     }
 
 }

@@ -38,6 +38,8 @@
     <events>
         <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
             objectName="cherry" timer="5000" />
+        <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
+            objectName="ghost" timer="50000" />
     </events>
 
     <!-- Defining rules. Events consecuences -->

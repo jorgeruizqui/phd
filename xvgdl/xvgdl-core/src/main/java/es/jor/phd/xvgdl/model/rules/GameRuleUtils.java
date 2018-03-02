@@ -35,7 +35,7 @@ public final class GameRuleUtils {
 	public static boolean applyGameRule(GameContext gameContext, IGameRule gameRule) {
 
 		boolean rto = true;
-		if (GameRuleType.COLLISION.equals(gameRule.getGameRuleType())) {
+		if (GameRuleType.COLLISION.equals(gameRule.getType())) {
 			// Take rule actions and see objects involved in the rule
 			List<String> objectNames = gameRule.getRuleActions().stream().map(IGameRuleAction::getObjectName)
 					.collect(Collectors.toList());
@@ -49,7 +49,7 @@ public final class GameRuleUtils {
 						if (object1.getX() == object2.getX() && object1.getY() == object2.getY()
 								&& object1.getZ() == object2.getZ()) {
 							ELogger.debug(GameRuleUtils.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-									"Collision Rule " + gameRule.getRuleName() + " satisfied for two objects ["
+									"Collision Rule " + gameRule.getName() + " satisfied for two objects ["
 											+ object1.getId() + ", " + object2.getId() + "]");
 
 							GameRuleUtils.executeResult(gameContext, object1,
@@ -62,11 +62,11 @@ public final class GameRuleUtils {
 				}
 			} else {
 				ELogger.error(GameRuleUtils.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-						"Error applying Collision Rule " + gameRule.getRuleName()
+						"Error applying Collision Rule " + gameRule.getName()
 								+ ". Two Action objects must be specified for this kind of rules.");
 				rto = false;
 			}
-		} else if (GameRuleType.END_CONDITION.equals(gameRule.getGameRuleType())) {
+		} else if (GameRuleType.END_CONDITION.equals(gameRule.getType())) {
 
 		}
 

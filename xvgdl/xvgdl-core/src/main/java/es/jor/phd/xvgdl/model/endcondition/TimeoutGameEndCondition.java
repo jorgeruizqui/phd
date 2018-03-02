@@ -1,7 +1,5 @@
 package es.jor.phd.xvgdl.model.endcondition;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import es.jor.phd.xvgdl.context.GameContext;
 
 /**

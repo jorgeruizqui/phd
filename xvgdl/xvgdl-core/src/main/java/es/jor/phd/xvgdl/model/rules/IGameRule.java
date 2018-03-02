@@ -14,13 +14,13 @@ public interface IGameRule {
      *
      * @return Rule Name
      */
-    String getRuleName();
+    String getName();
 
     /**
      *
      * @return Game Rule Type
      */
-    GameRuleType getGameRuleType();
+    GameRuleType getType();
 
     /**
      *

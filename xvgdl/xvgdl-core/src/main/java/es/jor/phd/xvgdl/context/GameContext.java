@@ -39,7 +39,7 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-public final class GameContext extends Context {
+public final class GameContext extends Context implements Comparable<GameContext>{
 
 	/** Renderer configuration key. */
 	private static final String RENDERER_CONFIGURATION = "rendererConfiguration";
@@ -98,6 +98,10 @@ public final class GameContext extends Context {
 
 	/** Singleton instance. */
 	private static GameContext instance;
+
+	/** Game Context Fitness function score. */
+	@Setter
+	private Double fitnessScore = 0.0d;
 
 	/**
 	 * Constructor.
@@ -404,4 +408,10 @@ public final class GameContext extends Context {
 	public long getTimePlayed() {
 		return getEndTime() - getStartTime();
 	}
+
+	@Override
+	public int compareTo(GameContext o) {
+		return getFitnessScore().compareTo(o.getFitnessScore());
+	}
+
 }

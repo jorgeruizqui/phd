@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import lombok.Data;
+
 /**
  * Game Rule
  *
  * @author jrquinones
  *
  */
+@Data
 public class GameRule implements IGameRule {
 
     /** Game Rule Name. */
@@ -19,47 +22,11 @@ public class GameRule implements IGameRule {
     private GameRuleType type;
 
     /** Rule Actions. */
-    private List<IGameRuleAction> ruleActions;
-
-    /**
-     * Constructor.
-     */
-    public GameRule() {
-        ruleActions = new ArrayList<>();
-    }
-
-    @Override
-    public String getRuleName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(GameRuleType type) {
-        this.type = type;
-    }
-
-    @Override
-    public GameRuleType getGameRuleType() {
-        return type;
-    }
+    private List<IGameRuleAction> ruleActions = new ArrayList<>();
 
     @Override
     public void addRuleAction(IGameRuleAction action) {
         this.ruleActions.add(action);
-    }
-
-    @Override
-    public List<IGameRuleAction> getRuleActions() {
-        return this.ruleActions;
     }
 
     @Override

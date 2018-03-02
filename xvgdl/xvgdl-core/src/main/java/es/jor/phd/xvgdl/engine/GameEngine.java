@@ -87,7 +87,7 @@ public final class GameEngine extends Properties {
                 GameContext.createGameContext(gc, getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
 
-            addKeyListener();
+            // addKeyListener();
 
         } catch (PropertiesParseException e) {
             ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception parsing properties",
@@ -243,7 +243,7 @@ public final class GameEngine extends Properties {
         for (IGameRule rule : getGameContext().getGameRules()) {
             boolean ruleResult = GameRuleUtils.applyGameRule(getGameContext(), rule);
 
-            if (ruleResult && rule.getGameRuleType().equals(GameRuleType.END_CONDITION)) {
+            if (ruleResult && rule.getType().equals(GameRuleType.END_CONDITION)) {
                 this.gameFinished = true;
             }
         }
