@@ -85,9 +85,7 @@ public final class GameRuleUtils {
 	public static void executeResult(GameContext gameContext, IGameObject gameObject, IGameRuleAction gameRuleAction) {
 		if (gameRuleAction != null) {
 			if (GameRuleResultType.TELETRANSPORT.equals(gameRuleAction.getResultType())) {
-				Random r = new Random();
-				gameObject.moveTo(r.nextInt(gameContext.getGameMap().getSizeX()),
-						r.nextInt(gameContext.getGameMap().getSizeY()), 0);
+				applyTeletransportRuleResult(gameContext, gameObject, gameRuleAction);
 			} else if (GameRuleResultType.DISAPPEAR.equals(gameRuleAction.getResultType())) {
 				gameContext.removeGameObject(gameObject);
 			} else if (GameRuleResultType.CANT_MOVE.equals(gameRuleAction.getResultType())) {
@@ -95,7 +93,7 @@ public final class GameRuleUtils {
 			} else if (GameRuleResultType.BOUNCE.equals(gameRuleAction.getResultType())) {
 			} else if (GameRuleResultType.DUPLICATE.equals(gameRuleAction.getResultType())) {
 			} else if (GameRuleResultType.FREEZE.equals(gameRuleAction.getResultType())) {
-				GameEngine.getInstance().freezeObject(gameObject, gameRuleAction.getValue().longValue());
+				GameEngine.getInstance().freezeObject(gameObject, gameRuleAction.getValueAsLong());
 			} else if (GameRuleResultType.LIVES_DOWN.equals(gameRuleAction.getResultType())) {
 				gameContext.getCurrentGamePlayer().livesDown();
 			} else if (GameRuleResultType.LIVES_RESET.equals(gameRuleAction.getResultType())) {
@@ -103,17 +101,38 @@ public final class GameRuleUtils {
 			} else if (GameRuleResultType.LIVES_UP.equals(gameRuleAction.getResultType())) {
 				gameContext.getCurrentGamePlayer().livesUp();
 			} else if (GameRuleResultType.SCORE_DOWN.equals(gameRuleAction.getResultType())) {
-				gameContext.getCurrentGamePlayer().scoreDown(gameRuleAction.getValue().intValue());
+				gameContext.getCurrentGamePlayer().scoreDown(gameRuleAction.getValueAsLong());
 			} else if (GameRuleResultType.SCORE_RESET.equals(gameRuleAction.getResultType())) {
 				gameContext.getCurrentGamePlayer().scoreSetTo(0);
 			} else if (GameRuleResultType.SCORE_SET_TO.equals(gameRuleAction.getResultType())) {
-				gameContext.getCurrentGamePlayer().scoreSetTo(gameRuleAction.getValue().intValue());
+				gameContext.getCurrentGamePlayer().scoreSetTo(gameRuleAction.getValueAsLong());
 			} else if (GameRuleResultType.SCORE_UP.equals(gameRuleAction.getResultType())) {
-				gameContext.getCurrentGamePlayer().scoreUp(gameRuleAction.getValue().intValue());
+				gameContext.getCurrentGamePlayer().scoreUp(gameRuleAction.getValueAsLong());
 			} else if (GameRuleResultType.TIME_DOWN.equals(gameRuleAction.getResultType())) {
 			} else if (GameRuleResultType.TIME_RESET.equals(gameRuleAction.getResultType())) {
 			} else if (GameRuleResultType.TIME_UP.equals(gameRuleAction.getResultType())) {
 			} else if (GameRuleResultType.TRANSFORM.equals(gameRuleAction.getResultType())) {
+			}
+		}
+	}
+
+	private static void applyTeletransportRuleResult(GameContext gameContext, IGameObject gameObject,
+			IGameRuleAction gameRuleAction) {
+		String value = gameRuleAction.getValue();
+		if (value == null || value.isEmpty()) {
+			Random r = new Random();
+			gameObject.moveTo(r.nextInt(gameContext.getGameMap().getSizeX()),
+					r.nextInt(gameContext.getGameMap().getSizeY()), 0);
+		} else {
+			List<IGameObject> objects = GameEngine.getInstance().getGameContext().getObjectsListByName(value);
+			if (objects != null && !objects.isEmpty()) {
+				IGameObject objectReferenced = objects.get(0);
+				gameObject.moveTo(objectReferenced.getX(), objectReferenced.getY(), objectReferenced.getZ());
+			} else {
+				// allows format "x,y,z"
+				String[] position = value.split(",");
+				gameObject.moveTo(Integer.parseInt(position[0]), Integer.parseInt(position[1]),
+						Integer.parseInt(position[2]));
 			}
 		}
 	}

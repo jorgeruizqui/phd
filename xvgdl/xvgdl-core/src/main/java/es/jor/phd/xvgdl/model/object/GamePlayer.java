@@ -49,7 +49,7 @@ public class GamePlayer extends GameObject {
 	 * Set score to a concrete value
 	 * @param score
 	 */
-	public void scoreSetTo(int score) {
+	public void scoreSetTo(double score) {
 		this.score = score;
 	}
 
@@ -57,7 +57,7 @@ public class GamePlayer extends GameObject {
 	 * Scores up
 	 * @param score
 	 */
-	public void scoreUp(int score) {
+	public void scoreUp(double score) {
 		this.score += score;
 	}
 
@@ -65,7 +65,7 @@ public class GamePlayer extends GameObject {
 	 * Scores down
 	 * @param score
 	 */
-	public void scoreDown(int score) {
+	public void scoreDown(double score) {
 		this.score -= score;
 	}
 

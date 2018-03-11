@@ -2,7 +2,6 @@ package es.jor.phd.xvgdl.renderer;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.lang3.SystemUtils;
 
@@ -30,7 +29,6 @@ public class BasicAsciiRenderer implements IGameRenderer {
 
     @Override
     public void render() {
-    	/*
 
         if (SystemUtils.IS_OS_WINDOWS) {
             try {
@@ -88,7 +86,6 @@ public class BasicAsciiRenderer implements IGameRenderer {
 
         // Print latest row with slashes
         System.out.println(arraySlash);
-*/
     }
 
 }

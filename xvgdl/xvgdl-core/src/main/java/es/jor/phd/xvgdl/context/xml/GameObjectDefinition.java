@@ -76,15 +76,13 @@ public class GameObjectDefinition extends Properties {
             gameObject.setInstance(instance);
             gameObject.setDynamic(objectDefinition.getBooleanValue(XMLATTR_DYNAMIC, false));
             gameObject.setVolatile(objectDefinition.getBooleanValue(XMLATTR_VOLATILE, false));
-            gameObject.setX(objectDefinition.getIntegerValue(XMLATTR_POSITION_X, 0));
-            gameObject.setY(objectDefinition.getIntegerValue(XMLATTR_POSITION_Y, 0));
-            gameObject.setZ(objectDefinition.getIntegerValue(XMLATTR_POSITION_Z, 0));
+			gameObject.setPosition(objectDefinition.getIntegerValue(XMLATTR_POSITION_X, 0),
+					objectDefinition.getIntegerValue(XMLATTR_POSITION_Y, 0),
+					objectDefinition.getIntegerValue(XMLATTR_POSITION_Z, 0));
             gameObject.setSizeX(objectDefinition.getIntegerValue(XMLATTR_SIZE_X, 0));
             gameObject.setSizeY(objectDefinition.getIntegerValue(XMLATTR_SIZE_Y, 0));
             gameObject.setSizeZ(objectDefinition.getIntegerValue(XMLATTR_SIZE_Z, 0));
-            gameObject.setIntendedX(gameObject.getX());
-            gameObject.setIntendedY(gameObject.getY());
-            gameObject.setIntendedZ(gameObject.getZ());
+            gameObject.setIntendedPosition(gameObject.getX(), gameObject.getY(), gameObject.getZ());
             gameObject.setObjectType(GameObjectType.fromString(objectDefinition.getProperty(XMLATTR_TYPE)));
 
             if (objectDefinition.getProperty(XMLATTR_AI) != null

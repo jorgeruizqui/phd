@@ -3,6 +3,7 @@ package es.jor.phd.xvgdl.model.object;
 import java.util.Random;
 
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.model.location.Position;
 import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,18 +24,12 @@ public class GameObject implements IGameObject {
     private String name;
     /** Instance. */
     private int instance;
-    /** x position. */
-    private int x;
-    /** y position. */
-    private int y;
-    /** z position. */
-    private int z;
-    /** x intended position. */
-    private int intendedX;
-    /** y intended position. */
-    private int intendedY;
-    /** z intended position. */
-    private int intendedZ;
+    /** Position. */
+    @Setter(lombok.AccessLevel.NONE)
+    private Position position  = new Position(0, 0, 0);;
+    /** Intended position. */
+    @Setter(lombok.AccessLevel.NONE)
+    private Position intendedPosition = new Position(0, 0, 0);
     /** Size x . */
     private int sizeX;
     /** Size y. */
@@ -67,21 +62,20 @@ public class GameObject implements IGameObject {
         return getName() + "-" + getInstance();
     }
 
-
     @Override
     public void moveTo(int x, int y, int z) {
     	if (!isFrozen()) {
-	        setIntendedX(x);
-	        setIntendedY(y);
-	        setIntendedZ(z);
+    		intendedPosition.setX(x);
+    		intendedPosition.setY(y);
+    		intendedPosition.setZ(z);
     	}
     }
 
     @Override
     public void resetMove() {
-        setIntendedX(getX());
-        setIntendedY(getY());
-        setIntendedZ(getZ());
+		intendedPosition.setX(getPosition().getX());
+		intendedPosition.setY(getPosition().getY());
+		intendedPosition.setZ(getPosition().getZ());
     }
 
     @Override
@@ -91,12 +85,40 @@ public class GameObject implements IGameObject {
         }
     }
 
+    public void setPosition(int x, int y, int z) {
+    	position.setX(x);
+    	position.setY(y);
+    	position.setZ(z);
+    }
+
+    @Override
+    public int getX() {
+    	return position.getX();
+    }
+
+    @Override
+    public int getY() {
+    	return position.getY();
+    }
+
+    @Override
+    public int getZ() {
+    	return position.getZ();
+    }
+
+    public void setIntendedPosition(int x, int y, int z) {
+    	intendedPosition.setX(x);
+    	intendedPosition.setY(y);
+    	intendedPosition.setZ(z);
+    }
+
     @Override
     public void update() {
-    	setX(getIntendedX());
-    	setY(getIntendedY());
-    	setZ(getIntendedZ());
+    	setX(getIntendedPosition().getX());
+    	setY(getIntendedPosition().getY());
+    	setZ(getIntendedPosition().getZ());
     }
+
 
     @Override
     public GameObject copy() {
@@ -109,13 +131,11 @@ public class GameObject implements IGameObject {
         }
         cloned.setDynamic(isDynamic());
         cloned.setInstance((new Random()).nextInt());
-        cloned.setIntendedX(getIntendedX());
+        cloned.setIntendedPosition(getIntendedPosition().getX(), getIntendedPosition().getY(), getIntendedPosition().getZ());
         cloned.setFrozen(false);
-        cloned.setIntendedY(getIntendedY());
-        cloned.setIntendedZ(getIntendedZ());
-        cloned.setX(getX());
-        cloned.setY(getY());
-        cloned.setZ(getZ());
+        cloned.setX(getPosition().getX());
+        cloned.setY(getPosition().getY());
+        cloned.setZ(getPosition().getZ());
         cloned.setName(getName());
         cloned.setSizeX(getSizeX());
         cloned.setSizeY(getSizeY());
@@ -125,5 +145,15 @@ public class GameObject implements IGameObject {
         return cloned;
     }
 
+    private void setX(int x) {
+    	position.setX(x);
+    }
 
+    private void setY(int y) {
+    	position.setY(y);
+    }
+
+    private void setZ(int z) {
+    	position.setZ(z);
+    }
 }

@@ -24,6 +24,18 @@ public interface IGameRuleAction {
      *
      * @return Result Value
      */
-    Double getValue();
+    String getValue();
+
+    /**
+     *
+     * @return Value as long. Default 0
+     */
+    Long getValueAsLong();
+
+    /**
+    *
+    * @return Value as Double. Default 0
+    */
+    Double getValueAsDouble();
 
 }

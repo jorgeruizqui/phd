@@ -1,6 +1,5 @@
 package es.jor.phd.xvgdl.model.object.ai;
 
-import es.indra.eplatform.filter.ObjectTypeFilter;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.IGameObject;
@@ -29,7 +28,7 @@ public class PlayerChaserAI implements IGameObjectAI {
                 newX = object.getX() - 1;
                 moved = true;
             }
-        } 
+        }
 
         int newY = object.getY();
         if (!moved) {
@@ -41,13 +40,13 @@ public class PlayerChaserAI implements IGameObjectAI {
                 if (canMove(gameContext, object.getX(), object.getY() - 1, object.getZ())) {
                     newY = object.getY() - 1;
                 }
-            } 
+            }
         }
 
         object.moveTo(newX, newY, 0);
 
     }
-    
+
     /**
      * Check if an object can move to a concrete square
      * @param gc

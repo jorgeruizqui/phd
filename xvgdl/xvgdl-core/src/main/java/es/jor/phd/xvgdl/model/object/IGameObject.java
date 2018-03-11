@@ -1,6 +1,7 @@
 package es.jor.phd.xvgdl.model.object;
 
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.model.location.Position;
 
 /**
  * Game Object basic interface
@@ -30,39 +31,30 @@ public interface IGameObject {
 
     /**
      *
-     * @return X position
+     * @return position
+     */
+    Position getPosition();
+
+    /**
+     * @return the X position
      */
     int getX();
 
     /**
-     *
-     * @return Y position
+     * @return the Y position
      */
     int getY();
 
     /**
-     *
-     * @return Z position
+     * @return the Z position
      */
     int getZ();
 
     /**
      *
-     * @return X intended position
+     * @return intended position
      */
-    int getIntendedX();
-
-    /**
-     *
-     * @return Y intended position
-     */
-    int getIntendedY();
-
-    /**
-     *
-     * @return Z intended position
-     */
-    int getIntendedZ();
+    Position getIntendedPosition();
 
     /**
      *

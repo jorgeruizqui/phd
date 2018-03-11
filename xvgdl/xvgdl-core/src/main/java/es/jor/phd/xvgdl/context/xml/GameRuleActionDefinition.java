@@ -46,7 +46,7 @@ public class GameRuleActionDefinition extends Properties {
             gameRuleAction.setObjectName(ruleActionDefinition.getProperty(XMLATTR_OBJECT_NAME));
             gameRuleAction
                     .setResultType(GameRuleResultType.fromString(ruleActionDefinition.getProperty(XMLATTR_RESULT)));
-            gameRuleAction.setValue(ruleActionDefinition.getDoubleValue(XMLATTR_VALUE, 0.0d));
+            gameRuleAction.setValue(ruleActionDefinition.getProperty(XMLATTR_VALUE));
 
         } catch (Exception e) {
             ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,

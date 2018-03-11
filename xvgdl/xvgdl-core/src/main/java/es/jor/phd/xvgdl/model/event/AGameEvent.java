@@ -35,7 +35,7 @@ public abstract class AGameEvent implements IGameEvent {
     @Override
     public void executeEvent() {
         setTimeStamp(System.currentTimeMillis());
-        executor.executeEvent(this, GameContext.getInstance());;
+        executor.executeEvent(this, GameContext.getInstance());
     }
 
     /**

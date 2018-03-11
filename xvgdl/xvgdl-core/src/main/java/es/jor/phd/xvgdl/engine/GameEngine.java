@@ -87,7 +87,7 @@ public final class GameEngine extends Properties {
                 GameContext.createGameContext(gc, getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
 
-            // addKeyListener();
+            addKeyListener();
 
         } catch (PropertiesParseException e) {
             ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception parsing properties",

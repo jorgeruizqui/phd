@@ -38,6 +38,8 @@ public enum GameRuleResultType {
     DUPLICATE,
     /** Teletransport. */
     TELETRANSPORT,
+    /** Change object moving direction. */
+    CHANGE_DIRECTION,
     /** Freeze. */
     FREEZE,
     /** Transform. */

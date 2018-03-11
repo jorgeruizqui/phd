@@ -27,10 +27,8 @@ public final class GameEventUtils {
         long eventTimer = event.getTimer();
         long currentTime = System.currentTimeMillis();
         boolean executeEvent = true;
-        if (eventTimer > 0) {
-            if (currentTime - lastEventExecutionTime < eventTimer) {
-                executeEvent = false;
-            }
+        if (eventTimer > 0 && (currentTime - lastEventExecutionTime < eventTimer)) {
+        	executeEvent = false;
         }
         if (executeEvent) {
             ELogger.debug(GameEventUtils.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
