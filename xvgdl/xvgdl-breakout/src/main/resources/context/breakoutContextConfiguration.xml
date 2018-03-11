@@ -15,29 +15,27 @@
             <contextProperty id="hiScore" />
         </component>
 
-        <component id="gameInfoDown" location="DOWN">
+        <component id="gameInfoDown" location="BOTTOM">
             <contextProperty id="lives" />
-            <contextProperty id="playerItems" />
         </component>
     </layout>
 
     <!-- Map Definition -->
-    <map type="2D" sizeX="25" sizeY="30" toroidal="false"
-        generator="es.jor.phd.xvgdl.model.map.GameMapGenerator">
+    <map type="2D" sizeX="55" sizeY="90" toroidal="false"
+    	file="/context/breakoutmap.txt">
     </map>
 
     <!-- Players Definition -->
     <players number="1" maxNumber="1" minNumber="1">
-        <player name="pacman" score="0" lives="3" livePercentage="100" ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaseNearestItemAI"/>
+        <player name="platform" score="0" lives="3" sizeX="10" sizeY="1"/>
     </players>
     <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles,
         structures, collectibles, etc... -->
     <objects>
-        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" instances="10" />
-        <object name="ghost" type="enemy" dynamic="true" volatile="true" size="1,1" instances="4" ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaserAI" />
-        <object name="smallDot" type="item" dynamic="true" volatile="true" size="1,1" instances="2" />
-        <object name="bigDot" type="item" dynamic="true" volatile="true" size="1,1" instances="2" />
-        <object name="cherry" type="item" dynamic="true" volatile="true" size="1,1" instances="1" />
+        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" />
+        <object name="brick" type="enemy" dynamic="false" volatile="true" sizeX="1" sizeY="1"  />
+        <object name="goal" type="item" dynamic="false" volatile="true" sizeX="1" sizeY="1"  />
+        <object name="missile" type="projectile" dynamic="true" volatile="false" sizeX="1" sizeY="1"  />
     </objects>
 
     <!-- Defining Game physics. Movements and collisions Define set of possible
@@ -52,58 +50,41 @@
         (not before X milliseconds) or a random value to be executed -->
     <events>
         <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
-            objectName="cherry" timer="5000" />
-        <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
-            objectName="ghost" timer="1000" />
+            objectName="brick" timer="15000" />
     </events>
 
-    <!-- Defining rules. Events consecuences -->
+    <!-- Defining rules. Events consequences -->
     <rules>
-    	<!-- Rule for object collision with wall -->
-<!--     	<rule name="wallCollision" type="collision"> -->
-<!--             <ruleAction objectName="pacman" result="cantMove"/> -->
-<!--             <ruleAction objectName="wall" result="cantMove"/> -->
-<!--         </rule> -->
 
-        <!-- Rule for pacman eating small dots Esto tiene buena pinta. Se
-            cargan las reglas, tienen un tipo (collision/proximidad/distancia) y un valor.
-            Cada regla tiene un array de elementos por nombre de objecto Se cogerá de
-            cada regla la lista de elementos de cada cosa. En función del tipo de regla,
-            se comprueba si las NxM combinaciones se cumple la regla y en ese caso, A
-            cada objeto se le aplica el resultado. -->
-        <rule name="eatSmallDot" type="collision">
-            <ruleAction objectName="pacman" result="scoreUp"
-                value="100" />
-            <ruleAction objectName="smallDot" result="disappear" />
+        <!-- Rules for missile hitting bricks -->
+        <rule name="missileHitsBrick" type="collision">
+            <ruleAction objectName="missile" result="scoreUp" value="100" />
+            <ruleAction objectName="brick" result="disappear" />
         </rule>
-        <rule name="eatBigDot" type="collision">
-            <ruleAction objectName="pacman" result="scoreUp"
-                value="300" />
-            <ruleAction objectName="bigDot" result="disappear" />
-        </rule>
-        <rule name="eatCherry" type="collision">
-            <ruleAction objectName="pacman" result="scoreUp"
-                value="500" />
-            <ruleAction objectName="cherry" result="disappear" />
-        </rule>
-        <rule name="ghostCatchPacman" type="collision">
-            <ruleAction objectName="pacman" result="teletransport" />
-            <ruleAction objectName="ghost" result="disappear" />
-        </rule>
-        <!-- Rule for pacman eating big dots -->
-        <!-- <rule id="eatBigDot" type="eventual"> -->
-        <!-- <objectRef id="pacman" action="scoreUp,500" /> -->
-        <!-- <objectRef id="bigDot" action="disappear" /> -->
-        <!-- </rule> -->
 
-        <!-- Rule for pacman eating all dots -->
-        <!-- <rule id="dotsCounter" type="permanent"> -->
-        <!-- <action condition="0" consequence="????" /> -->
-        <!-- </rule> -->
+        <!-- Rules for missile hitting walls -->
+        <rule name="missileHitsWall" type="collision">
+            <ruleAction objectName="missile" result="changeDirection" value="random" />
+            <ruleAction objectName="wall" result="" />
+        </rule>
+
+        <!-- Rules for missile hitting walls -->
+        <rule name="missileHitsPlatform" type="collision">
+            <ruleAction objectName="missile" result="changeDirection" value="invert" />
+            <ruleAction objectName="platform" result="" />
+        </rule>
+
+        <!-- Rules for missile hitting walls -->
+        <rule name="missileHitsGoal" type="collision">
+            <ruleAction objectName="missile" result="teletransport" value="platform" />
+            <ruleAction objectName="platform" result="" />
+        </rule>
 
     </rules>
     <!-- Game End Conditions -->
     <endConditions>
         <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition" property="timeout" value="0"/>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" objectNames="brick" />
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
     </endConditions>
 </gameDefinition>
