@@ -1,5 +1,7 @@
 package es.jor.phd.xvgdl.context.xml;
 
+import org.apache.commons.lang3.StringUtils;
+
 import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.util.IIdentificableObject;
 import es.indra.eplatform.util.log.ELogger;
@@ -39,6 +41,9 @@ public class GameMapDefinition extends Properties implements IIdentificableObjec
     /** XML Attribute. Generator. */
     public static final String XMLATTR_GENERATOR = "generator";
 
+    /** XML Attribute. File . */
+    public static final String XMLATTR_FILE = "file";
+
     @Override
     public String getId() {
         return getProperty(XMLATTR_TYPE);
@@ -60,12 +65,17 @@ public class GameMapDefinition extends Properties implements IIdentificableObjec
             gameMap.setSizeX(definition.getIntegerValue(XMLATTR_SIZE_X, 0));
             gameMap.setSizeY(definition.getIntegerValue(XMLATTR_SIZE_Y, 0));
             gameMap.setSizeZ(definition.getIntegerValue(XMLATTR_SIZE_Z, 0));
-            gameMap.setMapGenerator((IGameMapGenerator) Class.forName(
-                    definition.getProperty(XMLATTR_GENERATOR)).newInstance());
+
+            if (StringUtils.isNotEmpty(definition.getProperty(XMLATTR_GENERATOR))) {
+	            gameMap.setMapGenerator((IGameMapGenerator) Class.forName(
+	                    definition.getProperty(XMLATTR_GENERATOR)).newInstance());
+            }
+
             gameMap.setMapRepresentation(
                     new IGameObject[gameMap.getSizeX()][gameMap.getSizeY()][gameMap.getSizeZ()]);
             gameMap.setMapType(GameMapType.fromString(definition.getProperty(XMLATTR_TYPE)));
             gameMap.setToroidal(definition.getBooleanValue(XMLATTR_TOROIDAL));
+            gameMap.setMapFile(definition.getProperty(XMLATTR_FILE, ""));
         } catch (Exception e) {
             ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
                     "Exception converting GameMapDefinition to GameMap: " + e.getMessage(), e);

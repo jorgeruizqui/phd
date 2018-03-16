@@ -8,7 +8,7 @@
 
     <!-- Map Definition. Generated randomly -->
     <map type="2D" sizeX="25" sizeY="30" toroidal="false"
-        generator="es.jor.phd.xvgdl.model.map.GameMapGenerator">
+        generator="es.jor.phd.xvgdl.model.map.RandomLocationGameMapGenerator">
     </map>
 
     <!-- Players Definition -->

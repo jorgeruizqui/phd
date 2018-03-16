@@ -138,6 +138,12 @@ public interface IGameObject {
      */
     boolean isFrozen();
 
+    /**
+     *
+     * @return <code>true</code> if object is located anywhere in map (coordintes 0 or bigger)
+     */
+	boolean isLocatedAnyWhereInMap();
+
 
 
 }

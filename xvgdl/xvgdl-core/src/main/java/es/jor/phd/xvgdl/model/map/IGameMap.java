@@ -1,5 +1,7 @@
 package es.jor.phd.xvgdl.model.map;
 
+import java.util.List;
+
 import es.jor.phd.xvgdl.model.object.IGameObject;
 
 /**
@@ -50,10 +52,22 @@ public interface IGameMap {
     IGameMapGenerator getMapGenerator();
 
     /**
+     *
+     * @return Map File name
+     */
+    String getMapFile();
+
+    /**
      * Resize Map to new values.
      * @param x X Size
      * @param y Y Size
      * @param z Z Size
      */
     void resize(int x, int y, int z);
+
+    /**
+     * Generates map representation.
+     * @param objectList Object list
+     */
+    void generateMap(List<IGameObject> objectList);
 }
