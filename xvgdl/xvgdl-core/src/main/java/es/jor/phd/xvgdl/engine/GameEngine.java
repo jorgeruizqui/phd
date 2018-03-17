@@ -12,6 +12,7 @@ import org.jnativehook.NativeHookException;
 
 import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.properties.PropertiesParseException;
+import es.indra.eplatform.util.IOUtils;
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.input.KeyboardInputListener;

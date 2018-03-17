@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.SystemUtils;
 
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.engine.GameEngine;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.GamePlayer;
 import es.jor.phd.xvgdl.model.object.IGameObject;
@@ -48,7 +49,7 @@ public class BasicAsciiRenderer implements IGameRenderer {
         // 2. Rendering:
         // 2.1 Render the Top|Right|Left|bottom components
         GamePlayer gp = this.gameContext.getCurrentGamePlayer();
-        System.out.println("Player : " + gp.getName() + " - Score: " + gp.getScore() + " - Lives: " + gp.getLives());
+        System.out.println("Score: " + gp.getScore() + " - Lives: " + gp.getLives());
 
         // 2.2 Render the game screen.
 
@@ -67,11 +68,7 @@ public class BasicAsciiRenderer implements IGameRenderer {
             for (int j = 0; j < array[i].length; j++) {
                 IGameObject gameObject = this.gameContext.getObjectAt(i, j, 0);
                 if (gameObject != null) {
-                	if (gameObject.getObjectType().equals(GameObjectType.WALL)) {
-                        array[i][j] = '#';
-                	} else {
-                		array[i][j] = gameObject.getName().charAt(0);
-                	}
+                    array[i][j] = gameObject.getName().charAt(0);
                 } else {
                     array[i][j] = ' ';
                 }
@@ -86,6 +83,8 @@ public class BasicAsciiRenderer implements IGameRenderer {
 
         // Print latest row with slashes
         System.out.println(arraySlash);
+        System.out.println(
+                "Gameplay Time: " + GameEngine.getInstance().getGameContext().getTimePlayed() / 1000 + " Seg.");
     }
 
 }
