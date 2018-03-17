@@ -28,7 +28,7 @@ public class GameObject implements IGameObject {
     private int instance;
     /** Position. */
     @Setter(lombok.AccessLevel.NONE)
-    private Position position  = new Position(-1, -1, -1);
+    private Position position = new Position(-1, -1, -1);
     /** Intended position. */
     @Setter(lombok.AccessLevel.NONE)
     private Position intendedPosition = new Position(-1, -1, -1);
@@ -66,18 +66,18 @@ public class GameObject implements IGameObject {
 
     @Override
     public void moveTo(int x, int y, int z) {
-    	if (!isFrozen()) {
-    		intendedPosition.setX(x);
-    		intendedPosition.setY(y);
-    		intendedPosition.setZ(z);
-    	}
+        if (!isFrozen()) {
+            intendedPosition.setX(x);
+            intendedPosition.setY(y);
+            intendedPosition.setZ(z);
+        }
     }
 
     @Override
     public void resetMove() {
-		intendedPosition.setX(getPosition().getX());
-		intendedPosition.setY(getPosition().getY());
-		intendedPosition.setZ(getPosition().getZ());
+        intendedPosition.setX(getPosition().getX());
+        intendedPosition.setY(getPosition().getY());
+        intendedPosition.setZ(getPosition().getZ());
     }
 
     @Override
@@ -88,39 +88,38 @@ public class GameObject implements IGameObject {
     }
 
     public void setPosition(int x, int y, int z) {
-    	position.setX(x);
-    	position.setY(y);
-    	position.setZ(z);
+        position.setX(x);
+        position.setY(y);
+        position.setZ(z);
     }
 
     @Override
     public int getX() {
-    	return position.getX();
+        return position.getX();
     }
 
     @Override
     public int getY() {
-    	return position.getY();
+        return position.getY();
     }
 
     @Override
     public int getZ() {
-    	return position.getZ();
+        return position.getZ();
     }
 
     public void setIntendedPosition(int x, int y, int z) {
-    	intendedPosition.setX(x);
-    	intendedPosition.setY(y);
-    	intendedPosition.setZ(z);
+        intendedPosition.setX(x);
+        intendedPosition.setY(y);
+        intendedPosition.setZ(z);
     }
 
     @Override
     public void update() {
-    	setX(getIntendedPosition().getX());
-    	setY(getIntendedPosition().getY());
-    	setZ(getIntendedPosition().getZ());
+        setX(getIntendedPosition().getX());
+        setY(getIntendedPosition().getY());
+        setZ(getIntendedPosition().getZ());
     }
-
 
     @Override
     public GameObject copy() {
@@ -130,11 +129,12 @@ public class GameObject implements IGameObject {
                 cloned.setObjectAI(this.objectAI.getClass().newInstance());
             }
         } catch (InstantiationException | IllegalAccessException e) {
-        	ELogger.error(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception setting object class AI: ", e);
+            ELogger.error(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception setting object class AI: ", e);
         }
         cloned.setDynamic(isDynamic());
         cloned.setInstance((new Random()).nextInt());
-        cloned.setIntendedPosition(getIntendedPosition().getX(), getIntendedPosition().getY(), getIntendedPosition().getZ());
+        cloned.setIntendedPosition(getIntendedPosition().getX(), getIntendedPosition().getY(),
+                getIntendedPosition().getZ());
         cloned.setFrozen(false);
         cloned.setX(getPosition().getX());
         cloned.setY(getPosition().getY());
@@ -149,20 +149,20 @@ public class GameObject implements IGameObject {
     }
 
     private void setX(int x) {
-    	position.setX(x);
+        position.setX(x);
     }
 
     private void setY(int y) {
-    	position.setY(y);
+        position.setY(y);
     }
 
     private void setZ(int z) {
-    	position.setZ(z);
+        position.setZ(z);
     }
 
     @Override
     public boolean isLocatedAnyWhereInMap() {
-    	return (getX() >= 0 && getY() >= 0 && getZ() >= 0)
-    			|| (getIntendedPosition().getX() >= 0 && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
+        return (getX() >= 0 && getY() >= 0 && getZ() >= 0) || (getIntendedPosition().getX() >= 0
+                && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
     }
 }

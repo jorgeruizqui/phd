@@ -51,7 +51,8 @@ public class GameRendererXMLHandler extends BasicXMLHandler {
                 super.parseResource(resource);
             }
         } catch (XMLException e) {
-        	ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "XML Exception parsing renderer resource file.", e);
+            ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
+                    "XML Exception parsing renderer resource file.", e);
         }
     }
 

@@ -12,7 +12,6 @@ import org.jnativehook.NativeHookException;
 
 import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.properties.PropertiesParseException;
-import es.indra.eplatform.util.IOUtils;
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.input.KeyboardInputListener;
@@ -207,7 +206,7 @@ public final class GameEngine extends Properties {
                         "Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 if (endCondition.isWinningCondition()) {
-                	gameWinning = true;
+                    gameWinning = true;
                 }
                 getGameContext().setEndTime(System.currentTimeMillis());
                 break;
@@ -289,9 +288,10 @@ public final class GameEngine extends Properties {
 
     /**
      * If the game is won or not.
+     * 
      * @return
      */
     public boolean gameWinning() {
-    	return gameWinning;
+        return gameWinning;
     }
 }

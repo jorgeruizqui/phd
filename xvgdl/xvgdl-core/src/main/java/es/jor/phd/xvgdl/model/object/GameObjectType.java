@@ -2,6 +2,7 @@ package es.jor.phd.xvgdl.model.object;
 
 /**
  * Different kind of objects valid for a game
+ * 
  * @author jrquinones
  *
  */

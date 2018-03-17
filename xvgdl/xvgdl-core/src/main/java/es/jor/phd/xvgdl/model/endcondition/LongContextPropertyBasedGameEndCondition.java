@@ -23,7 +23,8 @@ public class LongContextPropertyBasedGameEndCondition extends AGameEndCondition 
 
             if (gameContextValue.equals(value)) {
                 rto = true;
-            } else rto = false;
+            } else
+                rto = false;
         } catch (Exception e) {
         }
         return rto;

@@ -28,45 +28,48 @@ public class GamePlayer extends GameObject {
      * Increment player lives.
      */
     public void livesUp() {
-    	this.lives++;
+        this.lives++;
     }
 
     /**
      * Decrement player lives.
      */
     public void livesDown() {
-    	this.lives--;
+        this.lives--;
     }
 
     /**
      * Reset to initial lives.
      */
-	public void liveReset() {
-		this.lives = this.initialLives;
-	}
+    public void liveReset() {
+        this.lives = this.initialLives;
+    }
 
-	/**
-	 * Set score to a concrete value
-	 * @param score
-	 */
-	public void scoreSetTo(double score) {
-		this.score = score;
-	}
+    /**
+     * Set score to a concrete value
+     * 
+     * @param score
+     */
+    public void scoreSetTo(double score) {
+        this.score = score;
+    }
 
-	/**
-	 * Scores up
-	 * @param score
-	 */
-	public void scoreUp(double score) {
-		this.score += score;
-	}
+    /**
+     * Scores up
+     * 
+     * @param score
+     */
+    public void scoreUp(double score) {
+        this.score += score;
+    }
 
-	/**
-	 * Scores down
-	 * @param score
-	 */
-	public void scoreDown(double score) {
-		this.score -= score;
-	}
+    /**
+     * Scores down
+     * 
+     * @param score
+     */
+    public void scoreDown(double score) {
+        this.score -= score;
+    }
 
 }

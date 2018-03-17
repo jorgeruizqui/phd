@@ -57,23 +57,23 @@ public class KeyboardGameEvent extends AGameEvent {
                 IGameObject player = context.getCurrentGamePlayer();
 
                 switch (kbGe.getKeyCode()) {
-                	case NativeKeyEvent.VC_LEFT:
-                		player.moveTo(player.getX() - 1, player.getY(), player.getZ());
-                		break;
-                	case NativeKeyEvent.VC_RIGHT:
-                		player.moveTo(player.getX() + 1, player.getY(), player.getZ());
-                		break;
-                	case NativeKeyEvent.VC_UP:
-                		player.moveTo(player.getX(), player.getY() + 1, player.getZ());
-                		break;
-                	case NativeKeyEvent.VC_DOWN:
-                		player.moveTo(player.getX(), player.getY() + -1, player.getZ());
-                		break;
-                	case NativeKeyEvent.VC_P:
-                		context.setGamePaused(true);
-                		break;
-                	default:
-                		break;
+                case NativeKeyEvent.VC_LEFT:
+                    player.moveTo(player.getX() - 1, player.getY(), player.getZ());
+                    break;
+                case NativeKeyEvent.VC_RIGHT:
+                    player.moveTo(player.getX() + 1, player.getY(), player.getZ());
+                    break;
+                case NativeKeyEvent.VC_UP:
+                    player.moveTo(player.getX(), player.getY() + 1, player.getZ());
+                    break;
+                case NativeKeyEvent.VC_DOWN:
+                    player.moveTo(player.getX(), player.getY() + -1, player.getZ());
+                    break;
+                case NativeKeyEvent.VC_P:
+                    context.setGamePaused(true);
+                    break;
+                default:
+                    break;
                 }
             }
         }

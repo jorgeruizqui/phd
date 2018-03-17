@@ -2,6 +2,7 @@ package es.jor.phd.xvgdl.util;
 
 /**
  * Constants
+ * 
  * @author jrquinones
  *
  */

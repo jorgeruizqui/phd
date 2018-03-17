@@ -76,9 +76,9 @@ public class GameObjectDefinition extends Properties {
             gameObject.setInstance(instance);
             gameObject.setDynamic(objectDefinition.getBooleanValue(XMLATTR_DYNAMIC, false));
             gameObject.setVolatile(objectDefinition.getBooleanValue(XMLATTR_VOLATILE, false));
-			gameObject.setPosition(objectDefinition.getIntegerValue(XMLATTR_POSITION_X, -1),
-					objectDefinition.getIntegerValue(XMLATTR_POSITION_Y, -1),
-					objectDefinition.getIntegerValue(XMLATTR_POSITION_Z, -1));
+            gameObject.setPosition(objectDefinition.getIntegerValue(XMLATTR_POSITION_X, -1),
+                    objectDefinition.getIntegerValue(XMLATTR_POSITION_Y, -1),
+                    objectDefinition.getIntegerValue(XMLATTR_POSITION_Z, -1));
             gameObject.setSizeX(objectDefinition.getIntegerValue(XMLATTR_SIZE_X, 0));
             gameObject.setSizeY(objectDefinition.getIntegerValue(XMLATTR_SIZE_Y, 0));
             gameObject.setSizeZ(objectDefinition.getIntegerValue(XMLATTR_SIZE_Z, 0));
@@ -87,7 +87,8 @@ public class GameObjectDefinition extends Properties {
 
             if (objectDefinition.getProperty(XMLATTR_AI) != null
                     && !objectDefinition.getProperty(XMLATTR_AI).trim().equals("")) {
-                gameObject.setObjectAI((IGameObjectAI) Class.forName(objectDefinition.getProperty(XMLATTR_AI)).newInstance());
+                gameObject.setObjectAI(
+                        (IGameObjectAI) Class.forName(objectDefinition.getProperty(XMLATTR_AI)).newInstance());
             }
         } catch (Exception e) {
             ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,

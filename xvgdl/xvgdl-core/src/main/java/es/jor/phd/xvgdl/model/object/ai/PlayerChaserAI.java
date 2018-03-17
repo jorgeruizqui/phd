@@ -49,6 +49,7 @@ public class PlayerChaserAI implements IGameObjectAI {
 
     /**
      * Check if an object can move to a concrete square
+     * 
      * @param gc
      * @param x
      * @param y

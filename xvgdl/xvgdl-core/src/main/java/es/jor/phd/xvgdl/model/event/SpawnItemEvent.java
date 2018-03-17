@@ -33,28 +33,28 @@ public class SpawnItemEvent extends AGameEvent {
 
     /**
      * Spawn Item executor
+     * 
      * @author Jor
      *
      */
     public class SpawnItemExecutor implements IGameEventExecutor {
 
-    	@Override
-    	public void executeEvent(IGameEvent event, GameContext context) {
-    		// Create the game object
-    		setObjectName(event.getGameEventDefinition().getStringValue(XML_OBJECT_NAME));
-    		List<IGameObject> list = context.getObjectsListByName(objectName);
-    		if (list != null && !list.isEmpty()) {
-    			IGameObject go = list.get(0);
-    			IGameObject goCloned = go.copy();
+        @Override
+        public void executeEvent(IGameEvent event, GameContext context) {
+            // Create the game object
+            setObjectName(event.getGameEventDefinition().getStringValue(XML_OBJECT_NAME));
+            List<IGameObject> list = context.getObjectsListByName(objectName);
+            if (list != null && !list.isEmpty()) {
+                IGameObject go = list.get(0);
+                IGameObject goCloned = go.copy();
 
-    			// Set the cloned object in a random situation
-    			Random r = new Random();
-    			goCloned.moveTo(r.nextInt(context.getGameMap().getSizeX()),
-    					r.nextInt(context.getGameMap().getSizeY()),
-    					0);
-    			// Add to game context
-    			context.addObject(goCloned);
-    		}
-    	}
+                // Set the cloned object in a random situation
+                Random r = new Random();
+                goCloned.moveTo(r.nextInt(context.getGameMap().getSizeX()), r.nextInt(context.getGameMap().getSizeY()),
+                        0);
+                // Add to game context
+                context.addObject(goCloned);
+            }
+        }
     }
 }

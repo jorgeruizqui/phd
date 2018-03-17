@@ -28,27 +28,34 @@
 
     <!-- Players Definition -->
     <players number="1" maxNumber="1" minNumber="1">
-        <player name="pacman" score="0" lives="3" livePercentage="100" ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaseNearestItemAI"/>
+        <player name="pacman" score="0" lives="3" livePercentage="100"
+            ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaseNearestItemAI" />
     </players>
-    <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles,
+    <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles, 
         structures, collectibles, etc... -->
     <objects>
-        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" instances="10" />
-        <object name="ghost" type="enemy" dynamic="true" volatile="true" size="1,1" instances="4" ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaserAI" />
-        <object name="smallDot" type="item" dynamic="true" volatile="true" size="1,1" instances="2" />
-        <object name="bigDot" type="item" dynamic="true" volatile="true" size="1,1" instances="2" />
-        <object name="cherry" type="item" dynamic="true" volatile="true" size="1,1" instances="1" />
+        <object name="wall" type="wall" dynamic="false" volatile="false"
+            sizeX="1" sizeY="1" instances="10" />
+        <object name="ghost" type="enemy" dynamic="true"
+            volatile="true" size="1,1" instances="4"
+            ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaserAI" />
+        <object name="smallDot" type="item" dynamic="true"
+            volatile="true" size="1,1" instances="2" />
+        <object name="bigDot" type="item" dynamic="true"
+            volatile="true" size="1,1" instances="2" />
+        <object name="cherry" type="item" dynamic="true"
+            volatile="true" size="1,1" instances="1" />
     </objects>
 
-    <!-- Defining Game physics. Movements and collisions Define set of possible
-        physics action: gravitational pull, friction, repulsion forces, bouncing
+    <!-- Defining Game physics. Movements and collisions Define set of possible 
+        physics action: gravitational pull, friction, repulsion forces, bouncing 
         effects, stickiness, etc Define the -->
     <physics>
     </physics>
 
-    <!-- Defining game events. Events sent from the player via input devices,
-        timed or random events, and object collision triggered events that affect
-        the game. May be as an example some item appears randomly. It can use a timer
+    <!-- Defining game events. Events sent from the player via input devices, 
+        timed or random events, and object collision triggered events that affect 
+        the game. May be as an example some item appears randomly. It can use a timer 
         (not before X milliseconds) or a random value to be executed -->
     <events>
         <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
@@ -59,17 +66,17 @@
 
     <!-- Defining rules. Events consecuences -->
     <rules>
-    	<!-- Rule for object collision with wall -->
-<!--     	<rule name="wallCollision" type="collision"> -->
-<!--             <ruleAction objectName="pacman" result="cantMove"/> -->
-<!--             <ruleAction objectName="wall" result="cantMove"/> -->
-<!--         </rule> -->
+        <!-- Rule for object collision with wall -->
+        <!-- <rule name="wallCollision" type="collision"> -->
+        <!-- <ruleAction objectName="pacman" result="cantMove"/> -->
+        <!-- <ruleAction objectName="wall" result="cantMove"/> -->
+        <!-- </rule> -->
 
-        <!-- Rule for pacman eating small dots Esto tiene buena pinta. Se
-            cargan las reglas, tienen un tipo (collision/proximidad/distancia) y un valor.
-            Cada regla tiene un array de elementos por nombre de objecto Se cogerá de
-            cada regla la lista de elementos de cada cosa. En función del tipo de regla,
-            se comprueba si las NxM combinaciones se cumple la regla y en ese caso, A
+        <!-- Rule for pacman eating small dots Esto tiene buena pinta. Se 
+            cargan las reglas, tienen un tipo (collision/proximidad/distancia) y un valor. 
+            Cada regla tiene un array de elementos por nombre de objecto Se cogerá de 
+            cada regla la lista de elementos de cada cosa. En función del tipo de regla, 
+            se comprueba si las NxM combinaciones se cumple la regla y en ese caso, A 
             cada objeto se le aplica el resultado. -->
         <rule name="eatSmallDot" type="collision">
             <ruleAction objectName="pacman" result="scoreUp"
@@ -104,6 +111,8 @@
     </rules>
     <!-- Game End Conditions -->
     <endConditions>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition" property="timeout" value="0"/>
+        <endCondition
+            checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition"
+            property="timeout" value="0" />
     </endConditions>
 </gameDefinition>

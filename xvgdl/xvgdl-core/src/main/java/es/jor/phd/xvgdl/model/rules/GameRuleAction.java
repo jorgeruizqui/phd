@@ -22,23 +22,23 @@ public class GameRuleAction implements IGameRuleAction {
 
     @Override
     public Double getValueAsDouble() {
-    	Double rto;
-    	try {
-    		rto = Double.parseDouble(getValue());
-    	} catch (Exception e) {
-    		rto = 0.0d;
-    	}
-    	return rto;
+        Double rto;
+        try {
+            rto = Double.parseDouble(getValue());
+        } catch (Exception e) {
+            rto = 0.0d;
+        }
+        return rto;
     }
 
     @Override
     public Long getValueAsLong() {
-    	Long rto;
-    	try {
-    		rto = Long.parseLong(getValue());
-    	} catch (Exception e) {
-    		rto = 0L;
-    	}
-    	return rto;
+        Long rto;
+        try {
+            rto = Long.parseLong(getValue());
+        } catch (Exception e) {
+            rto = 0L;
+        }
+        return rto;
     }
 }

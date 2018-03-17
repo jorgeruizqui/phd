@@ -47,18 +47,13 @@ public interface IGameMap {
 
     /**
      *
-     * @return Map generator
-     */
-    IGameMapGenerator getMapGenerator();
-
-    /**
-     *
      * @return Map File name
      */
     String getMapFile();
 
     /**
      * Resize Map to new values.
+     * 
      * @param x X Size
      * @param y Y Size
      * @param z Z Size
@@ -67,6 +62,7 @@ public interface IGameMap {
 
     /**
      * Generates map representation.
+     * 
      * @param objectList Object list
      */
     void generateMap(List<IGameObject> objectList);

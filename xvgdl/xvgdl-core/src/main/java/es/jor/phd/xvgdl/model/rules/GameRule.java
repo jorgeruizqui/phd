@@ -41,9 +41,9 @@ public class GameRule implements IGameRule {
     }
 
     private void evolveRuleAction(IGameRuleAction gameRuleAction) {
-    	if (ThreadLocalRandom.current().nextDouble() >= 0.95d) {
-    		GameRuleUtils.evolutionOfRuleAction(gameRuleAction);
-    	}
+        if (ThreadLocalRandom.current().nextDouble() >= 0.95d) {
+            GameRuleUtils.evolutionOfRuleAction(gameRuleAction);
+        }
     }
 
 }

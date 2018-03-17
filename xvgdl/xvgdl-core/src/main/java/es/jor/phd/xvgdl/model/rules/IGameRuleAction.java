@@ -33,9 +33,9 @@ public interface IGameRuleAction {
     Long getValueAsLong();
 
     /**
-    *
-    * @return Value as Double. Default 0
-    */
+     *
+     * @return Value as Double. Default 0
+     */
     Double getValueAsDouble();
 
 }

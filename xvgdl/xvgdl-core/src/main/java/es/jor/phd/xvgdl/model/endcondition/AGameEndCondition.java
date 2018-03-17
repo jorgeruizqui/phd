@@ -12,19 +12,19 @@ import lombok.Data;
 @Data
 public abstract class AGameEndCondition implements IGameEndCondition {
 
-	private static final String XML_WINNING_CONDITION = "winningCondition";
+    private static final String XML_WINNING_CONDITION = "winningCondition";
 
-	/** Game End condition defintion. */
-	private GameEndConditionDefinition gameEndConditionDefinition;
+    /** Game End condition defintion. */
+    private GameEndConditionDefinition gameEndConditionDefinition;
 
-	@Override
-	public void evolution() {
-		// Default implementation of the evolution is empty
-	}
+    @Override
+    public void evolution() {
+        // Default implementation of the evolution is empty
+    }
 
-	@Override
-	public boolean isWinningCondition() {
-		return gameEndConditionDefinition != null
-				? gameEndConditionDefinition.getBooleanValue(XML_WINNING_CONDITION, Boolean.FALSE) : false;
-	}
+    @Override
+    public boolean isWinningCondition() {
+        return gameEndConditionDefinition != null
+                ? gameEndConditionDefinition.getBooleanValue(XML_WINNING_CONDITION, Boolean.FALSE) : false;
+    }
 }

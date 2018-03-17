@@ -42,7 +42,7 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
                     newX = player.getX() - 1;
                     moved = true;
                 }
-            } 
+            }
 
             int newY = player.getY();
             if (!moved) {
@@ -54,7 +54,7 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
                     if (canMove(gameContext, player.getX(), player.getY() - 1, player.getZ())) {
                         newY = player.getY() - 1;
                     }
-                } 
+                }
             }
 
             player.moveTo(newX, newY, 0);
@@ -73,9 +73,10 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
         int distZ = Math.abs(player.getZ() - item.getZ());
         return distX + distY + distZ;
     }
-    
+
     /**
      * Check if an object can move to a concrete square
+     * 
      * @param gc
      * @param x
      * @param y
@@ -86,6 +87,5 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
         IGameObject elementAt = gc.getObjectAt(x, y, z);
         return (elementAt == null || !GameObjectType.WALL.equals(elementAt.getObjectType()));
     }
-
 
 }

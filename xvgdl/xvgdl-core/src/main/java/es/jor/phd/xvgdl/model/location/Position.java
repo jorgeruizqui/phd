@@ -8,6 +8,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class Position {
+
     /** x position. */
     private int x;
     /** y position. */

@@ -45,5 +45,5 @@ public interface IGameRule {
     /**
      * Evolve game Rule
      */
-	void evolution();
+    void evolution();
 }

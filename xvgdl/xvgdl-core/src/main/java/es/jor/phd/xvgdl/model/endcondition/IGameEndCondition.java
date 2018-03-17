@@ -17,7 +17,9 @@ public interface IGameEndCondition {
 
     /**
      * Checks the condition.
-     * @return <code>true</code> if the condition is accomplished. Otherwise <code>false</code>
+     * 
+     * @return <code>true</code> if the condition is accomplished. Otherwise
+     *         <code>false</code>
      *
      */
     boolean checkCondition(GameContext c);

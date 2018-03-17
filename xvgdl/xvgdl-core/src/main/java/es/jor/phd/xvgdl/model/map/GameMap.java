@@ -46,18 +46,17 @@ public class GameMap implements IGameMap {
         this.mapType = GameMapType.MAP_2D;
     }
 
-	@Override
-	public void resize(int x, int y, int z) {
-		setSizeX(x);
-		setSizeY(y);
-		setSizeZ(z);
-	}
+    @Override
+    public void resize(int x, int y, int z) {
+        setSizeX(x);
+        setSizeY(y);
+        setSizeZ(z);
+    }
 
-
-	@Override
-	public void generateMap(List<IGameObject> objectList) {
-		if (this.mapGenerator != null) {
-			this.mapGenerator.generateMapRepresentation(this, objectList);
-		}
-	}
+    @Override
+    public void generateMap(List<IGameObject> objectList) {
+        if (this.mapGenerator != null) {
+            this.mapGenerator.generateMapRepresentation(this, objectList);
+        }
+    }
 }

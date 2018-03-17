@@ -37,14 +37,14 @@ public class GameObjectiveDefinition extends Properties {
      */
     public static IGameObjective convert(GameObjectiveDefinition gameObjectiveDefinition) {
 
-    	IGameObjective gameObjective = null;
+        IGameObjective gameObjective = null;
 
         try {
-        	gameObjective = (IGameObjective) Class.forName(
-                    gameObjectiveDefinition.getProperty(XMLATTR_CHECKER_CLASS)).newInstance();
+            gameObjective = (IGameObjective) Class.forName(gameObjectiveDefinition.getProperty(XMLATTR_CHECKER_CLASS))
+                    .newInstance();
 
-        	gameObjective.setScore(gameObjectiveDefinition.getDoubleValue(XMLATTR_SCORE, 0d));
-        	gameObjective.setWeight(gameObjectiveDefinition.getDoubleValue(XMLATTR_WEIGHT, 1d));
+            gameObjective.setScore(gameObjectiveDefinition.getDoubleValue(XMLATTR_SCORE, 0d));
+            gameObjective.setWeight(gameObjectiveDefinition.getDoubleValue(XMLATTR_WEIGHT, 1d));
 
         } catch (Exception e) {
             ELogger.error(GameObjectiveDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,

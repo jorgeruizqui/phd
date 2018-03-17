@@ -104,7 +104,8 @@ public interface IGameObject {
     void moveTo(int x, int y, int z);
 
     /**
-     * Reset the intended values and restore to current values, so the element can't move.
+     * Reset the intended values and restore to current values, so the element
+     * can't move.
      */
     void resetMove();
 
@@ -122,28 +123,30 @@ public interface IGameObject {
 
     /**
      * Clones a game object
+     * 
      * @return Game Object Cloned.
      */
     IGameObject copy();
 
     /**
      * Sets the frozen flag
+     * 
      * @param frozen
      */
     void setFrozen(boolean frozen);
 
     /**
      * Is frozen flag
+     * 
      * @return
      */
     boolean isFrozen();
 
     /**
      *
-     * @return <code>true</code> if object is located anywhere in map (coordintes 0 or bigger)
+     * @return <code>true</code> if object is located anywhere in map
+     *         (coordintes 0 or bigger)
      */
-	boolean isLocatedAnyWhereInMap();
-
-
+    boolean isLocatedAnyWhereInMap();
 
 }
