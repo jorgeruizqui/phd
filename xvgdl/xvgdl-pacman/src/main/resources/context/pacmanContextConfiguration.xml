@@ -23,7 +23,7 @@
 
     <!-- Map Definition -->
     <map type="2D" sizeX="15" sizeY="25" toroidal="false"
-        generator="es.jor.phd.xvgdl.model.map.GameMapGenerator">
+        generator="es.jor.phd.xvgdl.model.map.RandomLocationGameMapGenerator">
     </map>
 
     <!-- Players Definition -->

@@ -11,7 +11,7 @@ import es.jor.phd.xvgdl.model.object.IGameObject;
  * @author jrquinones
  *
  */
-public class GameMapGenerator implements IGameMapGenerator {
+public class RandomLocationGameMapGenerator implements IGameMapGenerator {
 
     @Override
     public void generateMapRepresentation(IGameMap map, List<IGameObject> objects) {

@@ -2,9 +2,11 @@ package es.jor.phd.xvgdl.model.object;
 
 import java.util.Random;
 
+import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.location.Position;
 import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
+import es.jor.phd.xvgdl.util.GameConstants;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,10 +28,10 @@ public class GameObject implements IGameObject {
     private int instance;
     /** Position. */
     @Setter(lombok.AccessLevel.NONE)
-    private Position position  = new Position(0, 0, 0);;
+    private Position position  = new Position(-1, -1, -1);
     /** Intended position. */
     @Setter(lombok.AccessLevel.NONE)
-    private Position intendedPosition = new Position(0, 0, 0);
+    private Position intendedPosition = new Position(-1, -1, -1);
     /** Size x . */
     private int sizeX;
     /** Size y. */
@@ -128,6 +130,7 @@ public class GameObject implements IGameObject {
                 cloned.setObjectAI(this.objectAI.getClass().newInstance());
             }
         } catch (InstantiationException | IllegalAccessException e) {
+        	ELogger.error(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception setting object class AI: ", e);
         }
         cloned.setDynamic(isDynamic());
         cloned.setInstance((new Random()).nextInt());
@@ -155,5 +158,11 @@ public class GameObject implements IGameObject {
 
     private void setZ(int z) {
     	position.setZ(z);
+    }
+
+    @Override
+    public boolean isLocatedAnyWhereInMap() {
+    	return (getX() >= 0 && getY() >= 0 && getZ() >= 0)
+    			|| (getIntendedPosition().getX() >= 0 && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
     }
 }

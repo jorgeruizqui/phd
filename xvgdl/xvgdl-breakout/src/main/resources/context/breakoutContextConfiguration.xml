@@ -21,7 +21,7 @@
     </layout>
 
     <!-- Map Definition -->
-    <map type="2D" sizeX="55" sizeY="90" toroidal="false"
+    <map type="2D" sizeX="55" sizeY="90" toroidal="false" generator="es.jor.phd.xvgdl.model.map.FileBasedGameMapGenerator"
     	file="/context/breakoutmap.txt">
     </map>
 

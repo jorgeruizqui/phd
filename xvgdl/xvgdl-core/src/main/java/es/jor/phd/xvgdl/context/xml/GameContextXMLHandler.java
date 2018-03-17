@@ -95,6 +95,7 @@ public class GameContextXMLHandler extends BasicXMLHandler {
             String value = obj.toString().substring(obj.toString().indexOf(':') + 1);
             ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Added property: " + key + " - " + value);
             gameContext.put(key, value);
+
         } else if (xmlTag.equals(GameMapDefinition.XMLTAG)) {
             IGameMap gameMap = GameMapDefinition.convert((GameMapDefinition) obj);
             ELogger.debug(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Created Game Map: " + gameMap.toString());
@@ -110,6 +111,7 @@ public class GameContextXMLHandler extends BasicXMLHandler {
                         "Created Object: " + gameObject.toString());
                 gameContext.addObject(gameObject);
             }
+
         } else if (xmlTag.equals(GamePlayerDefinition.XMLTAG)) {
             GamePlayerDefinition objectDefinition = (GamePlayerDefinition) obj;
 
@@ -130,14 +132,17 @@ public class GameContextXMLHandler extends BasicXMLHandler {
                 GameRuleDefinition parentRuleDefinition = (GameRuleDefinition) getParent();
                 parentRuleDefinition.addActionDefinition(ruleActionDefinition);
             }
+
         } else if (xmlTag.equals(GameEventDefinition.XMLTAG)) {
             GameEventDefinition eventDefinition = (GameEventDefinition) obj;
             IGameEvent event = GameEventDefinition.convert(eventDefinition);
             gameContext.addEvent(event);
+
         } else if (xmlTag.equals(GameEndConditionDefinition.XMLTAG)) {
             GameEndConditionDefinition endConditionDefinition = (GameEndConditionDefinition) obj;
             IGameEndCondition endCondition = GameEndConditionDefinition.convert(endConditionDefinition);
             gameContext.addEndCondition(endCondition);
+
         } else if (xmlTag.equals(GameObjectiveDefinition.XMLTAG)) {
         	GameObjectiveDefinition gameObjectiveDefinition = (GameObjectiveDefinition) obj;
             IGameObjective gameObjective = GameObjectiveDefinition.convert(gameObjectiveDefinition);
