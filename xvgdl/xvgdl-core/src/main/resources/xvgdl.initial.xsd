@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:simpleType name="ruleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="generic" />
+      <xs:enumeration value="collision" />
+      <xs:enumeration value="proximity" />
+      <xs:enumeration value="distant" />
+      <xs:enumeration value="endCondition" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ruleResultType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="cantMove" />
+      <xs:enumeration value="scoreUp" />
+      <xs:enumeration value="scoreDown" />
+      <xs:enumeration value="scoreSetTo" />
+      <xs:enumeration value="scoreReset" />
+      <xs:enumeration value="livesUp" />
+      <xs:enumeration value="livesDown" />
+      <xs:enumeration value="livesReset" />
+      <xs:enumeration value="livesPercentageUp" />
+      <xs:enumeration value="livesPercentageDown" />
+      <xs:enumeration value="livesPercentageReset" />
+      <xs:enumeration value="dissapear" />
+      <xs:enumeration value="duplicate" />
+      <xs:enumeration value="teletransport" />
+      <xs:enumeration value="freeze" />
+      <xs:enumeration value="bounce" />
+      <xs:enumeration value="timeUp" />
+      <xs:enumeration value="timeDown" />
+      <xs:enumeration value="timeReset" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="gameDefinition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="map"/>
+        <xs:element ref="players"/>
+        <xs:element ref="objects"/>
+        <xs:element ref="physics"/>
+        <xs:element ref="events"/>
+        <xs:element ref="rules"/>
+        <xs:element ref="endConditions"/>
+        <xs:element ref="objectives"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="map">
+    <xs:complexType>
+      <xs:attribute name="generator" use="required"/>
+      <xs:attribute name="sizeX" use="required" type="xs:integer"/>
+      <xs:attribute name="sizeY" use="required" type="xs:integer"/>
+      <xs:attribute name="toroidal" use="required" type="xs:boolean"/>
+      <xs:attribute name="type" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="players">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="player"/>
+      </xs:sequence>
+      <xs:attribute name="maxNumber" use="required" type="xs:integer"/>
+      <xs:attribute name="minNumber" use="required" type="xs:integer"/>
+      <xs:attribute name="number" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="player">
+    <xs:complexType>
+      <xs:attribute name="ai" use="required"/>
+      <xs:attribute name="livePercentage" use="required" type="xs:integer"/>
+      <xs:attribute name="lives" use="required" type="xs:integer"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="score" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="objects">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="object"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:attribute name="ai"/>
+      <xs:attribute name="dynamic" use="required" type="xs:boolean"/>
+      <xs:attribute name="instances" use="required" type="xs:integer"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="size"/>
+      <xs:attribute name="sizeX" type="xs:integer"/>
+      <xs:attribute name="sizeY" type="xs:integer"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+      <xs:attribute name="volatile" use="required" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="physics">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="events">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="event"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="event">
+    <xs:complexType>
+      <xs:attribute name="className" use="required"/>
+      <xs:attribute name="objectName" use="required" type="xs:NCName"/>
+      <xs:attribute name="timer" use="required" type="xs:integer"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rules">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="rule"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="ruleAction"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="type" use="required" type="ruleType"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ruleAction">
+    <xs:complexType>
+      <xs:attribute name="objectName" use="required" type="xs:NCName"/>
+      <xs:attribute name="result" use="required"/>
+      <xs:attribute name="value"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="endConditions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="endCondition"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="endCondition">
+    <xs:complexType>
+      <xs:attribute name="checkerClass" use="required"/>
+      <xs:attribute name="objectNames"/>
+      <xs:attribute name="winningCondition" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="objectives">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="objective"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="objective">
+    <xs:complexType>
+      <xs:attribute name="objectiveCheckerClass" use="required"/>
+      <xs:attribute name="score" type="xs:integer"/>
+      <xs:attribute name="weight" use="required" type="xs:decimal"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
