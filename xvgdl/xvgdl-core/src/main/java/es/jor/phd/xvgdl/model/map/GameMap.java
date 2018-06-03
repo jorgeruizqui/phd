@@ -1,7 +1,6 @@
 package es.jor.phd.xvgdl.model.map;
 
-import java.util.List;
-
+import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 import lombok.Data;
 
@@ -54,9 +53,9 @@ public class GameMap implements IGameMap {
     }
 
     @Override
-    public void generateMap(List<IGameObject> objectList) {
+    public void generateMap(GameContext gc) {
         if (this.mapGenerator != null) {
-            this.mapGenerator.generateMapRepresentation(this, objectList);
+            this.mapGenerator.generateMapRepresentation(gc, this);
         }
     }
 }

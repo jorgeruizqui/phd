@@ -112,6 +112,8 @@ public final class GameRuleUtils {
             } else if (GameRuleResultType.TIME_RESET.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.TIME_UP.equals(gameRuleAction.getResultType())) {
             } else if (GameRuleResultType.TRANSFORM.equals(gameRuleAction.getResultType())) {
+            } else if (GameRuleResultType.CHANGE_DIRECTION.equals(gameRuleAction.getResultType())) {
+                gameObject.getDirection().invert();
             }
         }
     }

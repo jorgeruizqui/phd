@@ -28,6 +28,10 @@
             <groupId>es.indra.eplatform</groupId>
             <artifactId>eplatform-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

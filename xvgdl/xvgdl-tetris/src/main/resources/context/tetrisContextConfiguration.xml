@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+    
+<!-- Definition of tetris game -->
+
+<gameDefinition>
+
+    <!-- Renderer configuration -->
+    <property key="rendererConfiguration"
+        value="/context/tetrisAsciiRendererConfiguration.xml" />
+
+    <!-- Timeout configuration in milliseconds. Set to -1 for no timeout -->
+    <property key="TIMEOUT" value="-1" />
+
+    <layout>
+        <component id="gameInfoTop" location="TOP">
+            <contextProperty id="score" />
+            <contextProperty id="hiScore" />
+        </component>
+
+        <component id="gameInfoDown" location="BOTTOM">
+            <contextProperty id="nextBlock" />
+        </component>
+    </layout>
+
+    <!-- Map Definition -->
+    <map type="2D" sizeX="20" sizeY="40" toroidal="false" generator="es.jor.phd.xvgdl.model.map.FileBasedGameMapGenerator"
+    	file="/context/tetrismap.txt">
+    </map>
+
+    <!-- Players Definition -->
+    <players number="1" maxNumber="1" minNumber="1">
+        <player name="player" score="0" lives="1" sizeX="0" sizeY="0"/>
+    </players>
+    <!-- Defining the Objects present in the game -->
+    <objects>
+        <object name="longBlock" type="item" dynamic="true" volatile="true" sizeX="1" sizeY="4" />
+        <object name="squareBlock" type="item" dynamic="true" volatile="true" sizeX="2" sizeY="2" />
+        <object name="leftLBlock" type="item" dynamic="true" volatile="true" sizeX="2" sizeY="3" />
+        <object name="rightLBlock" type="item" dynamic="true" volatile="true" sizeX="2" sizeY="3" />
+        <object name="tBlock" type="item" dynamic="true" volatile="true" sizeX="3" sizeY="2" />
+        <object name="rightSBlock" type="item" dynamic="true" volatile="true" sizeX="3" sizeY="2" />
+        <object name="leftSBlock" type="item" dynamic="true" volatile="true" sizeX="3" sizeY="2" />
+    </objects>
+
+    <!-- Defining Game physics. Movements and collisions Define set of possible
+        physics action: gravitational pull, friction, repulsion forces, bouncing
+        effects, stickiness, etc Define the -->
+    <physics>
+        <physic type="gravity" value="1"/>
+    </physics>
+
+    <!-- Defining game events. Events sent from the player via input devices,
+        timed or random events, and object collision triggered events that affect
+        the game. May be as an example some item appears randomly. It can use a timer
+        (not before X milliseconds) or a random value to be executed -->
+    <events>
+        <event type="engine" className="es.jor.phd.xvgdl.model.event.PhysicsChange"
+            physicType="gravity" value="1" timer="15000" />
+    </events>
+
+    <!-- Defining rules. -->
+    <rules>
+
+        <!-- Rules for ball hitting bricks -->
+        <rule name="ballHitsYellowBrick" type="collision">
+            <ruleAction objectName="ball" result="scoreUp" value="100" />
+            <ruleAction objectName="yellowBrick" result="disappear" />
+        </rule>
+        <rule name="ballHitsYellowBrick" type="collision">
+            <ruleAction objectName="ball" result="changeDirection"/>
+            <ruleAction objectName="yellowBrick" result="" />
+        </rule>
+
+        <rule name="ballHitsOrangeBrick" type="collision">
+            <ruleAction objectName="ball" result="scoreUp" value="200" />
+            <ruleAction objectName="orangeBrick" result="transform" value="yellowBrick" />
+        </rule>
+        <rule name="ballHitsOrangeBrick" type="collision">
+            <ruleAction objectName="ball" result="changeDirection" />
+            <ruleAction objectName="orangeBrick" result="" />
+        </rule>
+
+        <rule name="ballHitsRedBrick" type="collision">
+            <ruleAction objectName="ball" result="scoreUp" value="300" />
+            <ruleAction objectName="redBrick" result="transform" value="orangeBrick" />
+        </rule>
+        <rule name="ballHitsRedBrick" type="collision">
+            <ruleAction objectName="ball" result="changeDirection" />
+            <ruleAction objectName="redBrick" result="" />
+        </rule>
+
+        <!-- Rules for ball hitting walls -->
+        <rule name="ballHitsWall" type="collision">
+            <ruleAction objectName="ball" result="changeDirection" value="random" />
+            <ruleAction objectName="wall" result="" />
+        </rule>
+
+        <!-- Rules for ball hitting platform -->
+        <rule name="missileHitsPlatform" type="collision">
+            <ruleAction objectName="ball" result="changeDirection" value="invert" />
+            <ruleAction objectName="platform" result="" />
+        </rule>
+
+        <!-- Rules for ball hitting floor -->
+        <rule name="ballHitsFloor" type="collision">
+            <ruleAction objectName="ball" result="teletransport" value="platform" />
+            <ruleAction objectName="floor" result="livesDown" />
+        </rule>
+    </rules>
+
+    <!-- Game End Conditions -->
+    <endConditions>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition" 
+            property="timeout" value="0"/>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" 
+            objectNames="yellowBrick,orangeBrick,redBrick" />
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
+    </endConditions>
+
+</gameDefinition>

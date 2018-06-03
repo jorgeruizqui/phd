@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+    
+<!-- Definition of space invaders game -->
+
+<gameDefinition>
+
+    <!-- Renderer configuration -->
+    <property key="rendererConfiguration"
+        value="/context/spaceInvadersAsciiRendererConfiguration.xml" />
+
+    <!-- Timeout configuration in milliseconds. Set to -1 for no timeout -->
+    <property key="TIMEOUT" value="-1" />
+
+    <layout>
+        <component id="gameInfoTop" location="TOP">
+            <contextProperty id="score" />
+            <contextProperty id="hiScore" />
+            <contextProperty id="lives" />
+        </component>
+
+        <component id="gameInfoDown" location="BOTTOM">
+            <contextProperty id="nextBlock" />
+        </component>
+    </layout>
+
+    <!-- Map Definition -->
+    <map type="2D" sizeX="40" sizeY="20" toroidal="false" 
+        generator="es.jor.phd.xvgdl.spaceinvaders.model.map.FileBasedGameMapGenerator"
+    	file="/context/spaceInvadersMap.txt">
+    </map>
+
+    <!-- Players Definition -->
+    <players number="1" maxNumber="1" minNumber="1">
+        <player name="player" score="0" lives="3" sizeX="1" sizeY="1"/>
+    </players>
+    <!-- Defining the Objects present in the game -->
+    <objects>
+        <object name="redEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
+            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
+        <object name="blueEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
+            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
+        <object name="yellowEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
+            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
+        <object name="disc" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1"
+            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemyDiscAI"/>
+        <object name="shield" type="item" dynamic="true" volatile="true" sizeX="1" sizeY="1" />
+        <object name="fireEnemy" type="projectile" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
+            instances="0"/>
+        <object name="firePlayer" type="projectile" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
+            instances="0"/>
+        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" />
+    </objects>
+
+    <!-- Defining Game physics. Movements and collisions Define set of possible
+        physics action: gravitational pull, friction, repulsion forces, bouncing
+        effects, stickiness, etc Define the -->
+    <physics>
+    </physics>
+
+    <!-- Defining game events. Events sent from the player via input devices,
+        timed or random events, and object collision triggered events that affect
+        the game. May be as an example some item appears randomly. It can use a timer
+        (not before X milliseconds) or a random value to be executed -->
+        
+    <events>
+        <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
+            objectName="disc" x="3" y="38" timer="15000" />
+        <event type="keyboard" keyCode="57"  objectName="firePlayer"
+            className="es.jor.phd.xvgdl.spaceinvaders.model.event.PlayerShootEvent" />
+    </events>
+
+    <!-- Defining rules. -->
+    <rules>
+
+        <rule name="enemyProjectileHitsPlayer" type="collision">
+            <ruleAction objectName="fireEnemy"  result="disappear" />
+            <ruleAction objectName="player" result="livesDown" value="1" />
+        </rule>
+        <rule name="enemyProjectileHitsShield" type="collision">
+            <ruleAction objectName="fireEnemy"  result="disappear" />
+            <ruleAction objectName="shield" result="disappear" />
+        </rule>
+        <rule name="enemyProjectileHitsWall" type="collision">
+            <ruleAction objectName="fireEnemy"  result="disappear" />
+            <ruleAction objectName="wall" result="" />
+        </rule>
+
+        <rule name="playerProjectileHitsWall" type="collision">
+            <ruleAction objectName="wall"  result="" />
+            <ruleAction objectName="firePlayer" result="disappear" />
+        </rule>
+        <rule name="playerProjectileHitsRedEnemy" type="collision">
+            <ruleAction objectName="redEnemy"  result="" />
+            <ruleAction objectName="firePlayer" result="scoreUp" value="100" />
+        </rule>
+        <rule name="playerProjectileHitsBlueEnemy" type="collision">
+            <ruleAction objectName="blueEnemy"  result="" />
+            <ruleAction objectName="firePlayer" result="scoreUp" value="200" />
+        </rule>
+        <rule name="playerProjectileHitsYellowEnemy" type="collision">
+            <ruleAction objectName="yellowEnemy"  result="" />
+            <ruleAction objectName="firePlayer" result="scoreUp" value="300" />
+        </rule>
+        <rule name="playerProjectileHitsRedEnemyAndDisappear" type="collision">
+            <ruleAction objectName="redEnemy"  result="disappear" />
+            <ruleAction objectName="firePlayer" result="disappear" />
+        </rule>
+        <rule name="playerProjectileHitsBlueEnemyAndDisappear" type="collision">
+            <ruleAction objectName="blueEnemy"  result="disappear" />
+            <ruleAction objectName="firePlayer" result="disappear" />
+        </rule>
+        <rule name="playerProjectileHitsBlueEnemyAndDisappear" type="collision">
+            <ruleAction objectName="yellowEnemy"  result="disappear" />
+            <ruleAction objectName="firePlayer" result="disappear" />
+        </rule>
+        <rule name="playerProjectileHitsDisc" type="collision">
+            <ruleAction objectName="disc"  result="" />
+            <ruleAction objectName="firePlayer" result="scoreUp" value="300" />
+        </rule>
+        <rule name="playerProjectileHitsDiscAndDisappear" type="collision">
+            <ruleAction objectName="disc"  result="disappear" />
+            <ruleAction objectName="firePlayer" result="disappear" />
+        </rule>
+        <rule name="playerProjectileHitsShield" type="collision">
+            <ruleAction objectName="shield"  result="" />
+            <ruleAction objectName="firePlayer" result="scoreDown" value="50" />
+        </rule>
+        <rule name="playerProjectileHitsShieldAndDisappear" type="collision">
+            <ruleAction objectName="shield"  result="disappear" />
+            <ruleAction objectName="firePlayer" result="disappear" />
+        </rule>
+
+    </rules>
+
+    <!-- Game End Conditions -->
+    <endConditions>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition" 
+            property="timeout" value="10000"/>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" 
+            objectNames="redEnemy,blueEnemy,yellowEnemy,disc" winning="true" />
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
+    </endConditions>
+
+</gameDefinition>

@@ -1,8 +1,8 @@
 package es.jor.phd.xvgdl.model.map;
 
-import java.util.List;
 import java.util.Random;
 
+import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 
 /**
@@ -14,11 +14,11 @@ import es.jor.phd.xvgdl.model.object.IGameObject;
 public class RandomLocationGameMapGenerator implements IGameMapGenerator {
 
     @Override
-    public void generateMapRepresentation(IGameMap map, List<IGameObject> objects) {
+    public void generateMapRepresentation(GameContext gc, IGameMap map) {
 
         Random r = new Random();
 
-        for (IGameObject iGameObject : objects) {
+        for (IGameObject iGameObject : gc.getObjectsAsList()) {
             int i = r.nextInt(map.getSizeX());
             int j = r.nextInt(map.getSizeY());
             iGameObject.moveTo(i, j, 0);

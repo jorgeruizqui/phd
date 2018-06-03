@@ -5,6 +5,7 @@ import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.model.event.AGameEvent;
 import es.jor.phd.xvgdl.model.event.GameEventType;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
+import es.jor.phd.xvgdl.model.event.KeyboardGameEvent;
 import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
@@ -27,6 +28,9 @@ public class GameEventDefinition extends Properties {
     /** XML Attribute. Timer. */
     public static final String XMLATTR_TIMER = "timer";
 
+    /** XML Attribute. Key Code. */
+    public static final String XMLATTR_KEY_CODE = "keyCode";
+
     @Override
     public void setXMLAttr(String key, String value) {
         setProperty(key, value);
@@ -42,11 +46,14 @@ public class GameEventDefinition extends Properties {
         AGameEvent gameEvent = null;
 
         try {
-            gameEvent = (AGameEvent) Class.forName(
-                    eventDefinition.getProperty(XMLATTR_CLASS_NAME)).newInstance();
+            gameEvent = (AGameEvent) Class.forName(eventDefinition.getProperty(XMLATTR_CLASS_NAME)).newInstance();
             gameEvent.setEventType(GameEventType.fromString(eventDefinition.getProperty(XMLATTR_TYPE)));
             gameEvent.setTimer(eventDefinition.getLongValue(XMLATTR_TIMER, 0));
             gameEvent.setGameEventDefinition(eventDefinition);
+
+            if (gameEvent instanceof KeyboardGameEvent) {
+                ((KeyboardGameEvent) gameEvent).setKeyCode(eventDefinition.getIntegerValue(XMLATTR_KEY_CODE, 0));
+            }
 
         } catch (Exception e) {
             ELogger.error(GameEventDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,

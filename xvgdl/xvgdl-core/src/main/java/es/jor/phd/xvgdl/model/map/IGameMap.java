@@ -1,7 +1,6 @@
 package es.jor.phd.xvgdl.model.map;
 
-import java.util.List;
-
+import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 
 /**
@@ -62,8 +61,7 @@ public interface IGameMap {
 
     /**
      * Generates map representation.
-     * 
-     * @param objectList Object list
+     * @param gameContext Game Context
      */
-    void generateMap(List<IGameObject> objectList);
+    void generateMap(GameContext gameContext);
 }

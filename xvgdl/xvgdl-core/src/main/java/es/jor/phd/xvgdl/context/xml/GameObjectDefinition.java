@@ -1,7 +1,10 @@
 package es.jor.phd.xvgdl.context.xml;
 
+import org.apache.commons.lang3.StringUtils;
+
 import es.indra.eplatform.properties.Properties;
 import es.indra.eplatform.util.log.ELogger;
+import es.jor.phd.xvgdl.model.location.DirectionVector;
 import es.jor.phd.xvgdl.model.object.GameObject;
 import es.jor.phd.xvgdl.model.object.GameObjectType;
 import es.jor.phd.xvgdl.model.object.IGameObject;
@@ -55,6 +58,9 @@ public class GameObjectDefinition extends Properties {
     /** XML Attribute. Dynamic. */
     public static final String XMLATTR_DYNAMIC = "dynamic";
 
+    /** XML Attribute. Direction. */
+    public static final String XMLATTR_DIRECTION = "direction";
+
     @Override
     public void setXMLAttr(String key, String value) {
         setProperty(key, value);
@@ -89,6 +95,10 @@ public class GameObjectDefinition extends Properties {
                     && !objectDefinition.getProperty(XMLATTR_AI).trim().equals("")) {
                 gameObject.setObjectAI(
                         (IGameObjectAI) Class.forName(objectDefinition.getProperty(XMLATTR_AI)).newInstance());
+            }
+            
+            if (StringUtils.isNotEmpty(objectDefinition.getProperty(XMLATTR_DIRECTION))) {
+                gameObject.setDirection(DirectionVector.parseFromString(objectDefinition.getProperty(XMLATTR_DIRECTION)));
             }
         } catch (Exception e) {
             ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,

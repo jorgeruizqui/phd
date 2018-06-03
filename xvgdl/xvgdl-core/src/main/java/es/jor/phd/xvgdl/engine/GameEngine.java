@@ -1,11 +1,13 @@
 package es.jor.phd.xvgdl.engine;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -19,6 +21,7 @@ import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
 import es.jor.phd.xvgdl.model.event.GameEventType;
 import es.jor.phd.xvgdl.model.event.GameEventUtils;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
+import es.jor.phd.xvgdl.model.event.KeyboardGameEvent;
 import es.jor.phd.xvgdl.model.object.IGameObject;
 import es.jor.phd.xvgdl.model.rules.GameRuleType;
 import es.jor.phd.xvgdl.model.rules.GameRuleUtils;
@@ -70,6 +73,8 @@ public final class GameEngine extends Properties {
     /** Game Running in simulation mode Flag. */
     private boolean simulationMode = false;
 
+    private KeyboardInputListener keyboardInputListener;
+
     /**
      * Constructor.
      *
@@ -87,7 +92,7 @@ public final class GameEngine extends Properties {
                 GameContext.createGameContext(gc, getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
 
-            addKeyListener();
+            addKeyboardListener();
 
         } catch (PropertiesParseException e) {
             ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception parsing properties",
@@ -95,8 +100,10 @@ public final class GameEngine extends Properties {
         }
     }
 
-    private void addKeyListener() {
+    private void addKeyboardListener() {
         try {
+            this.keyboardInputListener = new KeyboardInputListener(getGameContext());
+            
             // Get the logger for "org.jnativehook" and set the level to
             // off.
             Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
@@ -109,7 +116,16 @@ public final class GameEngine extends Properties {
                 handlers[i].setLevel(Level.OFF);
             }
             GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeKeyListener(new KeyboardInputListener(getGameContext()));
+            GlobalScreen.addNativeKeyListener(this.keyboardInputListener);
+           
+            List<KeyboardGameEvent> definedKeyboardGameEvents = 
+                    getGameContext().getGameEvents().stream()
+                    .filter(e -> e instanceof KeyboardGameEvent)
+                    .map(o -> (KeyboardGameEvent) o)
+                    .collect(Collectors.toList());
+
+            this.keyboardInputListener.addContextDefinedKeyboardGameEvent(definedKeyboardGameEvents);
+             
         } catch (NativeHookException ex) {
             ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception registering hooks",
                     ex);

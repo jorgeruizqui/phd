@@ -50,9 +50,9 @@ public class GamePlayerDefinition extends GameObjectDefinition {
             gameObject.setInstance(1);
             gameObject.setDynamic(true);
             gameObject.setVolatile(true);
-            gameObject.setPosition(playerDefinition.getIntegerValue(XMLATTR_POSITION_X, 0),
-                    playerDefinition.getIntegerValue(XMLATTR_POSITION_Y, 0),
-                    playerDefinition.getIntegerValue(XMLATTR_POSITION_Z, 0));
+            gameObject.setPosition(playerDefinition.getIntegerValue(XMLATTR_POSITION_X, -1),
+                    playerDefinition.getIntegerValue(XMLATTR_POSITION_Y, -1),
+                    playerDefinition.getIntegerValue(XMLATTR_POSITION_Z, -1));
             gameObject.setSizeX(playerDefinition.getIntegerValue(XMLATTR_SIZE_X, 0));
             gameObject.setSizeY(playerDefinition.getIntegerValue(XMLATTR_SIZE_Y, 0));
             gameObject.setSizeZ(playerDefinition.getIntegerValue(XMLATTR_SIZE_Z, 0));

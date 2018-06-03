@@ -23,7 +23,7 @@ public final class GameEventUtils {
      */
     public static void processGameEvent(GameContext gameContext, IGameEvent event) {
 
-        long lastEventExecutionTime = event.getTimeStamp();
+         long lastEventExecutionTime = event.getTimeStamp();
         long eventTimer = event.getTimer();
         long currentTime = System.currentTimeMillis();
         boolean executeEvent = true;

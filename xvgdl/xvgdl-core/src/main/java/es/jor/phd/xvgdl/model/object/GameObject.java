@@ -4,6 +4,7 @@ import java.util.Random;
 
 import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.model.location.DirectionVector;
 import es.jor.phd.xvgdl.model.location.Position;
 import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
 import es.jor.phd.xvgdl.util.GameConstants;
@@ -40,6 +41,11 @@ public class GameObject implements IGameObject {
     private int sizeZ;
     /** Game Object Type. */
     private GameObjectType objectType;
+    /** Speed factor. */
+    private Double speedFactor = 1d;
+    /** Direction Vector. If it's 0,0,0 means that the object is stopped. */
+    private DirectionVector direction = new DirectionVector(0, 0, 0);
+    
     /**
      * Is dynamic flag. Indicates if object can move during game or is fixed
      * forever.
@@ -119,6 +125,14 @@ public class GameObject implements IGameObject {
         setX(getIntendedPosition().getX());
         setY(getIntendedPosition().getY());
         setZ(getIntendedPosition().getZ());
+        
+        // If direction vector is informed, object is moving in that direction according the speed factor
+        if (direction.notZero()) {
+            setX((int) (getX() + (speedFactor * direction.getX())));
+            setY((int) (getY() + (speedFactor * direction.getY())));
+            setZ((int) (getZ() + (speedFactor * direction.getZ())));
+            setIntendedPosition(getX(), getY(), getZ());
+        }
     }
 
     @Override

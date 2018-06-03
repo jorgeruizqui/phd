@@ -121,7 +121,7 @@ public final class GameContext extends Context implements Comparable<GameContext
                 contextHandler.parseResource(configurationFile);
 
                 // Generate map position for all elements
-                this.gameMap.generateMap(getObjectsAsList());
+                this.gameMap.generateMap(this);
 
                 // Get renderer configuration and load renderer definitions:
                 GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);

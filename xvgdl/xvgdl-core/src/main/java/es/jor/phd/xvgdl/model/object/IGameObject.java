@@ -1,6 +1,7 @@
 package es.jor.phd.xvgdl.model.object;
 
 import es.jor.phd.xvgdl.context.GameContext;
+import es.jor.phd.xvgdl.model.location.DirectionVector;
 import es.jor.phd.xvgdl.model.location.Position;
 
 /**
@@ -148,5 +149,13 @@ public interface IGameObject {
      *         (coordintes 0 or bigger)
      */
     boolean isLocatedAnyWhereInMap();
+
+    /**
+     * 
+     * @param value the new speed factor for an object.
+     */
+    void setSpeedFactor(Double value);
+
+    DirectionVector getDirection();
 
 }

@@ -22,7 +22,7 @@
     </layout>
 
     <!-- Map Definition -->
-    <map type="2D" sizeX="15" sizeY="25" toroidal="false"
+    <map type="2D" sizeX="20" sizeY="40" toroidal="false"
         generator="es.jor.phd.xvgdl.model.map.RandomLocationGameMapGenerator">
     </map>
 
@@ -31,11 +31,10 @@
         <player name="pacman" score="0" lives="3" livePercentage="100"
             ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaseNearestItemAI" />
     </players>
-    <!-- Defining the Objects present in the game (NPCs, Obsctacles, projectiles, 
-        structures, collectibles, etc... -->
+
     <objects>
         <object name="wall" type="wall" dynamic="false" volatile="false"
-            sizeX="1" sizeY="1" instances="10" />
+            sizeX="1" sizeY="1" instances="60" />
         <object name="ghost" type="enemy" dynamic="true"
             volatile="true" size="1,1" instances="4"
             ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaserAI" />
@@ -114,5 +113,8 @@
         <endCondition
             checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition"
             property="timeout" value="0" />
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" 
+            objectNames="bigDot,smallDot" winningCondition="true"/>
+        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
     </endConditions>
 </gameDefinition>

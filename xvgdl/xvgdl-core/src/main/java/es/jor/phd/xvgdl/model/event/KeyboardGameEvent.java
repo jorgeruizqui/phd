@@ -4,6 +4,9 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.IGameObject;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Keyboard game event.
@@ -11,6 +14,9 @@ import es.jor.phd.xvgdl.model.object.IGameObject;
  * @author jrquinones
  *
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class KeyboardGameEvent extends AGameEvent {
 
     /** Key Code. */
@@ -23,20 +29,6 @@ public class KeyboardGameEvent extends AGameEvent {
     public KeyboardGameEvent(int keyCode) {
         this.keyCode = keyCode;
         this.executor = new KeyboardGameExecutor();
-    }
-
-    /**
-     * @return the keyCode
-     */
-    public int getKeyCode() {
-        return keyCode;
-    }
-
-    /**
-     * @param keyCode the keyCode to set
-     */
-    public void setKeyCode(int keyCode) {
-        this.keyCode = keyCode;
     }
 
     @Override
@@ -53,6 +45,7 @@ public class KeyboardGameEvent extends AGameEvent {
         @Override
         public void executeEvent(IGameEvent event, GameContext context) {
             if (event.getEventType().equals(GameEventType.KEYBOARD)) {
+
                 KeyboardGameEvent kbGe = (KeyboardGameEvent) event;
                 IGameObject player = context.getCurrentGamePlayer();
 

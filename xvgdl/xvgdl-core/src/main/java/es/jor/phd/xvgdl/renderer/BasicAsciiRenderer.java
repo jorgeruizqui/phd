@@ -57,26 +57,27 @@ public class BasicAsciiRenderer implements IGameRenderer {
         Arrays.fill(arraySlash, 0, arraySlash.length, '-');
         System.out.println(arraySlash);
 
-        char[][] array = new char[this.gameContext.getGameMap().getSizeX()][this.gameContext.getGameMap().getSizeY()];
+        char[][] array = new char[this.gameContext.getGameMap().getSizeY()][this.gameContext.getGameMap().getSizeX()];
 
         // 2.2.1 Render Map Walls
         // 2.2.2 Render Map Items
         // 2.2.3 Render Map Enemies
         // 2.2.4 Render Map Player
 
-        for (int i = 0; i < array.length - 1; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                IGameObject gameObject = this.gameContext.getObjectAt(i, j, 0);
+        for (int yCoord = array.length - 1; yCoord >= 0; yCoord--) {
+            for (int x = 0; x < array[yCoord].length; x++) {
+                IGameObject gameObject = this.gameContext.getObjectAt(x, yCoord + 1, 0);
                 if (gameObject != null) {
-                    array[i][j] = gameObject.getName().charAt(0);
+                    char c = gameObject.getObjectType().equals(GameObjectType.PROJECTILE) ?
+                            '*'
+                            : gameObject.getName().charAt(0);
+                    array[yCoord][x] = c;
                 } else {
-                    array[i][j] = ' ';
+                    array[yCoord][x] = ' ';
                 }
             }
         }
-        array[gp.getX()][gp.getY()] = gp.getName().charAt(0);
 
-        // Print the array in reverse order
         for (int i = array.length - 1; i >= 0; i--) {
             System.out.println(array[i]);
         }

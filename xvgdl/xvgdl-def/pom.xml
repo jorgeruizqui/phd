@@ -33,10 +33,10 @@
 		<build.output.home.dir>${default.build.output.home.dir}</build.output.home.dir>
 
 		<!-- Folder where to send Lib Jar files once they are generated -->
-		<build.output.default.lib.dir>${build.output.home.dir}/jar</build.output.default.lib.dir>
+		<build.output.default.lib.dir>${build.output.home.dir}</build.output.default.lib.dir>
 		<build.output.lib.dir>${build.output.default.lib.dir}</build.output.lib.dir>
 
-		<build.metainf.classpath.default.prefix>./jar/</build.metainf.classpath.default.prefix>
+		<build.metainf.classpath.default.prefix></build.metainf.classpath.default.prefix>
 		<build.metainf.classpath.prefix>${build.metainf.classpath.default.prefix}</build.metainf.classpath.prefix>
 
 		<!-- This property is used in Deployment. By default, classpath will include
@@ -72,6 +72,16 @@
 				<artifactId>xvgdl-clashroyale</artifactId>
 				<version>${xvgdl.version}</version>
 			</dependency>
+            <dependency>
+                <groupId>es.jor.phd.xvgdl</groupId>
+                <artifactId>xvgdl-space-invaders</artifactId>
+                <version>${xvgdl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>es.jor.phd.xvgdl</groupId>
+                <artifactId>xvgdl-clashroyale</artifactId>
+                <version>${xvgdl.version}</version>
+            </dependency>
 
 			<!-- Third-party dependencies -->
 			<dependency>
@@ -198,7 +208,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.5</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -326,6 +336,8 @@
 				<module>../xvgdl-core</module>
 				<module>../xvgdl-pacman</module>
 				<module>../xvgdl-clashroyale</module>
+                <module>../xvgdl-tetris</module>
+                <module>../xvgdl-space-invaders</module>
 			</modules>
 
 			<properties>

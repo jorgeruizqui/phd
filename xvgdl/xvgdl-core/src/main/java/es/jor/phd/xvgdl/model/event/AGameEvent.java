@@ -44,6 +44,10 @@ public abstract class AGameEvent implements IGameEvent {
      */
     public void setGameEventDefinition(GameEventDefinition gameEventDefinition) {
         this.gameEventDefinition = gameEventDefinition;
+        updateDefinitionFields();
+    }
+
+    protected void updateDefinitionFields() {
     }
 
     /**
