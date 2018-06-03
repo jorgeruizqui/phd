@@ -1,5 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Simple type definitions -->
+  <xs:simpleType name="locationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TOP" />
+      <xs:enumeration value="BOTTOM" />
+      <xs:enumeration value="LEFT" />
+      <xs:enumeration value="RIGHT" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="ruleType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="generic" />
@@ -9,6 +19,7 @@
       <xs:enumeration value="endCondition" />
     </xs:restriction>
   </xs:simpleType>
+
   <xs:simpleType name="ruleResultType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="cantMove" />
@@ -25,6 +36,7 @@
       <xs:enumeration value="dissapear" />
       <xs:enumeration value="duplicate" />
       <xs:enumeration value="teletransport" />
+      <xs:enumeration value="changeDirection" />
       <xs:enumeration value="freeze" />
       <xs:enumeration value="bounce" />
       <xs:enumeration value="timeUp" />
@@ -32,27 +44,206 @@
       <xs:enumeration value="timeReset" />
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:simpleType name="objectType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="player" />
+      <xs:enumeration value="wall" />
+      <xs:enumeration value="enemy" />
+      <xs:enumeration value="item" />
+      <xs:enumeration value="projectile" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:element name="gameDefinition">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="map"/>
-        <xs:element ref="players"/>
-        <xs:element ref="objects"/>
-        <xs:element ref="physics"/>
-        <xs:element ref="events"/>
-        <xs:element ref="rules"/>
-        <xs:element ref="endConditions"/>
-        <xs:element ref="objectives"/>
+        <xs:element ref="property" maxOccurs="unbounded" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>List 'key-values' of context properties </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="layout">
+          <xs:annotation>
+            <xs:documentation>Layout renderer-independent definition</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="map">
+          <xs:annotation>
+            <xs:documentation>Map Definition</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="players">
+          <xs:annotation>
+            <xs:documentation>Players Definition</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="objects">
+          <xs:annotation>
+            <xs:documentation>Defining the Objects present in the game (NPCs, Obsctacles, projectiles,
+        structures, collectibles, etc...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="physics">
+          <xs:annotation>
+            <xs:documentation>Defining Game physics. Define set of possible physics action: gravitational pull, friction, repulsion forces, bouncing
+        effects, stickiness, etc...</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="events">
+          <xs:annotation>
+            <xs:documentation>Defining game events. Events sent from the player via input devices,
+        timed or random events, and object collision triggered events that affect
+        the game. May be as an example some item appears randomly. It can use a timer
+        (not before X milliseconds) or a random value to be executed</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="rules">
+          <xs:annotation>
+            <xs:documentation>Defining rules and their consequences over involved objects</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="endConditions">
+          <xs:annotation>
+            <xs:documentation>Game End Conditions</xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+
+  <!-- Context properties tag -->
+  <xs:element name="property">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="key" use="required"/>
+          <xs:attribute type="xs:string" name="value" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Game layout definition -->
+  <xs:element name="layout">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="component" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Game layout component -->
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="contextProperty" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="required"/>
+      <xs:attribute type="locationType" name="location" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="contextProperty">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="id" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="player">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="name" use="required"/>
+          <xs:attribute type="objectType" name="type" use="optional"/> <!-- By default is type 'player' -->
+          <xs:attribute type="xs:byte" name="score"/>
+          <xs:attribute type="xs:byte" name="lives"/>
+          <xs:attribute type="xs:byte" name="sizeX"/>
+          <xs:attribute type="xs:byte" name="sizeY"/>
+          <xs:attribute type="xs:string" name="bitmap" use="optional"/>
+          <xs:attribute type="xs:string" name="ai" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="name" use="required"/>
+          <xs:attribute type="objectType" name="type" use="required"/>
+          <xs:attribute type="xs:boolean" name="dynamic" use="optional"/>
+          <xs:attribute type="xs:boolean" name="volatile" use="optional"/>
+          <xs:attribute type="xs:byte" name="sizeX" use="optional"/>
+          <xs:attribute type="xs:byte" name="sizeY" use="optional"/>
+          <xs:attribute type="xs:byte" name="sizeZ" use="optional"/>
+          <xs:attribute type="xs:string" name="bitmap" use="optional"/>
+          <xs:attribute type="xs:string" name="ai" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="event">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="type" use="required"/>
+          <xs:attribute type="xs:string" name="className" use="required"/>
+          <xs:attribute type="xs:string" name="objectName" use="required"/>
+          <xs:attribute type="xs:short" name="timer"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ruleAction">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="objectName" use="optional"/>
+          <xs:attribute type="xs:string" name="result" use="optional"/>
+          <xs:attribute type="xs:string" name="value" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ruleAction" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="name" use="optional"/>
+      <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="endCondition">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="checkerClass" use="optional"/>
+          <xs:attribute type="xs:string" name="property" use="optional"/>
+          <xs:attribute type="xs:byte" name="value" use="optional"/>
+          <xs:attribute type="xs:string" name="objectNames" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
   <xs:element name="map">
     <xs:complexType>
-      <xs:attribute name="generator" use="required"/>
-      <xs:attribute name="sizeX" use="required" type="xs:integer"/>
-      <xs:attribute name="sizeY" use="required" type="xs:integer"/>
-      <xs:attribute name="toroidal" use="required" type="xs:boolean"/>
-      <xs:attribute name="type" use="required" type="xs:NMTOKEN"/>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:float" name="type"/>
+          <xs:attribute type="xs:byte" name="sizeX"/>
+          <xs:attribute type="xs:byte" name="sizeY"/>
+          <xs:attribute type="xs:boolean" name="toroidal"/>
+          <xs:attribute type="xs:string" name="file"/>
+        </xs:extension>
+      </xs:simpleContent>
     </xs:complexType>
   </xs:element>
   <xs:element name="players">
@@ -60,43 +251,19 @@
       <xs:sequence>
         <xs:element ref="player"/>
       </xs:sequence>
-      <xs:attribute name="maxNumber" use="required" type="xs:integer"/>
-      <xs:attribute name="minNumber" use="required" type="xs:integer"/>
-      <xs:attribute name="number" use="required" type="xs:integer"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="player">
-    <xs:complexType>
-      <xs:attribute name="ai" use="required"/>
-      <xs:attribute name="livePercentage" use="required" type="xs:integer"/>
-      <xs:attribute name="lives" use="required" type="xs:integer"/>
-      <xs:attribute name="name" use="required" type="xs:NCName"/>
-      <xs:attribute name="score" use="required" type="xs:integer"/>
+      <xs:attribute type="xs:byte" name="number"/>
+      <xs:attribute type="xs:byte" name="maxNumber"/>
+      <xs:attribute type="xs:byte" name="minNumber"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="objects">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="object"/>
+        <xs:element ref="object" maxOccurs="unbounded" minOccurs="0"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="object">
-    <xs:complexType>
-      <xs:attribute name="ai"/>
-      <xs:attribute name="dynamic" use="required" type="xs:boolean"/>
-      <xs:attribute name="instances" use="required" type="xs:integer"/>
-      <xs:attribute name="name" use="required" type="xs:NCName"/>
-      <xs:attribute name="size"/>
-      <xs:attribute name="sizeX" type="xs:integer"/>
-      <xs:attribute name="sizeY" type="xs:integer"/>
-      <xs:attribute name="type" use="required" type="xs:NCName"/>
-      <xs:attribute name="volatile" use="required" type="xs:boolean"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="physics">
-    <xs:complexType/>
-  </xs:element>
+  <xs:element name="physics" type="xs:string"/>
   <xs:element name="events">
     <xs:complexType>
       <xs:sequence>
@@ -104,63 +271,22 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="event">
-    <xs:complexType>
-      <xs:attribute name="className" use="required"/>
-      <xs:attribute name="objectName" use="required" type="xs:NCName"/>
-      <xs:attribute name="timer" use="required" type="xs:integer"/>
-      <xs:attribute name="type" use="required" type="xs:NCName"/>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="rules">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="rule"/>
+        <xs:element ref="rule" maxOccurs="unbounded" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Rules for missile hitting bricks  Rules for missile hitting walls  Rules for missile hitting walls  Rules for missile hitting walls</xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="rule">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="ruleAction"/>
-      </xs:sequence>
-      <xs:attribute name="name" use="required" type="xs:NCName"/>
-      <xs:attribute name="type" use="required" type="ruleType"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ruleAction">
-    <xs:complexType>
-      <xs:attribute name="objectName" use="required" type="xs:NCName"/>
-      <xs:attribute name="result" use="required"/>
-      <xs:attribute name="value"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="endConditions">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="endCondition"/>
+        <xs:element ref="endCondition" maxOccurs="unbounded" minOccurs="0"/>
       </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="endCondition">
-    <xs:complexType>
-      <xs:attribute name="checkerClass" use="required"/>
-      <xs:attribute name="objectNames"/>
-      <xs:attribute name="winningCondition" type="xs:boolean"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="objectives">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="objective"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="objective">
-    <xs:complexType>
-      <xs:attribute name="objectiveCheckerClass" use="required"/>
-      <xs:attribute name="score" type="xs:integer"/>
-      <xs:attribute name="weight" use="required" type="xs:decimal"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>
