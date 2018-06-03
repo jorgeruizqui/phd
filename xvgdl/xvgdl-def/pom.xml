@@ -335,9 +335,8 @@
 			<modules>
 				<module>../xvgdl-core</module>
 				<module>../xvgdl-pacman</module>
-				<module>../xvgdl-clashroyale</module>
-                <module>../xvgdl-tetris</module>
                 <module>../xvgdl-space-invaders</module>
+                <module>../xvgdl-breakout</module>
 			</modules>
 
 			<properties>
