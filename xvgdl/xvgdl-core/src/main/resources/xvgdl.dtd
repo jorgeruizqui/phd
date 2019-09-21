@@ -1,10 +1,21 @@
 <?xml encoding="UTF-8"?>
 
-<!ELEMENT gameDefinition (map,players,objects,physics,events,rules,
+<!ELEMENT gameDefinition (controls*,map,players,objects,physics,events,rules,
                           endConditions,objectives)>
 <!ATTLIST gameDefinition
   xmlns CDATA #FIXED ''>
 
+<!ELEMENT controls (control)>
+<!ELEMENT control EMPTY>
+<!ATTLIST control
+  xmlns CDATA #FIXED ''
+  left CDATA #REQUIRED preferred '27'
+  right CDATA #REQUIRED preferred '26'
+  up CDATA #REQUIRED preferred '24'
+  down CDATA #REQUIRED preferred '25'
+  jump CDATA #REQUIRED preferred '32'
+  fire CDATA #REQUIRED preferred '10'>
+  
 <!ELEMENT map EMPTY>
 <!ATTLIST map
   xmlns CDATA #FIXED ''
