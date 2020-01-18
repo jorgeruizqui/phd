@@ -1,2 +1,4 @@
-# phd
-PHD works
+# XVGDL
+XML-based Video Game Description Language (XVGDL), a new language for describing (and specifying) videogames which is based on the well-known Extensible Markup Language (XML). The proposal is portable and extensible, and allows games to not only be defined at engine level but also includes some specific features that can lead the game design process whilst simultaneously reducing the gap between game specification and its corresponding game implementation. XVGDL is proposed here to be as generic as possible, making it possible to describe different genres of games, such as board-based, platform or first-person shooter games.
+
+Full paper with details was published in IEEE Access journal (http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=6287639&source=authoralert) and it's accessible from IEEE Xplore: https://ieeexplore.ieee.org/document/8945249?source=authoralert
