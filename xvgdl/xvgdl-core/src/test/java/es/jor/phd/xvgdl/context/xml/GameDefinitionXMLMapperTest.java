@@ -10,7 +10,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlEmptyGameDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/emptyGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/emptyGameDefinition.xml");
 
         assertNotNull(cg);
     }
@@ -19,7 +19,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlGamePropertiesDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/propertiesGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/propertiesGameDefinition.xml");
 
         assertNotNull(cg);
         assertNotNull(cg.getProperties());
@@ -31,7 +31,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlGameMapDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/mapGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/mapGameDefinition.xml");
 
         assertNotNull(cg);
         assertNotNull(cg.getMap());
@@ -48,7 +48,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlGamePlayersDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/playersGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/playersGameDefinition.xml");
 
         assertNotNull(cg);
         assertNotNull(cg.getPlayers());
@@ -84,7 +84,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlGameObjectsDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/objectsGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/objectsGameDefinition.xml");
 
         assertNotNull(cg);
         assertNotNull(cg.getObjects());
@@ -119,7 +119,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlGameEventsDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/eventsGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/eventsGameDefinition.xml");
 
         assertNotNull(cg);
         assertNotNull(cg.getEvents());
@@ -142,7 +142,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlGameRulesDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/rulesGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/rulesGameDefinition.xml");
 
         assertNotNull(cg);
         assertNotNull(cg.getRules());
@@ -174,7 +174,7 @@ public class GameDefinitionXMLMapperTest {
     public void mapXmlGameEndConditionsDefinition() {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
-        GameDefinition cg = parser.parse("/endConditionsGameDefinition.xml");
+        GameDefinition cg = parser.parse("/es/jor/phd/xvgdl/context/xml/endConditionsGameDefinition.xml");
 
         assertNotNull(cg);
         assertNotNull(cg.getEndConditions());

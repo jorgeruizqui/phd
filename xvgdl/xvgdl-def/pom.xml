@@ -136,34 +136,6 @@
 			care of version, if any is reused you may want to configured it. -->
 		<pluginManagement>
 			<plugins>
-
-				<!-- Ignore/Execute plugin execution -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<!-- copy-dependency plugin -->
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>copy-dependencies</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-
 				<!-- org.projectlombok -->
 				<plugin>
 					<groupId>org.projectlombok</groupId>
@@ -173,28 +145,7 @@
 			</plugins>
 		</pluginManagement>
 
-		<!-- Plugins declared here are reused by child POM's. No extra re-config.
-			is needed except to override the behavior defined here. If no version is
-			declared the last one found in repositories is used. This feature is not
-			used to avoid going to codehouse or maven repos, sometimes are no in good
-			shape...Specifying version we ensure to get the one catched at nexus repo. -->
 		<plugins>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
-			</plugin>
-
-			<!-- Activate help goals -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-help-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<!-- your example configuration here -->
-				</configuration>
-			</plugin>
 
 			<!-- Compile specific config -->
 			<plugin>
@@ -215,43 +166,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
-				<configuration>
-					<outputDirectory>${build.output.lib.dir}</outputDirectory>
-					<jarname>${project.name}</jarname>
-					<archive>
-						<index>false</index>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathLayoutType>${custom.layout.type}</classpathLayoutType>
-						</manifest>
-						<manifestEntries>
-							<company>jrq</company>
-						</manifestEntries>
-					</archive>
-				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${build.output.lib.dir}</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-							<excludeTransitive>false</excludeTransitive>
-							<excludeScope>provided</excludeScope>
-							<stripVersion>true</stripVersion>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 
 
@@ -287,11 +206,11 @@
 
 		<developer>
 			<id>jorgeruizqui</id>
-			<name>Jorge Ruiz Quinones</name>
+			<name>Jorge R. Quinones</name>
 			<email>jorge.ruiz.qui@gmail.com</email>
-			<organization>Indra</organization>
+			<organization></organization>
 			<roles>
-				<role>Senior Software Engineer</role>
+				<role>Technical Lead</role>
 			</roles>
 			<timezone>+1</timezone>
 		</developer>
