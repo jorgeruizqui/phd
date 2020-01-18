@@ -1,8 +1,7 @@
 package es.jor.phd.xvgdl.model.event;
 
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
-import es.jor.phd.xvgdl.util.GameConstants;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Game Event Utils
@@ -10,6 +9,7 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
+@Slf4j
 public final class GameEventUtils {
 
     /** Private constructor. */
@@ -31,8 +31,7 @@ public final class GameEventUtils {
             executeEvent = false;
         }
         if (executeEvent) {
-            ELogger.debug(GameEventUtils.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                    "Executing game event: " + event.getClass().getName());
+            log.debug("Executing game event: " + event.getClass().getName());
             event.executeEvent();
         }
     }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of pacman game -->
+
+<gameDefinition>
+
+    <!-- Map Definition -->
+    <map type="2D" sizeX="20" sizeY="40" sizeZ="60" toroidal="true"
+         generator="RandomLocationGameMapGenerator"
+         file="MapFile">
+    </map>
+
+</gameDefinition>

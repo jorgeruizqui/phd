@@ -1,6 +1,7 @@
 package es.jor.phd.xvgdl.model.event;
 
 import java.util.List;
+import java.util.Optional;
 
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.object.IGameObject;
@@ -31,8 +32,8 @@ public class Speedup extends AGameEvent {
     
     @Override
     protected void updateDefinitionFields() {
-        setObjectName(getGameEventDefinition().getStringValue(XML_OBJECT_NAME));
-        setValue(getGameEventDefinition().getDoubleValue(XML_VALUE, 1.0));
+        setObjectName(getGameEventDefinition().getObjectName());
+        setValue(Optional.of(getGameEventDefinition().getValue()).orElse(0d));
     }
 
     @Override

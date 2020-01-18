@@ -1,12 +1,16 @@
 package es.jor.phd.xvgdl.context.xml;
 
-import es.indra.eplatform.properties.Properties;
-import es.indra.eplatform.util.log.ELogger;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import es.jor.phd.xvgdl.model.event.AGameEvent;
 import es.jor.phd.xvgdl.model.event.GameEventType;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.event.KeyboardGameEvent;
 import es.jor.phd.xvgdl.util.GameConstants;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  * Game Event XML element Definition
@@ -14,27 +18,22 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
-public class GameEventDefinition extends Properties {
+@Slf4j
+@Data
+public class GameEventDefinition {
 
-    /** XML main tag. */
-    public static final String XMLTAG = "event";
-
-    /** XML Attribute. Class Name. */
-    public static final String XMLATTR_CLASS_NAME = "className";
-
-    /** XML Attribute. Type. */
-    public static final String XMLATTR_TYPE = "type";
-
-    /** XML Attribute. Timer. */
-    public static final String XMLATTR_TIMER = "timer";
-
-    /** XML Attribute. Key Code. */
-    public static final String XMLATTR_KEY_CODE = "keyCode";
-
-    @Override
-    public void setXMLAttr(String key, String value) {
-        setProperty(key, value);
-    }
+    @JacksonXmlProperty(isAttribute = true)
+    private String type;
+    @JacksonXmlProperty(isAttribute = true)
+    private String className;
+    @JacksonXmlProperty(isAttribute = true)
+    private String objectName;
+    @JacksonXmlProperty(isAttribute = true)
+    private Long timer;
+    @JacksonXmlProperty(isAttribute = true)
+    private Integer keyCode;
+    @JacksonXmlProperty(isAttribute = true)
+    private Double value;
 
     /**
      *
@@ -43,24 +42,19 @@ public class GameEventDefinition extends Properties {
      */
     public static IGameEvent convert(GameEventDefinition eventDefinition) {
 
-        AGameEvent gameEvent = null;
-
         try {
-            gameEvent = (AGameEvent) Class.forName(eventDefinition.getProperty(XMLATTR_CLASS_NAME)).newInstance();
-            gameEvent.setEventType(GameEventType.fromString(eventDefinition.getProperty(XMLATTR_TYPE)));
-            gameEvent.setTimer(eventDefinition.getLongValue(XMLATTR_TIMER, 0));
+            AGameEvent gameEvent = gameEvent = (AGameEvent) Class.forName(eventDefinition.getClassName()).getDeclaredConstructor().newInstance();
+            gameEvent.setEventType(GameEventType.fromString(eventDefinition.getType()));
+            gameEvent.setTimer(Optional.ofNullable(eventDefinition.getTimer()).orElse(0L));
             gameEvent.setGameEventDefinition(eventDefinition);
 
             if (gameEvent instanceof KeyboardGameEvent) {
-                ((KeyboardGameEvent) gameEvent).setKeyCode(eventDefinition.getIntegerValue(XMLATTR_KEY_CODE, 0));
+                ((KeyboardGameEvent) gameEvent).setKeyCode(eventDefinition.getKeyCode());
             }
-
+            return gameEvent;
         } catch (Exception e) {
-            ELogger.error(GameEventDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                    "Exception converting GameEventDefinition to GameEvent: " + e.getMessage(), e);
-            gameEvent = null;
+            log.error("Exception converting GameEventDefinition to GameEvent: " + e.getMessage(), e);
+            return null;
         }
-
-        return gameEvent;
     }
 }

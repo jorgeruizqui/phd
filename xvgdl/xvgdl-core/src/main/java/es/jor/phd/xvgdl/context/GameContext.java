@@ -1,19 +1,7 @@
 package es.jor.phd.xvgdl.context;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-
-import es.indra.eplatform.context.Context;
-import es.indra.eplatform.util.IOUtils;
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.xml.GameContextXMLHandler;
+import es.jor.phd.xvgdl.context.xml.GameElementBaseDefinition;
 import es.jor.phd.xvgdl.context.xml.GameRendererXMLHandler;
 import es.jor.phd.xvgdl.model.actions.IGameAction;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
@@ -26,10 +14,25 @@ import es.jor.phd.xvgdl.model.objectives.IGameObjective;
 import es.jor.phd.xvgdl.model.physics.IGamePhysic;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
 import es.jor.phd.xvgdl.renderer.IGameRenderer;
-import es.jor.phd.xvgdl.util.GameConstants;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Game context
@@ -39,7 +42,8 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-public final class GameContext extends Context implements Comparable<GameContext> {
+@Slf4j
+public final class GameContext extends GameElementBaseDefinition implements Comparable<GameContext> {
 
     /** Renderer configuration key. */
     private static final String RENDERER_CONFIGURATION = "rendererConfiguration";
@@ -103,6 +107,12 @@ public final class GameContext extends Context implements Comparable<GameContext
     @Setter
     private Double fitnessScore = 0.0d;
 
+    @Getter
+    private Map<Object, Object> objectProperties = new HashMap<>();
+
+    public GameContext(){
+        // Empty constructor to be called by XML Mapper
+    }
     /**
      * Constructor.
      *
@@ -112,7 +122,7 @@ public final class GameContext extends Context implements Comparable<GameContext
     private GameContext(GameContext gc, String configurationFile) {
 
         if (configurationFile != null) {
-            try (InputStream f = IOUtils.getInputStream(configurationFile)) {
+            try (InputStream f = new FileInputStream(configurationFile)) {
 
                 // Read and parse configuration file. This will create all
                 // elements
@@ -127,19 +137,22 @@ public final class GameContext extends Context implements Comparable<GameContext
                 GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
                 rendererHandler.parseResource(getProperty(RENDERER_CONFIGURATION));
             } catch (IOException e) {
-                ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                        "Game context configuration file not found: " + configurationFile);
+                log.error("Game context configuration file not found: " + configurationFile);
             }
         }
 
         if (gc != null) {
             this.addObjectProperties(gc.entrySet());
-            this.addEndConditions(gc.getEndConditions());
+            this.addGameEndConditions(gc.getEndConditions());
             this.addEvents(gc.getGameEvents());
             this.addRules(gc.getGameRules());
             this.addObjects(gc.getObjectsAsList());
         }
 
+    }
+
+    private void addObjectProperties(Set<Map.Entry<Object, Object>> entrySet) {
+        entrySet.forEach(entry -> this.objectProperties.put(entry.getKey(), entry.getValue()));
     }
 
     /**
@@ -164,10 +177,8 @@ public final class GameContext extends Context implements Comparable<GameContext
     }
 
     /**
-     * Creates game context.
+     * Creates an empty game context.
      *
-     * @param configurationFile
-     *        Configuration File
      */
     public static void createEmptyGameContext() {
         instance = new GameContext(null, null);
@@ -256,8 +267,8 @@ public final class GameContext extends Context implements Comparable<GameContext
 
     /**
      *
-     * @param object
-     *        Object to be added
+     * @param objects
+     *        Objects to be added
      */
     public void addObjects(Collection<IGameObject> objects) {
         objects.stream().forEach(this::addObject);
@@ -316,7 +327,7 @@ public final class GameContext extends Context implements Comparable<GameContext
 
     /**
      *
-     * @param turns update to next turn
+     * Update to next turn
      */
     public void nextTurn() {
         this.turns++;
@@ -370,11 +381,11 @@ public final class GameContext extends Context implements Comparable<GameContext
     /**
      * Adds a collection of End Conditions
      *
-     * @param endConditions
+     * @param gameEndConditions
      *        List of End conditions to add
      */
-    public void addEndConditions(Collection<IGameEndCondition> endConditions) {
-        endConditions.addAll(endConditions);
+    public void addGameEndConditions(Collection<IGameEndCondition> gameEndConditions) {
+        this.gameEndConditions.addAll(gameEndConditions);
     }
 
     /**
@@ -408,6 +419,7 @@ public final class GameContext extends Context implements Comparable<GameContext
     public long getTimePlayed() {
         return getEndTime() != null ? getEndTime() - getStartTime() : System.currentTimeMillis() - getStartTime();
     }
+
 
     @Override
     public int compareTo(GameContext o) {

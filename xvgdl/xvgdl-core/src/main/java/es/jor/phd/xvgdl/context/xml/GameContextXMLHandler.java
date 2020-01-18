@@ -1,11 +1,5 @@
 package es.jor.phd.xvgdl.context.xml;
 
-import es.indra.eplatform.properties.Properties;
-import es.indra.eplatform.util.log.ELogger;
-import es.indra.eplatform.util.xml.BasicXMLHandler;
-import es.indra.eplatform.util.xml.IgnorableXMLElementParser;
-import es.indra.eplatform.util.xml.XMLException;
-import es.indra.eplatform.util.xml.XMLObjectParser;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
@@ -21,7 +15,7 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
-public class GameContextXMLHandler extends BasicXMLHandler {
+public class GameContextXMLHandler extends Object {
 
     /** MAP tag. */
     private static final String XMLTAG_GAME_DEFINITION = "gameDefinition";
@@ -55,6 +49,7 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         this.gameContext = gameContext;
 
         // Ignoring tags:
+        /*
         this.register(new IgnorableXMLElementParser(XMLTAG_GAME_DEFINITION));
         this.register(new IgnorableXMLElementParser(XMLTAG_OBJECTS));
         this.register(new IgnorableXMLElementParser(XMLTAG_PLAYERS));
@@ -75,21 +70,20 @@ public class GameContextXMLHandler extends BasicXMLHandler {
         this.register(new XMLObjectParser(GameEventDefinition.XMLTAG, GameEventDefinition.class));
         this.register(new XMLObjectParser(GameEndConditionDefinition.XMLTAG, GameEndConditionDefinition.class));
         this.register(new XMLObjectParser(GameObjectiveDefinition.XMLTAG, GameObjectiveDefinition.class));
+
+         */
     }
 
-    @Override
     public void parseResource(String resource) {
 
         try {
-            super.parseResource(resource);
-        } catch (XMLException e) {
-            ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "XML Exception parsing context resource file.", e);
+            //super.parseResource(resource);
+        } catch (Exception e) {
         }
     }
 
-    @Override
     public void onElementFinished(String xmlTag, Object obj) {
-
+/*
         if (xmlTag.equals(Properties.XMLTAG_PROPERTY)) {
             String key = obj.toString().substring(0, obj.toString().indexOf(':'));
             String value = obj.toString().substring(obj.toString().indexOf(':') + 1);
@@ -148,5 +142,6 @@ public class GameContextXMLHandler extends BasicXMLHandler {
             IGameObjective gameObjective = GameObjectiveDefinition.convert(gameObjectiveDefinition);
             gameContext.addGameObjective(gameObjective);
         }
+        */
     }
 }

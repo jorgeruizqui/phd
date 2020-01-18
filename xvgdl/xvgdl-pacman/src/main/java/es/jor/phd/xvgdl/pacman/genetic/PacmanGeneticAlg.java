@@ -1,11 +1,5 @@
 package es.jor.phd.xvgdl.pacman.genetic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.app.GameApp;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.engine.GameEngine;
@@ -14,8 +8,14 @@ import es.jor.phd.xvgdl.model.objectives.IGameObjective;
 import es.jor.phd.xvgdl.model.rules.GameRule;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
 import es.jor.phd.xvgdl.pacman.context.PacmanSimulatorContextGenerator;
-import es.jor.phd.xvgdl.util.GameConstants;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+@Slf4j
 public class PacmanGeneticAlg {
 
     private static final String GAME_SIMULATION_CATEGORY = "GAME_GENETIC_ALGORITHM_SIMULATION";
@@ -68,13 +68,12 @@ public class PacmanGeneticAlg {
         // Force a first evolution of the contexts
         this.currentGameContexts.forEach(this::evolution);
 
-        ELogger.info(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-        		"Starting simulation with generated base " + this.numberOfCurrentContext + " Game Contexts");
+        log.info("Starting simulation with generated base " + this.numberOfCurrentContext + " Game Contexts");
 
         // Genetic algorithm main loop
         int iterations = 0;
         while (iterations++ < this.numberOfIterations) {
-            ELogger.debug(this, GAME_SIMULATION_CATEGORY, "Starting iteration " + iterations);
+            log.debug("Starting iteration " + iterations);
             this.currentGameContexts.forEach(this::play);
             // Order the results, bigger scores first
             Collections.sort(this.currentGameContexts, Collections.reverseOrder());
@@ -89,8 +88,7 @@ public class PacmanGeneticAlg {
 
         results();
 
-        ELogger.info(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-        		"End of simulation with DATA: TIME " + ((System.currentTimeMillis() - initTime) / 1000d) + " seconds." +
+        log.info("End of simulation with DATA: TIME " + ((System.currentTimeMillis() - initTime) / 1000d) + " seconds." +
          " ITERATIONS: " + this.numberOfIterations +
          " POPULATION: " + this.numberOfCurrentContext);
     }
@@ -116,8 +114,7 @@ public class PacmanGeneticAlg {
 	}
 
 	private void results() {
-        ELogger.info(this, "GAME_SIMULATION_RESULT",
-                "Simulation Ended after " + this.numberOfIterations + " executions. "
+        log.info("Simulation Ended after " + this.numberOfIterations + " executions. "
                 + "Fitness Score: " + this.currentBestSolution
                 + ". Game Context Solution: " + this.betterSolution);
     }
@@ -207,11 +204,11 @@ public class PacmanGeneticAlg {
         	fitness += go.checkObjective(this.currentGameEngine.getGameContext());
         }
 
-        ELogger.debug(this, GAME_SIMULATION_CATEGORY, "End of simulation with score" + fitness);
+        log.debug("End of simulation with score" + fitness);
         if (fitness > currentBestSolution) {
             currentBestSolution = fitness;
             betterSolution = c;
-            ELogger.debug(this, GAME_SIMULATION_CATEGORY, "New best score found for this context: " + betterSolution.toString());
+            log.debug("New best score found for this context: " + betterSolution.toString());
         }
 
         // Set the fitness score to the Game Context

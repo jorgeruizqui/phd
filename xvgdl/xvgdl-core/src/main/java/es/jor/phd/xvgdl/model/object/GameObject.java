@@ -1,16 +1,15 @@
 package es.jor.phd.xvgdl.model.object;
 
-import java.util.Random;
-
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.location.DirectionVector;
 import es.jor.phd.xvgdl.model.location.Position;
 import es.jor.phd.xvgdl.model.object.ai.IGameObjectAI;
-import es.jor.phd.xvgdl.util.GameConstants;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Random;
 
 /**
  * Game Object
@@ -21,6 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Slf4j
 public class GameObject implements IGameObject {
 
     /** Name of the game object. */
@@ -143,7 +143,7 @@ public class GameObject implements IGameObject {
                 cloned.setObjectAI(this.objectAI.getClass().newInstance());
             }
         } catch (InstantiationException | IllegalAccessException e) {
-            ELogger.error(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception setting object class AI: ", e);
+            log.error("Exception setting object class AI: ", e);
         }
         cloned.setDynamic(isDynamic());
         cloned.setInstance((new Random()).nextInt());

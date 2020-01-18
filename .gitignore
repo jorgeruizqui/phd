@@ -60,3 +60,7 @@ mvn-settings.xml
 
 #Checkstyle
 .checkstyle
+
+#Intellij
+.idea
+*.iml

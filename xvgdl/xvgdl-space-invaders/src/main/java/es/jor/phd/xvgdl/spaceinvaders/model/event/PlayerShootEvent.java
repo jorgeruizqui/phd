@@ -41,7 +41,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
     
     @Override
     protected void updateDefinitionFields() {
-        setObjectName(getGameEventDefinition().getStringValue(XML_OBJECT_NAME));
+        setObjectName(getGameEventDefinition().getObjectName());
     }
 
     /**
@@ -64,7 +64,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
             if (player != null && !firstTime) {
                 GameObject projectile = new GameObject();
                 projectile.moveTo(player.getX(), player.getY(), player.getZ());
-                projectile.setName(definition.getProperty(XML_OBJECT_NAME));
+                projectile.setName(definition.getObjectName());
                 projectile.setInstance(new Random().nextInt());
                 projectile.setDynamic(true);
                 projectile.setVolatile(true);

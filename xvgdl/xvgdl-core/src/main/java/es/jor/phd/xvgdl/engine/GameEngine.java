@@ -1,6 +1,7 @@
 package es.jor.phd.xvgdl.engine;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -9,12 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
-import es.indra.eplatform.properties.Properties;
-import es.indra.eplatform.properties.PropertiesParseException;
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.input.KeyboardInputListener;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
@@ -26,7 +25,7 @@ import es.jor.phd.xvgdl.model.object.IGameObject;
 import es.jor.phd.xvgdl.model.rules.GameRuleType;
 import es.jor.phd.xvgdl.model.rules.GameRuleUtils;
 import es.jor.phd.xvgdl.model.rules.IGameRule;
-import es.jor.phd.xvgdl.util.GameConstants;
+
 
 /**
  * Game engine
@@ -34,6 +33,7 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
+@Slf4j
 public final class GameEngine extends Properties {
 
     /**
@@ -83,20 +83,18 @@ public final class GameEngine extends Properties {
     private GameEngine(GameContext gc, String configFile) {
         try {
             // Load Game Engine properties
-            loadPropertiesFromXML(configFile);
-            this.simulationMode = getBooleanValue(SIMULATION_MODE_KEY, false);
+            //loadPropertiesFromXML(configFile);
+            //this.simulationMode = getBooleanValue(SIMULATION_MODE_KEY, false);
 
             if (getProperty(GAME_CONTEXT_CONFIG_KEY) != null) {
-                ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                        "Context to be created with file " + getProperty(GAME_CONTEXT_CONFIG_KEY));
+                log.debug("Context to be created with file " + getProperty(GAME_CONTEXT_CONFIG_KEY));
                 GameContext.createGameContext(gc, getProperty(GAME_CONTEXT_CONFIG_KEY));
             }
 
             addKeyboardListener();
 
-        } catch (PropertiesParseException e) {
-            ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception parsing properties",
-                    e);
+        } catch (Exception e) {
+            log.error("Exception parsing properties", e);
         }
     }
 
@@ -127,8 +125,7 @@ public final class GameEngine extends Properties {
             this.keyboardInputListener.addContextDefinedKeyboardGameEvent(definedKeyboardGameEvents);
              
         } catch (NativeHookException ex) {
-            ELogger.error(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Exception registering hooks",
-                    ex);
+            log.error("Exception registering hooks", ex);
         }
     }
 
@@ -185,7 +182,7 @@ public final class GameEngine extends Properties {
      */
     public void gameLoop() {
 
-        ELogger.debug(GameEngine.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Launching game loop....");
+        log.debug("Launching game loop....");
         getGameContext().setStartTime(System.currentTimeMillis());
 
         updateState();
@@ -198,18 +195,18 @@ public final class GameEngine extends Properties {
                 processRules();
                 updateState();
                 render();
-                Thread.sleep((long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
-                        - start));
+                //Thread.sleep((long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
+                //        - start));
                 getGameContext().nextTurn();
                 checkEndConditions();
             } catch (Exception e) {
-                ELogger.error(GameEngine.class, "", "Exception in game loop", e);
+                log.error("Exception in game loop", e);
             }
         }
         try {
             GlobalScreen.unregisterNativeHook();
         } catch (NativeHookException e) {
-            ELogger.error(GameEngine.class, "", "Exception Unregistering Native Hook", e);
+            log.error("Exception Unregistering Native Hook", e);
         }
 
     }
@@ -218,8 +215,7 @@ public final class GameEngine extends Properties {
 
         for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
             if (endCondition.checkCondition(getGameContext())) {
-                ELogger.info(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                        "Game end condition reached: " + endCondition.toString());
+                log.info("Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 if (endCondition.isWinningCondition()) {
                     gameWinning = true;
@@ -237,7 +233,7 @@ public final class GameEngine extends Properties {
 
         for (IGameEvent event : getGameContext().getGameSortedEvents()) {
             if (simulationMode && GameEventType.KEYBOARD.equals(event.getEventType())) {
-                ELogger.debug(this, "", "Keyboard Event not processed. Simulation Mode enabled");
+                log.debug("Keyboard Event not processed. Simulation Mode enabled");
             } else {
                 GameEventUtils.processGameEvent(getGameContext(), event);
             }
@@ -245,9 +241,7 @@ public final class GameEngine extends Properties {
             if (event.isConsumable()) {
                 getGameContext().eventProcessed(event);
             }
-
         }
-
     }
 
     /**
@@ -263,14 +257,12 @@ public final class GameEngine extends Properties {
                 this.gameFinished = true;
             }
         }
-
     }
 
     /**
      * Processes Artificial Intelligence.
      */
     private void processAI() {
-
         // Apply Artificial Intelligence to all elements that have AI configured
         getGameContext().getObjectsAsList().forEach(go -> go.applyAI(getGameContext()));
     }

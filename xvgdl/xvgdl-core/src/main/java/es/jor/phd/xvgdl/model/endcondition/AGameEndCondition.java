@@ -3,6 +3,8 @@ package es.jor.phd.xvgdl.model.endcondition;
 import es.jor.phd.xvgdl.context.xml.GameEndConditionDefinition;
 import lombok.Data;
 
+import java.util.Optional;
+
 /**
  * Basic implementation for an End Game Condition.
  *
@@ -11,8 +13,6 @@ import lombok.Data;
  */
 @Data
 public abstract class AGameEndCondition implements IGameEndCondition {
-
-    private static final String XML_WINNING_CONDITION = "winningCondition";
 
     /** Game End condition defintion. */
     private GameEndConditionDefinition gameEndConditionDefinition;
@@ -25,6 +25,6 @@ public abstract class AGameEndCondition implements IGameEndCondition {
     @Override
     public boolean isWinningCondition() {
         return gameEndConditionDefinition != null
-                ? gameEndConditionDefinition.getBooleanValue(XML_WINNING_CONDITION, Boolean.FALSE) : false;
+                ? Optional.ofNullable(gameEndConditionDefinition.getWinningCondition()).orElse(false) : false;
     }
 }

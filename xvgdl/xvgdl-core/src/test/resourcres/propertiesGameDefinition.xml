@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of pacman game -->
+
+<gameDefinition>
+
+    <properties>
+        <rendererConfiguration>renderer_config.xml</rendererConfiguration>
+        <timeout>20000</timeout>
+    </properties>
+
+</gameDefinition>
