@@ -3,6 +3,7 @@ package es.jor.phd.xvgdl.model.endcondition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import es.jor.phd.xvgdl.context.GameContext;
 
@@ -12,11 +13,9 @@ import es.jor.phd.xvgdl.context.GameContext;
  */
 public class NoObjectsPresentGameEndCondition extends AGameEndCondition {
 
-    private static final String XML_OBJECT_NAMES = "objectNames";
-
     @Override
     public boolean checkCondition(GameContext c) {
-        String objectNames = getGameEndConditionDefinition().getProperty(XML_OBJECT_NAMES, "");
+        String objectNames = Optional.ofNullable(getGameEndConditionDefinition().getObjectNames()).orElse("");
         List<String> objectList = new ArrayList<>();
 
         if (!objectNames.isEmpty()) {

@@ -1,16 +1,18 @@
 package es.jor.phd.xvgdl.context.xml;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import es.indra.eplatform.properties.Properties;
-import es.indra.eplatform.util.IIdentificableObject;
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.model.map.GameMap;
 import es.jor.phd.xvgdl.model.map.GameMapType;
 import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.map.IGameMapGenerator;
 import es.jor.phd.xvgdl.model.object.IGameObject;
-import es.jor.phd.xvgdl.util.GameConstants;
+
+import java.util.Optional;
 
 /**
  * Game Map XML element Definition
@@ -18,41 +20,24 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
-public class GameMapDefinition extends Properties implements IIdentificableObject {
+@Slf4j
+@Data
+public class GameMapDefinition {
 
-    /** XML main tag. */
-    public static final String XMLTAG = "map";
-
-    /** XML Attribute. Type. */
-    public static final String XMLATTR_TYPE = "type";
-
-    /** XML Attribute. Size X. */
-    public static final String XMLATTR_SIZE_X = "sizeX";
-
-    /** XML Attribute. Size Y. */
-    public static final String XMLATTR_SIZE_Y = "sizeY";
-
-    /** XML Attribute. Size Z. */
-    public static final String XMLATTR_SIZE_Z = "sizeZ";
-
-    /** XML Attribute. Toroidal. */
-    public static final String XMLATTR_TOROIDAL = "toroidal";
-
-    /** XML Attribute. Generator. */
-    public static final String XMLATTR_GENERATOR = "generator";
-
-    /** XML Attribute. File . */
-    public static final String XMLATTR_FILE = "file";
-
-    @Override
-    public String getId() {
-        return getProperty(XMLATTR_TYPE);
-    }
-
-    @Override
-    public void setXMLAttr(String key, String value) {
-        setProperty(key, value);
-    }
+    @JacksonXmlProperty(isAttribute = true)
+    private Integer sizeX;
+    @JacksonXmlProperty(isAttribute = true)
+    private Integer sizeY;
+    @JacksonXmlProperty(isAttribute = true)
+    private Integer sizeZ;
+    @JacksonXmlProperty(isAttribute = true)
+    private String generator;
+    @JacksonXmlProperty(isAttribute = true)
+    private String type;
+    @JacksonXmlProperty(isAttribute = true)
+    private Boolean toroidal;
+    @JacksonXmlProperty(isAttribute = true)
+    private String file;
 
     /**
      * Convert to IGameMap interface
@@ -62,23 +47,22 @@ public class GameMapDefinition extends Properties implements IIdentificableObjec
     public static IGameMap convert(GameMapDefinition definition) {
         GameMap gameMap = new GameMap();
         try {
-            gameMap.setSizeX(definition.getIntegerValue(XMLATTR_SIZE_X, 0));
-            gameMap.setSizeY(definition.getIntegerValue(XMLATTR_SIZE_Y, 0));
-            gameMap.setSizeZ(definition.getIntegerValue(XMLATTR_SIZE_Z, 0));
+            gameMap.setSizeX(definition.getSizeX());
+            gameMap.setSizeY(definition.getSizeY());
+            gameMap.setSizeZ(definition.getSizeZ());
 
-            if (StringUtils.isNotEmpty(definition.getProperty(XMLATTR_GENERATOR))) {
+            if (StringUtils.isNotEmpty(definition.getGenerator())) {
 	            gameMap.setMapGenerator((IGameMapGenerator) Class.forName(
-	                    definition.getProperty(XMLATTR_GENERATOR)).newInstance());
+	                    definition.getGenerator()).newInstance());
             }
 
             gameMap.setMapRepresentation(
                     new IGameObject[gameMap.getSizeX()][gameMap.getSizeY()][gameMap.getSizeZ()]);
-            gameMap.setMapType(GameMapType.fromString(definition.getProperty(XMLATTR_TYPE)));
-            gameMap.setToroidal(definition.getBooleanValue(XMLATTR_TOROIDAL));
-            gameMap.setMapFile(definition.getProperty(XMLATTR_FILE, ""));
+            gameMap.setMapType(GameMapType.fromString(definition.getType()));
+            gameMap.setToroidal(Optional.ofNullable(definition.getToroidal()).orElse(Boolean.FALSE));
+            gameMap.setMapFile(definition.getFile());
         } catch (Exception e) {
-            ELogger.error(GameMapDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                    "Exception converting GameMapDefinition to GameMap: " + e.getMessage(), e);
+            log.error("Exception converting GameMapDefinition to GameMap: " + e.getMessage(), e);
             gameMap = null;
         }
 

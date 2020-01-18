@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<gameDefinition>
+
+    <rules>
+        <rule name="eatBigDot" type="collision">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="scoreUp" value="300" />
+                <ruleAction objectName="bigDot" result="disappear" />
+            </ruleActions>
+        </rule>
+    </rules>
+
+</gameDefinition>

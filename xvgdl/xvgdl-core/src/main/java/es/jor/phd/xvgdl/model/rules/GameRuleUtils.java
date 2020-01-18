@@ -1,14 +1,13 @@
 package es.jor.phd.xvgdl.model.rules;
 
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.engine.GameEngine;
 import es.jor.phd.xvgdl.model.object.IGameObject;
-import es.jor.phd.xvgdl.util.GameConstants;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Game Rule Utils
@@ -16,6 +15,7 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
+@Slf4j
 public final class GameRuleUtils {
 
     /** Private constructor. */
@@ -48,8 +48,7 @@ public final class GameRuleUtils {
                     for (IGameObject object2 : objects2) {
                         if (object1.getX() == object2.getX() && object1.getY() == object2.getY()
                                 && object1.getZ() == object2.getZ()) {
-                            ELogger.debug(GameRuleUtils.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                                    "Collision Rule " + gameRule.getName() + " satisfied for two objects ["
+                            log.debug("Collision Rule " + gameRule.getName() + " satisfied for two objects ["
                                             + object1.getId() + ", " + object2.getId() + "]");
 
                             GameRuleUtils.executeResult(gameContext, object1,
@@ -61,8 +60,7 @@ public final class GameRuleUtils {
                     }
                 }
             } else {
-                ELogger.error(GameRuleUtils.class, GameConstants.GAME_ENGINE_LOGGER_CATEGORY,
-                        "Error applying Collision Rule " + gameRule.getName()
+                log.error("Error applying Collision Rule " + gameRule.getName()
                                 + ". Two Action objects must be specified for this kind of rules.");
                 rto = false;
             }

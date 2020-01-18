@@ -1,9 +1,7 @@
 package es.jor.phd.xvgdl.context.xml;
 
-import es.indra.eplatform.properties.Properties;
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.model.objectives.IGameObjective;
-import es.jor.phd.xvgdl.util.GameConstants;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Game End Condition XML element Definition
@@ -11,7 +9,8 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
-public class GameObjectiveDefinition extends Properties {
+@Slf4j
+public class GameObjectiveDefinition extends GameElementBaseDefinition {
 
     /** XML main tag. */
     public static final String XMLTAG = "objective";
@@ -24,11 +23,6 @@ public class GameObjectiveDefinition extends Properties {
 
     /** XML Attribute. Score. */
     public static final String XMLATTR_SCORE = "score";
-
-    @Override
-    public void setXMLAttr(String key, String value) {
-        setProperty(key, value);
-    }
 
     /**
      *
@@ -47,8 +41,7 @@ public class GameObjectiveDefinition extends Properties {
             gameObjective.setWeight(gameObjectiveDefinition.getDoubleValue(XMLATTR_WEIGHT, 1d));
 
         } catch (Exception e) {
-            ELogger.error(GameObjectiveDefinition.class, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                    "Exception converting GameObjectiveDefinition to IGameObjective: " + e.getMessage(), e);
+            log.error("Exception converting GameObjectiveDefinition to IGameObjective: " + e.getMessage(), e);
             gameObjective = null;
         }
 

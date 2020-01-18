@@ -8,26 +8,18 @@ import es.jor.phd.xvgdl.context.GameContext;
  */
 public class LongContextPropertyBasedGameEndCondition extends AGameEndCondition {
 
-    private static final String PROPERTY = "property";
-    private static final String VALUE = "value";
-
     @Override
     public boolean checkCondition(GameContext c) {
 
-        boolean rto = false;
-
         try {
-            String prop = getGameEndConditionDefinition().getStringValue(PROPERTY);
+            String prop = getGameEndConditionDefinition().getProperty();
             Long gameContextValue = c.getLongValue(prop.toUpperCase(), -1);
-            Long value = Long.parseLong(getGameEndConditionDefinition().getStringValue(VALUE));
+            Long value = Long.parseLong(getGameEndConditionDefinition().getValue());
 
-            if (gameContextValue.equals(value)) {
-                rto = true;
-            } else
-                rto = false;
+            return gameContextValue.equals(value);
         } catch (Exception e) {
         }
-        return rto;
+        return false;
     }
 
 }

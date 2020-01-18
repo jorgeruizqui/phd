@@ -24,8 +24,7 @@
 		<junit.version>4.12</junit.version>
 		<slf4j.version>1.7.21</slf4j.version>
 		<apache.commons.version>3.6</apache.commons.version>
-		<eplatform.commons.version>1.8.13.1</eplatform.commons.version>
-		<lombok.version>1.16.2</lombok.version>
+		<lombok.version>1.18.10</lombok.version>
 		<!-- Build definitions -->
 
 		<!-- Folder where to send Jar files once they are generated -->
@@ -35,9 +34,6 @@
 		<!-- Folder where to send Lib Jar files once they are generated -->
 		<build.output.default.lib.dir>${build.output.home.dir}</build.output.default.lib.dir>
 		<build.output.lib.dir>${build.output.default.lib.dir}</build.output.lib.dir>
-
-		<build.metainf.classpath.default.prefix></build.metainf.classpath.default.prefix>
-		<build.metainf.classpath.prefix>${build.metainf.classpath.default.prefix}</build.metainf.classpath.prefix>
 
 		<!-- This property is used in Deployment. By default, classpath will include
 			versions and SNAPSHOTS in their JAR names. If this property is set to "custom",
@@ -58,6 +54,11 @@
 		<dependencies>
 			<!-- Project dependencies -->
 			<dependency>
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-xml</artifactId>
+				<version>2.10.2</version>
+			</dependency>
+			<dependency>
 				<groupId>es.jor.phd.xvgdl</groupId>
 				<artifactId>xvgdl-core</artifactId>
 				<version>${xvgdl.version}</version>
@@ -75,11 +76,6 @@
             <dependency>
                 <groupId>es.jor.phd.xvgdl</groupId>
                 <artifactId>xvgdl-space-invaders</artifactId>
-                <version>${xvgdl.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>es.jor.phd.xvgdl</groupId>
-                <artifactId>xvgdl-clashroyale</artifactId>
                 <version>${xvgdl.version}</version>
             </dependency>
 
@@ -131,10 +127,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -225,20 +217,15 @@
 				<version>2.3.1</version>
 				<configuration>
 					<outputDirectory>${build.output.lib.dir}</outputDirectory>
-					<jarName>${project.name}</jarName>
+					<jarname>${project.name}</jarname>
 					<archive>
 						<index>false</index>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<classpathPrefix>${build.metainf.classpath.prefix}</classpathPrefix>
-							<mainClass>${build.metainf.main.class}</mainClass>
 							<classpathLayoutType>${custom.layout.type}</classpathLayoutType>
-							<!-- Only used if classpathLayoutType is set to 'custom' -->
-							<customClasspathLayout>$${artifact.artifactId}.$${artifact.extension}</customClasspathLayout>
 						</manifest>
 						<manifestEntries>
-							<Class-Path></Class-Path>
-							<company>JOR</company>
+							<company>jrq</company>
 						</manifestEntries>
 					</archive>
 				</configuration>

@@ -2,14 +2,15 @@ package es.jor.phd.xvgdl.pacman.context;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.context.generator.IGameContextGenerator;
 import es.jor.phd.xvgdl.model.endcondition.IGameEndCondition;
 import es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition;
 import es.jor.phd.xvgdl.model.endcondition.TurnsGameEndCondition;
 import es.jor.phd.xvgdl.util.GameConstants;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
 
     // Game Engine properties
@@ -41,8 +42,7 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
 
         Integer maxTurns = ThreadLocalRandom.current().nextInt(MAX_TURNS);
         IGameEndCondition turnsEndCondition = new TurnsGameEndCondition(maxTurns);
-        ELogger.info(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                "Generated game max number of turns for " + maxTurns + ".");
+        log.info("Generated game max number of turns for " + maxTurns + ".");
         gc.addEndCondition(turnsEndCondition);
     }
 
@@ -69,7 +69,7 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
     private void generateContextProperties(GameContext gc) {
         Long to = ThreadLocalRandom.current().nextLong(MIN_TIMEOUT, MAX_TIMEOUT);
         gc.setTimeout(to);
-        ELogger.info(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY, "Generated game timout for " + to + "ms.");
+        log.info("Generated game timout for " + to + "ms.");
     }
 
 }

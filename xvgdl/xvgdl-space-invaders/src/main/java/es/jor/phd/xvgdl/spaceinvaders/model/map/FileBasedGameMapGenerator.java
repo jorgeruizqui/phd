@@ -1,15 +1,16 @@
 package es.jor.phd.xvgdl.spaceinvaders.model.map;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
-import es.indra.eplatform.util.IOUtils;
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.map.IGameMap;
 import es.jor.phd.xvgdl.model.map.IGameMapGenerator;
 import es.jor.phd.xvgdl.model.object.IGameObject;
-import es.jor.phd.xvgdl.util.GameConstants;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Game Map Generator basic implementations
@@ -17,22 +18,24 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
+@Slf4j
 public class FileBasedGameMapGenerator implements IGameMapGenerator {
 
     @Override
     public void generateMapRepresentation(GameContext gc, IGameMap map) {
-
-        try (InputStream f = IOUtils.getInputStream(map.getMapFile())) {
+        try (InputStream f = new FileInputStream(map.getMapFile())) {
             String sCurrentLine = "";
 //            char [][] mapRepresentation;
             int numberOfRows = 0;
-            BufferedReader br = IOUtils.createBufferedReader(f);
+            BufferedReader br = new BufferedReader(new InputStreamReader(f));
+
             while ((sCurrentLine = br.readLine()) != null) {
                 numberOfRows++;
             }
             f.close();
-            InputStream readValues = IOUtils.getInputStream(map.getMapFile());
-            br = IOUtils.createBufferedReader(readValues);
+            InputStream readValues = new FileInputStream(map.getMapFile());
+            br = new BufferedReader(new InputStreamReader(readValues));
+
             int y = 0;
             while ((sCurrentLine = br.readLine()) != null) {
                 for (int x = 0; x < sCurrentLine.length(); x++) {
@@ -55,8 +58,7 @@ public class FileBasedGameMapGenerator implements IGameMapGenerator {
             readValues.close();
 
         } catch (Exception e) {
-            ELogger.error(this, GameConstants.GAME_CONTEXT_LOGGER_CATEGORY,
-                    "Error parsing map file: " + map.getMapFile(), e);
+            log.error("Error parsing map file: " + map.getMapFile(), e);
         }
     }
 

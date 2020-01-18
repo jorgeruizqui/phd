@@ -2,17 +2,15 @@ package es.jor.phd.xvgdl.input;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-import es.indra.eplatform.util.log.ELogger;
 import es.jor.phd.xvgdl.context.GameContext;
 import es.jor.phd.xvgdl.model.event.GameEventType;
 import es.jor.phd.xvgdl.model.event.IGameEvent;
 import es.jor.phd.xvgdl.model.event.KeyboardGameEvent;
-import es.jor.phd.xvgdl.util.GameConstants;
 
 /**
  * Default Keyboard input listener
@@ -20,6 +18,7 @@ import es.jor.phd.xvgdl.util.GameConstants;
  * @author jrquinones
  *
  */
+@Slf4j
 public class KeyboardInputListener implements NativeKeyListener {
 
     /**
@@ -58,7 +57,6 @@ public class KeyboardInputListener implements NativeKeyListener {
         KeyboardGameEvent keyEvent = new KeyboardGameEvent(event.getKeyCode());
         keyEvent.setTimeStamp(System.currentTimeMillis());
         keyEvent.setEventType(GameEventType.KEYBOARD);
-        //ELogger.debug(this, GameConstants.GAME_ENGINE_LOGGER_CATEGORY, "Keyboard pressed: " + event.getKeyChar());
         gameContext.addEvent(keyEvent);
 
     }

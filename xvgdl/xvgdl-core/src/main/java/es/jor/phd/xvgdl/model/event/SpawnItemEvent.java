@@ -35,7 +35,7 @@ public class SpawnItemEvent extends AGameEvent {
     
     @Override
     protected void updateDefinitionFields() {
-        setObjectName(getGameEventDefinition().getStringValue(XML_OBJECT_NAME));
+        setObjectName(getGameEventDefinition().getObjectName());
     }
 
     /**
