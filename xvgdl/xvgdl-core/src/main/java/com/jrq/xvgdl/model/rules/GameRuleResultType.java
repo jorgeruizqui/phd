@@ -1,0 +1,107 @@
+package com.jrq.xvgdl.model.rules;
+
+import java.util.Arrays;
+
+/**
+ * Game Rule Result Type.
+ *
+ * @author jrquinones
+ */
+public enum GameRuleResultType {
+
+    /**
+     * Can't move.
+     */
+    CANT_MOVE,
+    /**
+     * Score Up.
+     */
+    SCORE_UP,
+    /**
+     * Score Down.
+     */
+    SCORE_DOWN,
+    /**
+     * Score set to a concrete value.
+     */
+    SCORE_SET_TO,
+    /**
+     * Score reset to initial value.
+     */
+    SCORE_RESET,
+    /**
+     * Lives up.
+     */
+    LIVES_UP,
+    /**
+     * Lives down.
+     */
+    LIVES_DOWN,
+    /**
+     * Lives reset to initial value.
+     */
+    LIVES_RESET,
+    /**
+     * Live Percentage up.
+     */
+    LIVES_PERCENTAGE_UP,
+    /**
+     * Live Percentage down.
+     */
+    LIVES_PERCENTAGE_DOWN,
+    /**
+     * Live Percentage reset to initial value.
+     */
+    LIVES_PERCENTAGE_RESET,
+    /**
+     * Disappear.
+     */
+    DISAPPEAR,
+    /**
+     * Duplicate.
+     */
+    DUPLICATE,
+    /**
+     * Teletransport.
+     */
+    TELETRANSPORT,
+    /**
+     * Change object moving direction.
+     */
+    CHANGE_DIRECTION,
+    /**
+     * Freeze.
+     */
+    FREEZE,
+    /**
+     * Transform.
+     */
+    TRANSFORM,
+    /**
+     * Bounce.
+     */
+    BOUNCE,
+    /**
+     * Time Up.
+     */
+    TIME_UP,
+    /**
+     * Time Down.
+     */
+    TIME_DOWN,
+    /**
+     * Time Reset to initial value.
+     */
+    TIME_RESET;
+
+    /**
+     * @param ruleResultTypeSt String defining rule result type
+     * @return the Rule Result type according to the string parameter
+     */
+    public static GameRuleResultType fromString(String ruleResultTypeSt) {
+
+        return Arrays.asList(values()).stream()
+                .filter(s -> ruleResultTypeSt.trim().equalsIgnoreCase(s.name().replace("_", ""))).findFirst()
+                .orElse(null);
+    }
+}

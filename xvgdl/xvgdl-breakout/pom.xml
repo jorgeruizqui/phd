@@ -30,7 +30,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>es.jor.phd.xvgdl.breakout.LaunchBreakout</mainClass>
+                            <mainClass>com.jrq.xvgdl.breakout.LaunchBreakout</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

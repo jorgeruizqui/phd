@@ -1,116 +1,116 @@
 <?xml encoding="UTF-8"?>
 
-<!ELEMENT gameDefinition (controls*,map,players,objects,physics,events,rules,
-                          endConditions,objectives)>
-<!ATTLIST gameDefinition
-  xmlns CDATA #FIXED ''>
+        <!ELEMENT gameDefinition (controls*,map,players,objects,physics,events,rules,
+                endConditions,objectives)>
+        <!ATTLIST gameDefinition
+                xmlns CDATA #FIXED ''>
 
-<!ELEMENT controls (control)>
-<!ELEMENT control EMPTY>
-<!ATTLIST control
-  xmlns CDATA #FIXED ''
-  left CDATA #REQUIRED preferred '27' <!-- Arrow left key -->
-  right CDATA #REQUIRED preferred '26' <!-- Arrow right key -->
-  up CDATA #REQUIRED preferred '24' <!-- Arrow up key -->
-  down CDATA #REQUIRED preferred '25' <!-- Arrow down key -->
-  jump CDATA #REQUIRED preferred '32' <!-- Space key -->
-  fire CDATA #REQUIRED preferred '10' <!-- Enter key -->
-  special CDATA #REQUIRED preferred '9' <!-- Tab key -->
-  >
-  
-<!ELEMENT map EMPTY>
-<!ATTLIST map
-  xmlns CDATA #FIXED ''
-  generator CDATA #REQUIRED
-  sizeX CDATA #REQUIRED
-  sizeY CDATA #REQUIRED
-  toroidal NMTOKEN #REQUIRED
-  type NMTOKEN #REQUIRED>
+        <!ELEMENT controls (control)>
+        <!ELEMENT control EMPTY>
+        <!ATTLIST control
+                xmlns CDATA #FIXED ''
+                left CDATA #REQUIRED preferred '27' <!-- Arrow left key -->
+                right CDATA #REQUIRED preferred '26' <!-- Arrow right key -->
+                up CDATA #REQUIRED preferred '24' <!-- Arrow up key -->
+                down CDATA #REQUIRED preferred '25' <!-- Arrow down key -->
+                jump CDATA #REQUIRED preferred '32' <!-- Space key -->
+                fire CDATA #REQUIRED preferred '10' <!-- Enter key -->
+                special CDATA #REQUIRED preferred '9' <!-- Tab key -->
+                >
 
-<!ELEMENT players (player)>
-<!ATTLIST players
-  xmlns CDATA #FIXED ''
-  maxNumber CDATA #REQUIRED
-  minNumber CDATA #REQUIRED
-  number CDATA #REQUIRED>
+        <!ELEMENT map EMPTY>
+        <!ATTLIST map
+                xmlns CDATA #FIXED ''
+                generator CDATA #REQUIRED
+                sizeX CDATA #REQUIRED
+                sizeY CDATA #REQUIRED
+                toroidal NMTOKEN #REQUIRED
+                type NMTOKEN #REQUIRED>
 
-<!ELEMENT objects (object)+>
-<!ATTLIST objects
-  xmlns CDATA #FIXED ''>
+        <!ELEMENT players (player)>
+        <!ATTLIST players
+                xmlns CDATA #FIXED ''
+                maxNumber CDATA #REQUIRED
+                minNumber CDATA #REQUIRED
+                number CDATA #REQUIRED>
 
-<!ELEMENT physics EMPTY>
-<!ATTLIST physics
-  xmlns CDATA #FIXED ''>
+        <!ELEMENT objects (object)+>
+        <!ATTLIST objects
+                xmlns CDATA #FIXED ''>
 
-<!ELEMENT events (event)>
-<!ATTLIST events
-  xmlns CDATA #FIXED ''>
+        <!ELEMENT physics EMPTY>
+        <!ATTLIST physics
+                xmlns CDATA #FIXED ''>
 
-<!ELEMENT rules (rule)+>
-<!ATTLIST rules
-  xmlns CDATA #FIXED ''>
+        <!ELEMENT events (event)>
+        <!ATTLIST events
+                xmlns CDATA #FIXED ''>
 
-<!ELEMENT endConditions (endCondition)+>
-<!ATTLIST endConditions
-  xmlns CDATA #FIXED ''>
+        <!ELEMENT rules (rule)+>
+        <!ATTLIST rules
+                xmlns CDATA #FIXED ''>
 
-<!ELEMENT objectives (objective)+>
-<!ATTLIST objectives
-  xmlns CDATA #FIXED ''>
+        <!ELEMENT endConditions (endCondition)+>
+        <!ATTLIST endConditions
+                xmlns CDATA #FIXED ''>
 
-<!ELEMENT player EMPTY>
-<!ATTLIST player
-  xmlns CDATA #FIXED ''
-  ai CDATA #REQUIRED
-  livePercentage CDATA #REQUIRED
-  lives CDATA #REQUIRED
-  name NMTOKEN #REQUIRED
-  score CDATA #REQUIRED>
+        <!ELEMENT objectives (objective)+>
+        <!ATTLIST objectives
+                xmlns CDATA #FIXED ''>
 
-<!ELEMENT object EMPTY>
-<!ATTLIST object
-  xmlns CDATA #FIXED ''
-  ai CDATA #IMPLIED
-  dynamic NMTOKEN #REQUIRED
-  instances CDATA #REQUIRED
-  name NMTOKEN #REQUIRED
-  size CDATA #IMPLIED
-  sizeX CDATA #IMPLIED
-  sizeY CDATA #IMPLIED
-  type NMTOKEN #REQUIRED
-  volatile NMTOKEN #REQUIRED>
+        <!ELEMENT player EMPTY>
+        <!ATTLIST player
+                xmlns CDATA #FIXED ''
+                ai CDATA #REQUIRED
+                livePercentage CDATA #REQUIRED
+                lives CDATA #REQUIRED
+                name NMTOKEN #REQUIRED
+                score CDATA #REQUIRED>
 
-<!ELEMENT event EMPTY>
-<!ATTLIST event
-  xmlns CDATA #FIXED ''
-  className CDATA #REQUIRED
-  objectName NMTOKEN #REQUIRED
-  timer CDATA #REQUIRED
-  type NMTOKEN #REQUIRED>
+        <!ELEMENT object EMPTY>
+        <!ATTLIST object
+                xmlns CDATA #FIXED ''
+                ai CDATA #IMPLIED
+                dynamic NMTOKEN #REQUIRED
+                instances CDATA #REQUIRED
+                name NMTOKEN #REQUIRED
+                size CDATA #IMPLIED
+                sizeX CDATA #IMPLIED
+                sizeY CDATA #IMPLIED
+                type NMTOKEN #REQUIRED
+                volatile NMTOKEN #REQUIRED>
 
-<!ELEMENT rule (ruleAction)+>
-<!ATTLIST rule
-  xmlns CDATA #FIXED ''
-  name NMTOKEN #REQUIRED
-  type NMTOKEN #REQUIRED>
+        <!ELEMENT event EMPTY>
+        <!ATTLIST event
+                xmlns CDATA #FIXED ''
+                className CDATA #REQUIRED
+                objectName NMTOKEN #REQUIRED
+                timer CDATA #REQUIRED
+                type NMTOKEN #REQUIRED>
 
-<!ELEMENT endCondition EMPTY>
-<!ATTLIST endCondition
-  xmlns CDATA #FIXED ''
-  checkerClass CDATA #REQUIRED
-  objectNames CDATA #IMPLIED
-  winningCondition NMTOKEN #IMPLIED>
+        <!ELEMENT rule (ruleAction)+>
+        <!ATTLIST rule
+                xmlns CDATA #FIXED ''
+                name NMTOKEN #REQUIRED
+                type NMTOKEN #REQUIRED>
 
-<!ELEMENT objective EMPTY>
-<!ATTLIST objective
-  xmlns CDATA #FIXED ''
-  objectiveCheckerClass CDATA #REQUIRED
-  score CDATA #IMPLIED
-  weight CDATA #REQUIRED>
+        <!ELEMENT endCondition EMPTY>
+        <!ATTLIST endCondition
+                xmlns CDATA #FIXED ''
+                checkerClass CDATA #REQUIRED
+                objectNames CDATA #IMPLIED
+                winningCondition NMTOKEN #IMPLIED>
 
-<!ELEMENT ruleAction EMPTY>
-<!ATTLIST ruleAction
-  xmlns CDATA #FIXED ''
-  objectName NMTOKEN #REQUIRED
-  result CDATA #REQUIRED
-  value CDATA #IMPLIED>
+        <!ELEMENT objective EMPTY>
+        <!ATTLIST objective
+                xmlns CDATA #FIXED ''
+                objectiveCheckerClass CDATA #REQUIRED
+                score CDATA #IMPLIED
+                weight CDATA #REQUIRED>
+
+        <!ELEMENT ruleAction EMPTY>
+        <!ATTLIST ruleAction
+                xmlns CDATA #FIXED ''
+                objectName NMTOKEN #REQUIRED
+                result CDATA #REQUIRED
+                value CDATA #IMPLIED>

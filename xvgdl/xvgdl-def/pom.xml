@@ -243,6 +243,8 @@
 				<module>../xvgdl-pacman</module>
                 <module>../xvgdl-space-invaders</module>
                 <module>../xvgdl-breakout</module>
+				<module>../xvgdl-tetris</module>
+				<module>../xvgdl-clashroyale</module>
 			</modules>
 
 			<properties>

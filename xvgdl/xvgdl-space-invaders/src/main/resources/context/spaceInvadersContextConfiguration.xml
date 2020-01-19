@@ -25,7 +25,7 @@
 
     <!-- Map Definition -->
     <map type="2D" sizeX="40" sizeY="20" toroidal="false" 
-        generator="es.jor.phd.xvgdl.spaceinvaders.model.map.FileBasedGameMapGenerator"
+        generator="com.jrq.xvgdl.spaceinvaders.model.map.FileBasedGameMapGenerator"
     	file="/context/spaceInvadersMap.txt">
     </map>
 
@@ -36,13 +36,13 @@
     <!-- Defining the Objects present in the game -->
     <objects>
         <object name="redEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
-            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
+            ai="com.jrq.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
         <object name="blueEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
-            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
+            ai="com.jrq.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
         <object name="yellowEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
-            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
+            ai="com.jrq.xvgdl.spaceinvaders.model.ai.EnemySpaceshipAI"/>
         <object name="disc" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1"
-            ai="es.jor.phd.xvgdl.spaceinvaders.model.ai.EnemyDiscAI"/>
+            ai="com.jrq.xvgdl.spaceinvaders.model.ai.EnemyDiscAI"/>
         <object name="shield" type="item" dynamic="true" volatile="true" sizeX="1" sizeY="1" />
         <object name="fireEnemy" type="projectile" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
             instances="0"/>
@@ -63,10 +63,10 @@
         (not before X milliseconds) or a random value to be executed -->
         
     <events>
-        <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
+        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
             objectName="disc" x="3" y="38" timer="15000" />
         <event type="keyboard" keyCode="57"  objectName="firePlayer"
-            className="es.jor.phd.xvgdl.spaceinvaders.model.event.PlayerShootEvent" />
+            className="com.jrq.xvgdl.spaceinvaders.model.event.PlayerShootEvent" />
     </events>
 
     <!-- Defining rules. -->
@@ -134,11 +134,11 @@
 
     <!-- Game End Conditions -->
     <endConditions>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition" 
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition"
             property="timeout" value="10000"/>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" 
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
             objectNames="redEnemy,blueEnemy,yellowEnemy,disc" winning="true" />
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
     </endConditions>
 
 </gameDefinition>
