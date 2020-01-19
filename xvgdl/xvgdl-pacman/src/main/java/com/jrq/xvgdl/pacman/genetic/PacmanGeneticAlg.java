@@ -1,6 +1,6 @@
 package com.jrq.xvgdl.pacman.genetic;
 
-import com.jrq.xvgdl.app.GameApp;
+import com.jrq.xvgdl.app.XvgdlGameApp;
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.engine.GameEngine;
 import com.jrq.xvgdl.model.endcondition.IGameEndCondition;
@@ -222,7 +222,7 @@ public class PacmanGeneticAlg {
 
     private void play(GameContext c) {
         // Execute game simulation for this context
-        this.currentGameEngine = GameApp.launchGameApp(c, "/engine/simul/pacmanSimulatorEngineConfiguration.xml");
+        this.currentGameEngine = XvgdlGameApp.launchGameApp(c, "/engine/simul/pacmanSimulatorEngineConfiguration.xml");
         this.currentGameEngine.start();
 
         // Evaluate the context and store its solution

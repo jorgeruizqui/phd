@@ -1,6 +1,6 @@
 package com.jrq.xvgdl.breakout;
 
-import com.jrq.xvgdl.app.GameApp;
+import com.jrq.xvgdl.app.XvgdlGameApp;
 import com.jrq.xvgdl.engine.GameEngine;
 
 /**
@@ -16,7 +16,7 @@ public class LaunchBreakout {
      */
     public static void main(String[] args) {
 
-        GameEngine ge = GameApp.launchGameApp("/engine/breakoutEngineConfiguration.xml");
+        GameEngine ge = XvgdlGameApp.launchGameApp("/engine/breakoutEngineConfiguration.xml");
         ge.start();
     }
 

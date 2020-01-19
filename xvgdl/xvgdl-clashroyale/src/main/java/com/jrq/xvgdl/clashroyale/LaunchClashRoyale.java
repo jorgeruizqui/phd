@@ -1,6 +1,6 @@
 package com.jrq.xvgdl.clashroyale;
 
-import com.jrq.xvgdl.app.GameApp;
+import com.jrq.xvgdl.app.XvgdlGameApp;
 import com.jrq.xvgdl.engine.GameEngine;
 
 /**
@@ -16,7 +16,7 @@ public class LaunchClashRoyale {
      */
     public static void main(String[] args) {
 
-        GameEngine ge = GameApp.launchGameApp("/engine/clashRoyaleEngineConfiguration.xml");
+        GameEngine ge = XvgdlGameApp.launchGameApp("/engine/clashRoyaleEngineConfiguration.xml");
         ge.start();
     }
 

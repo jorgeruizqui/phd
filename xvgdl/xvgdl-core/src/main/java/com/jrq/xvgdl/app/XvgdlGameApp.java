@@ -4,11 +4,11 @@ import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.engine.GameEngine;
 
 /**
- * The Game Application
+ * The XVGDL Game Application
  *
  * @author jrquinones
  */
-public final class GameApp {
+public final class XvgdlGameApp {
 
     /**
      * Instance of the game engine.
@@ -18,7 +18,7 @@ public final class GameApp {
     /**
      * Constructor
      */
-    private GameApp() {
+    private XvgdlGameApp() {
     }
 
     /**

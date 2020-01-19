@@ -1,6 +1,6 @@
 package com.jrq.xvgdl.tetris;
 
-import com.jrq.xvgdl.app.GameApp;
+import com.jrq.xvgdl.app.XvgdlGameApp;
 import com.jrq.xvgdl.engine.GameEngine;
 
 /**
@@ -17,7 +17,7 @@ public class LaunchTetris {
      */
     public static void main(String[] args) {
 
-        GameEngine ge = GameApp.launchGameApp("/engine/tetrisEngineConfiguration.xml");
+        GameEngine ge = XvgdlGameApp.launchGameApp("/engine/tetrisEngineConfiguration.xml");
         ge.start();
     }
 
