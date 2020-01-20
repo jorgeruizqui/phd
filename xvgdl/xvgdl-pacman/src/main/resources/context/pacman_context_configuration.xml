@@ -5,45 +5,45 @@
 
     <!-- Renderer configuration -->
     <property key="rendererConfiguration"
-        value="/context/pacmanAsciiRendererConfiguration.xml" />
+              value="/context/pacmanAsciiRendererConfiguration.xml"/>
     <!-- Timeout configuration in milliseconds. Set to -1 for no timeout -->
-    <property key="TIMEOUT" value="20000" />
+    <property key="TIMEOUT" value="20000"/>
 
     <layout>
         <component id="gameInfoTop" location="TOP">
-            <contextProperty id="score" />
-            <contextProperty id="hiScore" />
+            <contextProperty id="score"/>
+            <contextProperty id="hiScore"/>
         </component>
 
         <component id="gameInfoDown" location="DOWN">
-            <contextProperty id="lives" />
-            <contextProperty id="playerItems" />
+            <contextProperty id="lives"/>
+            <contextProperty id="playerItems"/>
         </component>
     </layout>
 
     <!-- Map Definition -->
     <map type="2D" sizeX="20" sizeY="40" toroidal="false"
-         generator="es.jor.phd.xvgdl.model.map.RandomLocationGameMapGenerator">
+         generator="com.jrq.xvgdl.model.map.RandomLocationGameMapGenerator">
     </map>
 
     <!-- Players Definition -->
     <players number="1" maxNumber="1" minNumber="1">
         <player name="pacman" score="0" lives="3" livePercentage="100"
-            ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaseNearestItemAI" />
+                ai="com.jrq.xvgdl.model.object.ai.PlayerChaseNearestItemAI"/>
     </players>
 
     <objects>
         <object name="wall" type="wall" dynamic="false" volatile="false"
-            sizeX="1" sizeY="1" instances="60" />
+                sizeX="1" sizeY="1" instances="60"/>
         <object name="ghost" type="enemy" dynamic="true"
-            volatile="true" size="1,1" instances="4"
-            ai="es.jor.phd.xvgdl.model.object.ai.PlayerChaserAI" />
+                volatile="true" size="1,1" instances="4"
+                ai="com.jrq.xvgdl.model.object.ai.PlayerChaserAI"/>
         <object name="smallDot" type="item" dynamic="true"
-            volatile="true" size="1,1" instances="2" />
+                volatile="true" size="1,1" instances="2"/>
         <object name="bigDot" type="item" dynamic="true"
-            volatile="true" size="1,1" instances="2" />
+                volatile="true" size="1,1" instances="2"/>
         <object name="cherry" type="item" dynamic="true"
-            volatile="true" size="1,1" instances="1" />
+                volatile="true" size="1,1" instances="1"/>
     </objects>
 
     <!-- Defining Game physics. Movements and collisions Define set of possible 
@@ -57,10 +57,10 @@
         the game. May be as an example some item appears randomly. It can use a timer 
         (not before X milliseconds) or a random value to be executed -->
     <events>
-        <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
-            objectName="cherry" timer="5000" />
-        <event type="engine" className="es.jor.phd.xvgdl.model.event.SpawnItemEvent"
-            objectName="ghost" timer="1000" />
+        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
+               objectName="cherry" timer="5000"/>
+        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
+               objectName="ghost" timer="1000"/>
     </events>
 
     <!-- Defining rules. Events consecuences -->
@@ -79,22 +79,22 @@
             cada objeto se le aplica el resultado. -->
         <rule name="eatSmallDot" type="collision">
             <ruleAction objectName="pacman" result="scoreUp"
-                value="100" />
-            <ruleAction objectName="smallDot" result="disappear" />
+                        value="100"/>
+            <ruleAction objectName="smallDot" result="disappear"/>
         </rule>
         <rule name="eatBigDot" type="collision">
             <ruleAction objectName="pacman" result="scoreUp"
-                value="300" />
-            <ruleAction objectName="bigDot" result="disappear" />
+                        value="300"/>
+            <ruleAction objectName="bigDot" result="disappear"/>
         </rule>
         <rule name="eatCherry" type="collision">
             <ruleAction objectName="pacman" result="scoreUp"
-                value="500" />
-            <ruleAction objectName="cherry" result="disappear" />
+                        value="500"/>
+            <ruleAction objectName="cherry" result="disappear"/>
         </rule>
         <rule name="ghostCatchPacman" type="collision">
-            <ruleAction objectName="pacman" result="teletransport" />
-            <ruleAction objectName="ghost" result="disappear" />
+            <ruleAction objectName="pacman" result="teletransport"/>
+            <ruleAction objectName="ghost" result="disappear"/>
         </rule>
         <!-- Rule for pacman eating big dots -->
         <!-- <rule id="eatBigDot" type="eventual"> -->
@@ -111,10 +111,10 @@
     <!-- Game End Conditions -->
     <endConditions>
         <endCondition
-            checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition"
-            property="timeout" value="0" />
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition" 
-            objectNames="bigDot,smallDot" winningCondition="true"/>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
+                checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition"
+                property="timeout" value="0"/>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
+                      objectNames="bigDot,smallDot" winningCondition="true"/>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
     </endConditions>
 </gameDefinition>

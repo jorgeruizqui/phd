@@ -34,7 +34,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>es.jor.phd.xvgdl.spaceinvaders.LaunchSpaceInvaders</mainClass>
+                            <mainClass>com.jrq.xvgdl.spaceinvaders.LaunchSpaceInvaders</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

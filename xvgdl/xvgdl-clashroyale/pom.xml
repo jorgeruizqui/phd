@@ -30,7 +30,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>es.jor.phd.xvgdl.clashroyale.LaunchClashRoyale</mainClass>
+                            <mainClass>com.jrq.xvgdl.clashroyale.LaunchClashRoyale</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
