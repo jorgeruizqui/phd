@@ -64,3 +64,6 @@ mvn-settings.xml
 #Intellij
 .idea
 *.iml
+
+#MAC
+.DS_Store

@@ -4,20 +4,14 @@ import com.jrq.xvgdl.app.XvgdlGameApp;
 import com.jrq.xvgdl.engine.GameEngine;
 
 /**
- * Launcher
+ * XVGDL Engine Launcher for Breakout XVGDL game
  * @author jrquinones
  *
  */
 public class LaunchBreakout {
 
-    /**
-     * Main class
-     * @param args Arguments
-     */
     public static void main(String[] args) {
-
-        GameEngine ge = XvgdlGameApp.launchGameApp("/engine/breakoutEngineConfiguration.xml");
-        ge.start();
+        XvgdlGameApp.launchGameApp("/context/breakoutXvgdl.xml").start();
     }
 
 }

@@ -24,7 +24,7 @@
 
     <!-- Map Definition -->
     <map type="2D" sizeX="20" sizeY="40" toroidal="false"
-         generator="es.jor.phd.xvgdl.model.map.FileBasedGameMapGenerator"
+         generator="com.jrq.xvgdl.model.map.FileBasedGameMapGenerator"
          file="/context/tetrismap.txt">
     </map>
 
@@ -55,7 +55,7 @@
         the game. May be as an example some item appears randomly. It can use a timer
         (not before X milliseconds) or a random value to be executed -->
     <events>
-        <event type="engine" className="es.jor.phd.xvgdl.model.event.PhysicsChange"
+        <event type="engine" className="com.jrq.xvgdl.model.event.PhysicsChange"
                physicType="gravity" value="1" timer="15000"/>
     </events>
 
@@ -111,11 +111,11 @@
 
     <!-- Game End Conditions -->
     <endConditions>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.TimeoutGameEndCondition"
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition"
                       property="timeout" value="0"/>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
                       objectNames="yellowBrick,orangeBrick,redBrick"/>
-        <endCondition checkerClass="es.jor.phd.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
     </endConditions>
 
 </gameDefinition>

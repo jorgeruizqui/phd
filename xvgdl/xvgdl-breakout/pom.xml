@@ -9,7 +9,7 @@
     <description>XVGDL Breakout implementation</description>
 
     <parent>
-        <groupId>es.jor.phd.xvgdl</groupId>
+        <groupId>com.jrq.xvgdl</groupId>
         <artifactId>xvgdl-def</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../xvgdl-def/pom.xml</relativePath>
@@ -17,7 +17,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>es.jor.phd.xvgdl</groupId>
+            <groupId>com.jrq.xvgdl</groupId>
             <artifactId>xvgdl-core</artifactId>
         </dependency>
     </dependencies>

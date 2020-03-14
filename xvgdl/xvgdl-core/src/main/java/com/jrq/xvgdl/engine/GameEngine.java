@@ -11,6 +11,7 @@ import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.rules.GameRuleType;
 import com.jrq.xvgdl.model.rules.GameRuleUtils;
 import com.jrq.xvgdl.model.rules.IGameRule;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -45,11 +46,6 @@ public final class GameEngine extends Properties {
     private static final double DEFAULT_MS_PER_FRAME = 1000;
 
     /**
-     * Game Context configuration file key.
-     */
-    private static final String GAME_CONTEXT_CONFIG_KEY = "gameContextConfiguration";
-
-    /**
      * Simulation mode configuration key.
      */
     private static final String SIMULATION_MODE_KEY = "simulationMode";
@@ -69,10 +65,8 @@ public final class GameEngine extends Properties {
      */
     private boolean gameFinished = false;
 
-    /**
-     * Game Winning Flag.
-     */
-    private boolean gameWinning = false;
+    @Getter
+    private boolean winningGame = false;
 
     /**
      * Game Running in simulation mode Flag.
@@ -88,37 +82,28 @@ public final class GameEngine extends Properties {
      */
     private GameEngine(GameContext gc, String configFile) {
         try {
-            // Load Game Engine properties
-            //loadPropertiesFromXML(configFile);
-            //this.simulationMode = getBooleanValue(SIMULATION_MODE_KEY, false);
-
-            if (getProperty(GAME_CONTEXT_CONFIG_KEY) != null) {
-                log.debug("Context to be created with file " + getProperty(GAME_CONTEXT_CONFIG_KEY));
-                GameContext.createGameContext(gc, getProperty(GAME_CONTEXT_CONFIG_KEY));
-            }
+            loadGameContext(gc, configFile);
 
             addKeyboardListener();
-
         } catch (Exception e) {
-            log.error("Exception parsing properties", e);
+            log.error("Exception initializing game context with file: " + configFile, e);
         }
+    }
+
+    private void loadGameContext(GameContext gc, String configFile) {
+        log.debug("Context to be created with file: " + configFile);
+        long start = System.currentTimeMillis();
+        GameContext.createGameContext(gc, configFile);
+        long end = System.currentTimeMillis();
+        log.debug("Context has been created in " + (end - start)+ " ms.");
     }
 
     private void addKeyboardListener() {
         try {
             this.keyboardInputListener = new KeyboardInputListener(getGameContext());
 
-            // Get the logger for "org.jnativehook" and set the level to
-            // off.
-            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-            logger.setLevel(Level.OFF);
+            setNativeHookLogLevelOff();
 
-            // Change the level for all handlers attached to the default
-            // logger.
-            Handler[] handlers = Logger.getLogger("").getHandlers();
-            for (int i = 0; i < handlers.length; i++) {
-                handlers[i].setLevel(Level.OFF);
-            }
             GlobalScreen.registerNativeHook();
             GlobalScreen.addNativeKeyListener(this.keyboardInputListener);
 
@@ -133,6 +118,16 @@ public final class GameEngine extends Properties {
         } catch (NativeHookException ex) {
             log.error("Exception registering hooks", ex);
         }
+    }
+
+    private void setNativeHookLogLevelOff() {
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+        Handler[] handlers = Logger.getLogger("").getHandlers();
+        for (Handler handler : handlers) {
+            handler.setLevel(Level.OFF);
+        }
+
     }
 
     /**
@@ -184,7 +179,7 @@ public final class GameEngine extends Properties {
     /**
      * Main game loop.
      */
-    public void gameLoop() {
+    private void gameLoop() {
 
         log.debug("Launching game loop....");
         getGameContext().setStartTime(System.currentTimeMillis());
@@ -222,7 +217,7 @@ public final class GameEngine extends Properties {
                 log.info("Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 if (endCondition.isWinningCondition()) {
-                    gameWinning = true;
+                    winningGame = true;
                 }
                 getGameContext().setEndTime(System.currentTimeMillis());
                 break;
@@ -253,7 +248,6 @@ public final class GameEngine extends Properties {
      */
     private void processRules() {
 
-        // Foreach rule : Rules
         for (IGameRule rule : getGameContext().getGameRules()) {
             boolean ruleResult = GameRuleUtils.applyGameRule(getGameContext(), rule);
 
@@ -298,12 +292,4 @@ public final class GameEngine extends Properties {
         scheduler.schedule(() -> o.setFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * If the game is won or not.
-     *
-     * @return
-     */
-    public boolean gameWinning() {
-        return gameWinning;
-    }
 }
