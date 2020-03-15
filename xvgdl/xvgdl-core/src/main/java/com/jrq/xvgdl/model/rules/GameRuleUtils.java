@@ -51,9 +51,9 @@ public final class GameRuleUtils {
                                     + object1.getId() + ", " + object2.getId() + "]");
 
                             GameRuleUtils.executeResult(gameContext, object1,
-                                    gameRule.getRuleActionByName(object1.getName()));
+                                    gameRule.getRuleActionByObjectName(object1.getName()));
                             GameRuleUtils.executeResult(gameContext, object2,
-                                    gameRule.getRuleActionByName(object2.getName()));
+                                    gameRule.getRuleActionByObjectName(object2.getName()));
 
                         }
                     }

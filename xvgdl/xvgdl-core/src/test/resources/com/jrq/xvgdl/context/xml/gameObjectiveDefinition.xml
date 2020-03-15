@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<gameDefinition>
+
+    <objectives>
+        <objective objectiveCheckerClass="MaximizeScoreObjective" score="5.0"/>
+        <objective objectiveCheckerClass="MaximizeTurnsObjective" weight="0.5"/>
+        <objective objectiveCheckerClass="NoProps" />
+        <objective objectiveCheckerClass="AllProps" score="5.0" weight="0.5"/>
+    </objectives>
+
+</gameDefinition>

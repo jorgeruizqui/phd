@@ -5,6 +5,7 @@ import com.jrq.xvgdl.engine.GameEngine;
 import com.jrq.xvgdl.model.object.GameObjectType;
 import com.jrq.xvgdl.model.object.GamePlayer;
 import com.jrq.xvgdl.model.object.IGameObject;
+import com.jrq.xvgdl.renderer.AGameRenderer;
 import com.jrq.xvgdl.renderer.IGameRenderer;
 import org.apache.commons.lang3.SystemUtils;
 
@@ -18,10 +19,7 @@ import java.util.Arrays;
  * @author jrquinones
  *
  */
-public class SpaceInvadersAsciiRenderer implements IGameRenderer {
-
-    /** Game Context. */
-    private GameContext gameContext;
+public class SpaceInvadersAsciiRenderer extends AGameRenderer {
 
     @Override
     public void initializeRenderer(GameContext gameContext) {

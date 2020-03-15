@@ -11,6 +11,7 @@ import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.rules.GameRuleType;
 import com.jrq.xvgdl.model.rules.GameRuleUtils;
 import com.jrq.xvgdl.model.rules.IGameRule;
+import com.jrq.xvgdl.util.GameBaseProperties;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jnativehook.GlobalScreen;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
  * @author jrquinones
  */
 @Slf4j
-public final class GameEngine extends Properties {
+public final class GameEngine extends GameBaseProperties {
 
     /**
      * Milliseconds per frame Configuration Key.
@@ -194,8 +195,11 @@ public final class GameEngine extends Properties {
                 processRules();
                 updateState();
                 render();
-                //Thread.sleep((long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
-                //        - start));
+                if (!simulationMode) {
+                    Thread.sleep(
+                            (long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
+                            - start));
+                }
                 getGameContext().nextTurn();
                 checkEndConditions();
             } catch (Exception e) {
@@ -288,8 +292,8 @@ public final class GameEngine extends Properties {
      * @param milliseconds Time to be frozen
      */
     public void freezeObject(IGameObject o, long milliseconds) {
-        o.setFrozen(true);
-        scheduler.schedule(() -> o.setFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
+        o.setIsFrozen(true);
+        scheduler.schedule(() -> o.setIsFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
     }
 
 }

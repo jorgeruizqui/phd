@@ -3,6 +3,7 @@ package com.jrq.xvgdl.model.object;
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.model.location.DirectionVector;
 import com.jrq.xvgdl.model.location.Position;
+import com.jrq.xvgdl.model.object.ai.IGameObjectAI;
 
 /**
  * Game Object basic interface
@@ -24,7 +25,7 @@ public interface IGameObject {
     /**
      * @return Game object instance.
      */
-    int getInstance();
+    Integer getInstance();
 
     /**
      * @return position
@@ -34,17 +35,17 @@ public interface IGameObject {
     /**
      * @return the X position
      */
-    int getX();
+    Integer getX();
 
     /**
      * @return the Y position
      */
-    int getY();
+    Integer getY();
 
     /**
      * @return the Z position
      */
-    int getZ();
+    Integer getZ();
 
     /**
      * @return intended position
@@ -59,31 +60,31 @@ public interface IGameObject {
     /**
      * @return X size
      */
-    int getSizeX();
+    Integer getSizeX();
 
     /**
      * @return Y size
      */
-    int getSizeY();
+    Integer getSizeY();
 
     /**
      * @return Z size
      */
-    int getSizeZ();
+    Integer getSizeZ();
 
     /**
      * Is object volatile (can appear/disappear)?
      *
      * @return Is volatile flag
      */
-    boolean isVolatile();
+    Boolean getIsVolatile();
 
     /**
      * Is object dynamic (can move) or fixed?
      *
      * @return Is dynamic flag
      */
-    boolean isDynamic();
+    Boolean getIsDynamic();
 
     /**
      * Moves the object to the specified coordinates
@@ -124,20 +125,20 @@ public interface IGameObject {
      *
      * @param frozen
      */
-    void setFrozen(boolean frozen);
+    void setIsFrozen(Boolean frozen);
 
     /**
      * Is frozen flag
      *
      * @return
      */
-    boolean isFrozen();
+    Boolean getIsFrozen();
 
     /**
      * @return <code>true</code> if object is located anywhere in map
      * (coordintes 0 or bigger)
      */
-    boolean isLocatedAnyWhereInMap();
+    Boolean isLocatedAnyWhereInMap();
 
     /**
      * @param value the new speed factor for an object.
@@ -146,4 +147,5 @@ public interface IGameObject {
 
     DirectionVector getDirection();
 
+    IGameObjectAI getAi();
 }

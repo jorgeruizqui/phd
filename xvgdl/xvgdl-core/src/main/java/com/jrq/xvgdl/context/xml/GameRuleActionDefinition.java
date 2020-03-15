@@ -24,16 +24,15 @@ public class GameRuleActionDefinition {
     private String value;
 
     /**
-     * @param ruleActionDefinition Rule Action definition
      * @return Game Rule Action initialized
      */
-    public static IGameRuleAction convert(GameRuleActionDefinition ruleActionDefinition) {
+    public IGameRuleAction toModel() {
 
         try {
             GameRuleAction gameRuleAction = new GameRuleAction();
-            gameRuleAction.setObjectName(ruleActionDefinition.getObjectName());
-            gameRuleAction.setResultType(GameRuleResultType.fromString(ruleActionDefinition.getResult()));
-            gameRuleAction.setValue(ruleActionDefinition.getValue());
+            gameRuleAction.setObjectName(this.getObjectName());
+            gameRuleAction.setResultType(GameRuleResultType.fromString(this.getResult()));
+            gameRuleAction.setValue(this.getValue());
             return gameRuleAction;
 
         } catch (Exception e) {

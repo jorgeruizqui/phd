@@ -1,5 +1,6 @@
 package com.jrq.xvgdl.model.rules;
 
+import com.jrq.xvgdl.context.xml.GameRuleDefinition;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -14,15 +15,10 @@ import java.util.concurrent.ThreadLocalRandom;
 @Data
 public class GameRule implements IGameRule {
 
-    /**
-     * Game Rule Name.
-     */
     private String name;
-
-    /**
-     * Game Rule Type.
-     */
     private GameRuleType type;
+    private GameRuleDefinition gameRuleDefinition;
+    private String gameState;
 
     /**
      * Rule Actions.
@@ -35,7 +31,7 @@ public class GameRule implements IGameRule {
     }
 
     @Override
-    public IGameRuleAction getRuleActionByName(String objectName) {
+    public IGameRuleAction getRuleActionByObjectName(String objectName) {
         return ruleActions.stream().filter(s -> s.getObjectName().equalsIgnoreCase(objectName)).findFirst()
                 .orElse(null);
     }
@@ -50,5 +46,4 @@ public class GameRule implements IGameRule {
             GameRuleUtils.evolutionOfRuleAction(gameRuleAction);
         }
     }
-
 }

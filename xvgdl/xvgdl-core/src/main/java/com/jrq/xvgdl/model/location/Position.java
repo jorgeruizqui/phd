@@ -12,13 +12,13 @@ public class Position {
     /**
      * x position.
      */
-    private int x;
+    private Integer x;
     /**
      * y position.
      */
-    private int y;
+    private Integer y;
     /**
      * z position.
      */
-    private int z;
+    private Integer z;
 }

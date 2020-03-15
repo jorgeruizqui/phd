@@ -17,14 +17,14 @@ public interface IGameEvent {
     /**
      * @return the event time in milliseconds
      */
-    long getTimeStamp();
+    Long getTimeStamp();
 
     /**
      * Launcher Timer of the event.
      *
      * @return the timer in milliseconds
      */
-    long getTimer();
+    Long getTimer();
 
     /**
      * Executes the event.
@@ -44,6 +44,7 @@ public interface IGameEvent {
      *
      * @return
      */
-    boolean isConsumable();
+    Boolean isConsumable();
 
+    Double getValue();
 }

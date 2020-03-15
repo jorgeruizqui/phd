@@ -5,7 +5,7 @@ import com.jrq.xvgdl.context.GameContext;
 public class MaximizeTimeObjective extends AGameObjective {
 
     @Override
-    public double checkObjective(GameContext c) {
+    public Double checkObjective(GameContext c) {
         // The higher time, the higher value returned
         return c.getTimePlayed() * getWeight();
     }

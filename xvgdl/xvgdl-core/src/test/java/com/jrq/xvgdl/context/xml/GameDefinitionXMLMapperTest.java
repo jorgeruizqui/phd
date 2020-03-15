@@ -1,5 +1,6 @@
 package com.jrq.xvgdl.context.xml;
 
+import com.jrq.xvgdl.exception.XvgdlException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -8,8 +9,15 @@ import static org.junit.Assert.assertNull;
 
 public class GameDefinitionXMLMapperTest {
 
+    @Test (expected = XvgdlException.class)
+    public void invalidFileThrowException() throws XvgdlException {
+        GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
+
+        GameDefinition cg = parser.parse("invalid");
+    }
+
     @Test
-    public void mapXmlEmptyGameDefinition() {
+    public void mapXmlEmptyGameDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/emptyGameDefinition.xml");
@@ -18,7 +26,7 @@ public class GameDefinitionXMLMapperTest {
     }
 
     @Test
-    public void mapXmlGamePropertiesDefinition() {
+    public void mapXmlGamePropertiesDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/propertiesGameDefinition.xml");
@@ -30,7 +38,7 @@ public class GameDefinitionXMLMapperTest {
     }
 
     @Test
-    public void mapXmlGameMapDefinition() {
+    public void mapXmlGameMapDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/mapGameDefinition.xml");
@@ -47,7 +55,7 @@ public class GameDefinitionXMLMapperTest {
     }
 
     @Test
-    public void mapXmlGamePlayersDefinition() {
+    public void mapXmlGamePlayersDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/playersGameDefinition.xml");
@@ -83,7 +91,7 @@ public class GameDefinitionXMLMapperTest {
     }
 
     @Test
-    public void mapXmlGameObjectsDefinition() {
+    public void mapXmlGameObjectsDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/objectsGameDefinition.xml");
@@ -118,7 +126,7 @@ public class GameDefinitionXMLMapperTest {
     }
 
     @Test
-    public void mapXmlGameEventsDefinition() {
+    public void mapXmlGameEventsDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/eventsGameDefinition.xml");
@@ -141,7 +149,7 @@ public class GameDefinitionXMLMapperTest {
     }
 
     @Test
-    public void mapXmlGameRulesDefinition() {
+    public void mapXmlGameRulesDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/rulesGameDefinition.xml");
@@ -173,7 +181,7 @@ public class GameDefinitionXMLMapperTest {
     }
 
     @Test
-    public void mapXmlGameEndConditionsDefinition() {
+    public void mapXmlGameEndConditionsDefinition() throws XvgdlException {
         GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
 
         GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/endConditionsGameDefinition.xml");
@@ -196,5 +204,56 @@ public class GameDefinitionXMLMapperTest {
         assertEquals("Error in checkerClass", "NoObjectsPresentGameEndCondition", cg.getEndConditions().get(1).getCheckerClass());
         assertEquals("Error in object names", "bigDot,smallDot", cg.getEndConditions().get(1).getObjectNames());
         assertEquals("Error in winning condition", true, cg.getEndConditions().get(1).getWinningCondition());
+    }
+
+    @Test
+    public void mapXmlGameObjectiveDefinition() throws XvgdlException {
+        GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
+
+        GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/gameObjectiveDefinition.xml");
+
+        assertNotNull(cg);
+        assertNotNull(cg.getObjectives());
+        assertEquals("Error number of game objectives", 4, cg.getObjectives().size());
+
+        /*
+            <gameObjectives>
+                <objective objectiveCheckerClass="MaximizeScoreObjective" score="5.0"/>
+                <objective objectiveCheckerClass="MaximizeTurnsObjective" weight="0.5"/>
+                <objective objectiveCheckerClass="NoProps" />
+                <objective objectiveCheckerClass="AllProps" score="5.0" weight="0.5"/>
+            </gameObjectives>
+         */
+        assertEquals("Error in checkerClass", "MaximizeScoreObjective", cg.getObjectives().get(0).getObjectiveCheckerClass());
+        assertEquals("Error in score", 5.0, cg.getObjectives().get(0).getScore(), 0.1);
+        assertNull("Error, weight should be null", cg.getObjectives().get(0).getWeight());
+        assertEquals("Error in checkerClass", "MaximizeTurnsObjective", cg.getObjectives().get(1).getObjectiveCheckerClass());
+        assertEquals("Error in weight", 0.5, cg.getObjectives().get(1).getWeight(), 0.1);
+        assertNull("Error, score should be null", cg.getObjectives().get(1).getScore());
+        assertEquals("Error in checkerClass", "NoProps", cg.getObjectives().get(2).getObjectiveCheckerClass());
+        assertNull("Error, weight should be null", cg.getObjectives().get(2).getWeight());
+        assertNull("Error, score should be null", cg.getObjectives().get(2).getScore());
+        assertEquals("Error in checkerClass", "AllProps", cg.getObjectives().get(3).getObjectiveCheckerClass());
+        assertEquals("Error in weight", 0.5, cg.getObjectives().get(3).getWeight(), 0.1);
+        assertEquals("Error in score", 5.0, cg.getObjectives().get(3).getScore(), 0.1);
+    }
+
+    @Test
+    public void mapXmlGameRendererDefinition() throws XvgdlException {
+        GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
+
+        GameDefinition cg = parser.parse("/com/jrq/xvgdl/context/xml/rendererGameDefinition.xml");
+
+        /*
+            <renderer>
+                <className>aClassName</className>
+                <aRendererProperty>aRendererValue</aRendererProperty>
+            </renderer>
+         */
+
+        assertNotNull(cg);
+        assertNotNull(cg.getRenderer());
+        assertEquals("aRendererValue", cg.getRenderer().get("aRendererProperty"));
+        assertEquals("aClassName", cg.getRenderer().get("className"));
     }
 }

@@ -28,19 +28,18 @@ public class GamePlayerDefinition extends GameObjectDefinition {
     private Integer livePercentage;
 
     /**
-     * @param playerDefinition Object definition
-     * @return Game Object completely initialize
+     * @return Game Player from Game Definition
      */
-    public static IGameObject convert(GamePlayerDefinition playerDefinition) {
+    public IGameObject toModel() {
 
         try {
-            // Mapping GameObject Properties
-            GamePlayer gamePlayer = (GamePlayer) convert(GamePlayer.class, playerDefinition, 1);
+            this.setType(GameObjectType.PLAYER.name());
+            GamePlayer gamePlayer = (GamePlayer) super.toModel(GamePlayer.class, 1);
             gamePlayer.setObjectType(GameObjectType.PLAYER);
-            gamePlayer.setLives(Optional.ofNullable(playerDefinition.getLives()).orElse(1));
-            gamePlayer.setInitialLives(Optional.ofNullable(playerDefinition.getInitialLives()).orElse(1));
-            gamePlayer.setLivePercentage(Optional.ofNullable(playerDefinition.getLivePercentage()).orElse(1));
-            gamePlayer.setScore(Optional.ofNullable(playerDefinition.getScore()).orElse(0.0d));
+            gamePlayer.setLives(Optional.ofNullable(this.getLives()).orElse(1));
+            gamePlayer.setInitialLives(Optional.ofNullable(this.getInitialLives()).orElse(1));
+            gamePlayer.setLivePercentage(Optional.ofNullable(this.getLivePercentage()).orElse(1));
+            gamePlayer.setScore(Optional.ofNullable(this.getScore()).orElse(0.0d));
 
             return gamePlayer;
         } catch (Exception e) {

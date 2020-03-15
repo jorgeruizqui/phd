@@ -29,7 +29,7 @@ public class GameObject implements IGameObject {
     /**
      * Instance.
      */
-    private int instance;
+    private Integer instance;
     /**
      * Position.
      */
@@ -43,15 +43,15 @@ public class GameObject implements IGameObject {
     /**
      * Size x .
      */
-    private int sizeX;
+    private Integer sizeX;
     /**
      * Size y.
      */
-    private int sizeY;
+    private Integer sizeY;
     /**
      * Size z.
      */
-    private int sizeZ;
+    private Integer sizeZ;
     /**
      * Game Object Type.
      */
@@ -69,22 +69,22 @@ public class GameObject implements IGameObject {
      * Is dynamic flag. Indicates if object can move during game or is fixed
      * forever.
      */
-    private boolean isDynamic;
+    private Boolean isDynamic;
     /**
      * Is volatile flag. Indicates if object can appear/disappear during game or
      * is present forever.
      */
-    private boolean isVolatile;
+    private Boolean isVolatile;
 
     /**
      * Flag indicating if the object is frozen.
      */
-    private boolean isFrozen;
+    private Boolean isFrozen;
 
     /**
      * Artificial Intelligence associated with this object.
      */
-    private IGameObjectAI objectAI;
+    private IGameObjectAI ai;
 
     @Override
     public String getId() {
@@ -93,7 +93,7 @@ public class GameObject implements IGameObject {
 
     @Override
     public void moveTo(int x, int y, int z) {
-        if (!isFrozen()) {
+        if (!getIsFrozen()) {
             intendedPosition.setX(x);
             intendedPosition.setY(y);
             intendedPosition.setZ(z);
@@ -109,33 +109,33 @@ public class GameObject implements IGameObject {
 
     @Override
     public void applyAI(GameContext gameContext) {
-        if (objectAI != null) {
-            objectAI.applyAIonObject(gameContext, this);
+        if (ai != null) {
+            ai.applyAIonObject(gameContext, this);
         }
     }
 
-    public void setPosition(int x, int y, int z) {
+    public void setPosition(Integer x, Integer y, Integer z) {
         position.setX(x);
         position.setY(y);
         position.setZ(z);
     }
 
     @Override
-    public int getX() {
+    public Integer getX() {
         return position.getX();
     }
 
     @Override
-    public int getY() {
+    public Integer getY() {
         return position.getY();
     }
 
     @Override
-    public int getZ() {
+    public Integer getZ() {
         return position.getZ();
     }
 
-    public void setIntendedPosition(int x, int y, int z) {
+    public void setIntendedPosition(Integer x, Integer y, Integer z) {
         intendedPosition.setX(x);
         intendedPosition.setY(y);
         intendedPosition.setZ(z);
@@ -160,17 +160,17 @@ public class GameObject implements IGameObject {
     public GameObject copy() {
         GameObject cloned = new GameObject();
         try {
-            if (this.objectAI != null) {
-                cloned.setObjectAI(this.objectAI.getClass().newInstance());
+            if (this.ai != null) {
+                cloned.setAi(this.ai.getClass().newInstance());
             }
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("Exception setting object class AI: ", e);
         }
-        cloned.setDynamic(isDynamic());
+        cloned.setIsDynamic(getIsDynamic());
         cloned.setInstance((new Random()).nextInt());
         cloned.setIntendedPosition(getIntendedPosition().getX(), getIntendedPosition().getY(),
                 getIntendedPosition().getZ());
-        cloned.setFrozen(false);
+        cloned.setIsFrozen(false);
         cloned.setX(getPosition().getX());
         cloned.setY(getPosition().getY());
         cloned.setZ(getPosition().getZ());
@@ -179,7 +179,7 @@ public class GameObject implements IGameObject {
         cloned.setSizeY(getSizeY());
         cloned.setSizeZ(getSizeZ());
         cloned.setObjectType(getObjectType());
-        cloned.setVolatile(isVolatile());
+        cloned.setIsVolatile(getIsVolatile());
         return cloned;
     }
 
@@ -196,7 +196,7 @@ public class GameObject implements IGameObject {
     }
 
     @Override
-    public boolean isLocatedAnyWhereInMap() {
+    public Boolean isLocatedAnyWhereInMap() {
         return (getX() >= 0 && getY() >= 0 && getZ() >= 0) || (getIntendedPosition().getX() >= 0
                 && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
     }

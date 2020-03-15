@@ -35,7 +35,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
     }
 
     @Override
-    public boolean isConsumable() {
+    public Boolean isConsumable() {
         return true;
     }
     
@@ -66,8 +66,8 @@ public class PlayerShootEvent extends KeyboardGameEvent {
                 projectile.moveTo(player.getX(), player.getY(), player.getZ());
                 projectile.setName(definition.getObjectName());
                 projectile.setInstance(new Random().nextInt());
-                projectile.setDynamic(true);
-                projectile.setVolatile(true);
+                projectile.setIsDynamic(true);
+                projectile.setIsVolatile(true);
                 projectile.setSizeX(1);
                 projectile.setSizeY(1);
                 projectile.setSizeZ(1);

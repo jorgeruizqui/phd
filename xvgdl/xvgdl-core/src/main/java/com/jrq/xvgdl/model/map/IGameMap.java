@@ -21,22 +21,22 @@ public interface IGameMap {
     /**
      * @return X Size of the map
      */
-    int getSizeX();
+    Integer getSizeX();
 
     /**
      * @return Y Size of the map
      */
-    int getSizeY();
+    Integer getSizeY();
 
     /**
      * @return Z Size of the map in case of 3D maps
      */
-    int getSizeZ();
+    Integer getSizeZ();
 
     /**
      * @return flag indicating if its toroidal
      */
-    boolean isToroidal();
+    Boolean getIsToroidal();
 
     /**
      * @return Map File name

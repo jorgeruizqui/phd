@@ -17,19 +17,19 @@ public class GamePlayer extends GameObject {
     /**
      * Initial number of lives.
      */
-    private int initialLives;
+    private Integer initialLives;
     /**
      * Current number of lives.
      */
-    private int lives;
+    private Integer lives;
     /**
      * Current live percentage.
      */
-    private int livePercentage;
+    private Integer livePercentage;
     /**
      * Current Player score.
      */
-    private double score;
+    private Double score;
 
     /**
      * Increment player lives.

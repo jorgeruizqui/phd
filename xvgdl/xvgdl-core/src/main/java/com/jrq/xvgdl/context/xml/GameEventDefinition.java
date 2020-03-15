@@ -33,19 +33,18 @@ public class GameEventDefinition {
     private Double value;
 
     /**
-     * @param eventDefinition Object definition
      * @return Game Event initialized
      */
-    public static IGameEvent convert(GameEventDefinition eventDefinition) {
+    public IGameEvent toModel() {
 
         try {
-            AGameEvent gameEvent = gameEvent = (AGameEvent) Class.forName(eventDefinition.getClassName()).getDeclaredConstructor().newInstance();
-            gameEvent.setEventType(GameEventType.fromString(eventDefinition.getType()));
-            gameEvent.setTimer(Optional.ofNullable(eventDefinition.getTimer()).orElse(0L));
-            gameEvent.setGameEventDefinition(eventDefinition);
+            AGameEvent gameEvent = gameEvent = (AGameEvent) Class.forName(this.getClassName()).getDeclaredConstructor().newInstance();
+            gameEvent.setEventType(GameEventType.fromString(this.getType()));
+            gameEvent.setTimer(Optional.ofNullable(this.getTimer()).orElse(0L));
+            gameEvent.setGameEventDefinition(this);
 
             if (gameEvent instanceof KeyboardGameEvent) {
-                ((KeyboardGameEvent) gameEvent).setKeyCode(eventDefinition.getKeyCode());
+                ((KeyboardGameEvent) gameEvent).setKeyCode(this.getKeyCode());
             }
             return gameEvent;
         } catch (Exception e) {

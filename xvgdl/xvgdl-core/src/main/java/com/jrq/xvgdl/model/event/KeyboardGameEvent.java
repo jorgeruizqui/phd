@@ -31,7 +31,7 @@ public class KeyboardGameEvent extends AGameEvent {
     }
 
     @Override
-    public boolean isConsumable() {
+    public Boolean isConsumable() {
         return true;
     }
 
@@ -69,5 +69,4 @@ public class KeyboardGameEvent extends AGameEvent {
             }
         }
     }
-
 }

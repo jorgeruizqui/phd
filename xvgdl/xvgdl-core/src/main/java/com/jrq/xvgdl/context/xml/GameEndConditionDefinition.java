@@ -26,15 +26,14 @@ public class GameEndConditionDefinition {
     private String value;
 
     /**
-     * @param endConditionDefinition Object definition
-     * @return Game End Condition initialized
+    * @return Game End Condition initialized
      */
-    public static IGameEndCondition convert(GameEndConditionDefinition endConditionDefinition) {
+    public IGameEndCondition toModel() {
 
         try {
             IGameEndCondition gameEndCondition = (IGameEndCondition) Class.forName(
-                    endConditionDefinition.getCheckerClass()).getDeclaredConstructor().newInstance();
-            gameEndCondition.setGameEndConditionDefinition(endConditionDefinition);
+                    this.getCheckerClass()).getDeclaredConstructor().newInstance();
+            gameEndCondition.setGameEndConditionDefinition(this);
             return gameEndCondition;
         } catch (Exception e) {
             log.error("Exception converting GameEndConditionDefinition to IGameEndCondition: " + e.getMessage(), e);
