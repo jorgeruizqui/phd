@@ -34,10 +34,12 @@ public interface IGameRule {
      * @return The game rule action associated with that name or null if not
      * exits
      */
-    IGameRuleAction getRuleActionByName(String objectName);
+    IGameRuleAction getRuleActionByObjectName(String objectName);
 
     /**
      * Evolve game Rule
      */
     void evolution();
+
+    void setGameState(String gameState);
 }

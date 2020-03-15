@@ -25,22 +25,22 @@ public class GameMap implements IGameMap {
     /**
      * Size X
      */
-    private int sizeX;
+    private Integer sizeX;
 
     /**
      * Size Y
      */
-    private int sizeY;
+    private Integer sizeY;
 
     /**
      * Size Z
      */
-    private int sizeZ;
+    private Integer sizeZ;
 
     /**
      * Toroidal.
      */
-    private boolean toroidal;
+    private Boolean isToroidal;
 
     /**
      * Generator.

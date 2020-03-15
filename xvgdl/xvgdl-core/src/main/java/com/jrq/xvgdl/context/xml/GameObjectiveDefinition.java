@@ -1,56 +1,42 @@
 package com.jrq.xvgdl.context.xml;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.jrq.xvgdl.model.objectives.IGameObjective;
+import com.jrq.xvgdl.util.GameBaseProperties;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Game End Condition XML element Definition
+ * Game Objective XML element Definition
  *
  * @author jrquinones
  */
 @Slf4j
-public class GameObjectiveDefinition extends GameElementBaseDefinition {
+@Data
+public class GameObjectiveDefinition {
+
+    @JacksonXmlProperty(isAttribute = true)
+    public String objectiveCheckerClass;
+
+    @JacksonXmlProperty(isAttribute = true)
+    public Double weight;
+
+    @JacksonXmlProperty(isAttribute = true)
+    public Double score;
 
     /**
-     * XML main tag.
-     */
-    public static final String XMLTAG = "objective";
-
-    /**
-     * XML Attribute. Class Name.
-     */
-    public static final String XMLATTR_CHECKER_CLASS = "objectiveCheckerClass";
-
-    /**
-     * XML Attribute. Weight.
-     */
-    public static final String XMLATTR_WEIGHT = "weight";
-
-    /**
-     * XML Attribute. Score.
-     */
-    public static final String XMLATTR_SCORE = "score";
-
-    /**
-     * @param gameObjectiveDefinition Object definition
      * @return Game Objective initialized
      */
-    public static IGameObjective convert(GameObjectiveDefinition gameObjectiveDefinition) {
-
-        IGameObjective gameObjective = null;
+    public IGameObjective toModel() {
 
         try {
-            gameObjective = (IGameObjective) Class.forName(gameObjectiveDefinition.getProperty(XMLATTR_CHECKER_CLASS))
-                    .newInstance();
+            IGameObjective gameObjective = (IGameObjective) Class.forName(this.getObjectiveCheckerClass()).getDeclaredConstructor().newInstance();
+            gameObjective.setGameObjectiveDefinition(this);
 
-            gameObjective.setScore(gameObjectiveDefinition.getDoubleValue(XMLATTR_SCORE, 0d));
-            gameObjective.setWeight(gameObjectiveDefinition.getDoubleValue(XMLATTR_WEIGHT, 1d));
-
+            return gameObjective;
         } catch (Exception e) {
             log.error("Exception converting GameObjectiveDefinition to IGameObjective: " + e.getMessage(), e);
-            gameObjective = null;
+            return null;
         }
-
-        return gameObjective;
     }
 }

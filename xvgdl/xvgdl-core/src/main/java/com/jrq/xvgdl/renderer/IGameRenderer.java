@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.renderer;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.context.xml.GameRendererDefinition;
 
 /**
  * Game Renderer Interface
@@ -20,4 +21,8 @@ public interface IGameRenderer {
      * Rendering command.
      */
     void render();
+
+    String getProperty(String key);
+
+    void setGameRendererDefinition(GameRendererDefinition gameRendererDefinition);
 }

@@ -46,43 +46,41 @@ public class GameObjectDefinition {
     private String direction;
 
     /**
-     * @param objectDefinition Object definition
      * @param instance         Instance of the object
-     * @return Game Object completely initialize
+     * @return Game Object model from Definition
      */
-    public static GameObject convert(GameObjectDefinition objectDefinition, int instance) {
-        return convert(GameObject.class, objectDefinition, instance);
+    public GameObject toModel(int instance) {
+        return toModel(GameObject.class, instance);
     }
 
     /**
-     * @param objectDefinition Object definition
-     * @param instance         Instance of the object
+     * @param instance        Instance of the object
      * @return Game Object completely initialize
      */
-    public static GameObject convert(Class clazz, GameObjectDefinition objectDefinition, int instance) {
+    public GameObject toModel(Class clazz, int instance) {
 
         try {
             GameObject gameObject = (GameObject) clazz.getDeclaredConstructor().newInstance();
-            gameObject.setName(objectDefinition.getName());
+            gameObject.setName(this.getName());
             gameObject.setInstance(instance);
-            gameObject.setDynamic(objectDefinition.getIsDynamic());
-            gameObject.setVolatile(objectDefinition.getIsVolatile());
-            gameObject.setPosition(objectDefinition.getPositionX(),
-                    objectDefinition.getPositionY(),
-                    objectDefinition.getPositionZ());
-            gameObject.setSizeX(objectDefinition.getSizeX());
-            gameObject.setSizeY(objectDefinition.getSizeY());
-            gameObject.setSizeZ(objectDefinition.getSizeZ());
+            gameObject.setIsDynamic(this.getIsDynamic());
+            gameObject.setIsVolatile(this.getIsVolatile());
+            gameObject.setPosition(this.getPositionX(),
+                    this.getPositionY(),
+                    this.getPositionZ());
+            gameObject.setSizeX(this.getSizeX());
+            gameObject.setSizeY(this.getSizeY());
+            gameObject.setSizeZ(this.getSizeZ());
             gameObject.setIntendedPosition(gameObject.getX(), gameObject.getY(), gameObject.getZ());
-            gameObject.setObjectType(GameObjectType.fromString(objectDefinition.getType()));
+            gameObject.setObjectType(GameObjectType.fromString(this.getType()));
 
-            if (StringUtils.isNotEmpty(objectDefinition.getAi())) {
-                gameObject.setObjectAI(
-                        (IGameObjectAI) Class.forName(objectDefinition.getAi()).getDeclaredConstructor().newInstance());
+            if (StringUtils.isNotEmpty(this.getAi())) {
+                gameObject.setAi(
+                        (IGameObjectAI) Class.forName(this.getAi()).getDeclaredConstructor().newInstance());
             }
 
-            if (StringUtils.isNotEmpty(objectDefinition.getDirection())) {
-                gameObject.setDirection(DirectionVector.parseFromString(objectDefinition.getDirection()));
+            if (StringUtils.isNotEmpty(this.getDirection())) {
+                gameObject.setDirection(DirectionVector.parseFromString(this.getDirection()));
             }
             return gameObject;
         } catch (Exception e) {

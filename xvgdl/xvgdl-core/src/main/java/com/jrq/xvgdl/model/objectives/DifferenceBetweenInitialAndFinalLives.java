@@ -5,7 +5,7 @@ import com.jrq.xvgdl.context.GameContext;
 public class DifferenceBetweenInitialAndFinalLives extends AGameObjective {
 
     @Override
-    public double checkObjective(GameContext c) {
+    public Double checkObjective(GameContext c) {
         double rto = 0;
 
         // Number of lives lost shouldn't be 0 and shouldn't be the initial

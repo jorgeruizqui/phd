@@ -39,7 +39,7 @@ public class Speedup extends AGameEvent {
     }
 
     @Override
-    public boolean isConsumable() {
+    public Boolean isConsumable() {
         return false;
     }
 

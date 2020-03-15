@@ -1,8 +1,9 @@
 package com.jrq.xvgdl.context;
 
-import com.jrq.xvgdl.context.xml.GameContextXMLHandler;
-import com.jrq.xvgdl.context.xml.GameElementBaseDefinition;
-import com.jrq.xvgdl.context.xml.GameRendererXMLHandler;
+import com.jrq.xvgdl.context.xml.GameDefinition;
+import com.jrq.xvgdl.context.xml.GameDefinitionXMLMapper;
+import com.jrq.xvgdl.context.xml.GameRendererDefinition;
+import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.model.actions.IGameAction;
 import com.jrq.xvgdl.model.endcondition.IGameEndCondition;
 import com.jrq.xvgdl.model.event.IGameEvent;
@@ -14,12 +15,15 @@ import com.jrq.xvgdl.model.objectives.IGameObjective;
 import com.jrq.xvgdl.model.physics.IGamePhysic;
 import com.jrq.xvgdl.model.rules.IGameRule;
 import com.jrq.xvgdl.renderer.IGameRenderer;
+import com.jrq.xvgdl.util.GameBaseProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Game context
@@ -40,8 +45,9 @@ import java.util.stream.Collectors;
  */
 @Getter
 @ToString
+@NoArgsConstructor
 @Slf4j
-public final class GameContext extends GameElementBaseDefinition implements Comparable<GameContext> {
+public final class GameContext extends GameBaseProperties implements Comparable<GameContext> {
 
     /**
      * Renderer configuration key.
@@ -144,12 +150,7 @@ public final class GameContext extends GameElementBaseDefinition implements Comp
     @Getter
     private Map<Object, Object> objectProperties = new HashMap<>();
 
-    public GameContext() {
-        // Empty constructor to be called by XML Mapper
-    }
-
     /**
-     * Constructor.
      *
      * @param configurationFile Configuration file
      */
@@ -158,19 +159,15 @@ public final class GameContext extends GameElementBaseDefinition implements Comp
         if (configurationFile != null) {
             try (InputStream f = new FileInputStream(configurationFile)) {
 
-                // Read and parse configuration file. This will create all
-                // elements
-                // needed
-                GameContextXMLHandler contextHandler = new GameContextXMLHandler(this);
-                contextHandler.parseResource(configurationFile);
+                GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
+                GameDefinition gameDefinition = parser.parse(configurationFile);
+
+                rollup(gameDefinition);
 
                 // Generate map position for all elements
                 this.gameMap.generateMap(this);
 
-                // Get renderer configuration and load renderer definitions:
-                GameRendererXMLHandler rendererHandler = new GameRendererXMLHandler(this);
-                rendererHandler.parseResource(getProperty(RENDERER_CONFIGURATION));
-            } catch (IOException e) {
+            } catch (XvgdlException | IOException e) {
                 log.error("Game context configuration file not found: " + configurationFile);
             }
         }
@@ -183,6 +180,37 @@ public final class GameContext extends GameElementBaseDefinition implements Comp
             this.addObjects(gc.getObjectsAsList());
         }
 
+    }
+
+    private void rollup(GameDefinition gameDefinition) {
+        // Properties
+        this.putAll(gameDefinition.getProperties());
+
+        // Game Map
+        this.setGameMap(gameDefinition.getMap().toModel());
+
+        // Objects
+        gameDefinition.getObjects().stream().forEach(o -> {
+            IntStream.range(0, o.getInstances()).forEach(i -> {
+                IGameObject gameObject = o.toModel(i);
+                this.addObject(gameObject);
+            });
+        });
+
+        // Players
+        gameDefinition.getPlayers().stream().forEach(p -> addObject(p.toModel()));
+
+        // Rules
+        gameDefinition.getRules().stream().forEach(r -> addRule(r.toModel()));
+
+        // Events
+        gameDefinition.getEvents().stream().forEach(e -> addEvent(e.toModel()));
+
+        // End Conditions
+        gameDefinition.getEndConditions().stream().forEach(ec -> addEndCondition(ec.toModel()));
+
+        // Objectives
+        gameDefinition.getObjectives().stream().forEach(o -> addGameObjective(o.toModel()));
     }
 
     private void addObjectProperties(Set<Map.Entry<Object, Object>> entrySet) {

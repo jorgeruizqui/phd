@@ -20,14 +20,14 @@ public abstract class AGameEvent implements IGameEvent {
     /**
      * Game Event Time stamp in milliseconds.
      */
-    private long timeStamp;
+    private Long timeStamp;
 
     /**
      * Game Event Timer in milliseconds. According to last time stamp, this
      * timer
      * indicates not to launch the event if not enough time has passed.
      */
-    private long timer;
+    private Long timer;
 
     /**
      * Game Event Executor.
@@ -63,4 +63,7 @@ public abstract class AGameEvent implements IGameEvent {
         return gameEventDefinition;
     }
 
+    public Double getValue() {
+        return gameEventDefinition.getValue();
+    }
 }

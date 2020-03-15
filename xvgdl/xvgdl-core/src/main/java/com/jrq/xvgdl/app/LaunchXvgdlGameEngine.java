@@ -23,7 +23,6 @@ public class LaunchXvgdlGameEngine {
             System.exit(-1);
         }
 
-        GameEngine ge = XvgdlGameApp.launchGameApp(args[0]);
-        ge.start();
+        XvgdlGameApp.launchGameApp(args[0]).start();
     }
 }

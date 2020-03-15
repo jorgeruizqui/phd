@@ -10,9 +10,6 @@ import org.junit.Test;
  */
 public class RulesTest {
 
-    /**
-     * Test Rule Result type converting to String
-     */
     @Test
     public void ruleResultTypeToString() {
         Assert.assertNull(GameRuleResultType.fromString("nonValid"));

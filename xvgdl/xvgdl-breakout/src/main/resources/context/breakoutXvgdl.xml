@@ -4,9 +4,6 @@
 
 <gameDefinition>
 
-    <!-- Renderer configuration -->
-    <property key="rendererConfiguration"
-        value="/context/breakoutAsciiRendererConfiguration.xml" />
     <!-- Timeout configuration in milliseconds. Set to -1 for no timeout -->
     <property key="TIMEOUT" value="-1" />
 

@@ -30,7 +30,7 @@ public class SpawnItemEvent extends AGameEvent {
     }
 
     @Override
-    public boolean isConsumable() {
+    public Boolean isConsumable() {
         return false;
     }
 

@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.model.objectives;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.context.xml.GameObjectiveDefinition;
 
 public interface IGameObjective {
 
@@ -9,26 +10,19 @@ public interface IGameObjective {
      *
      * @return
      */
-    double checkObjective(GameContext c);
+    Double checkObjective(GameContext c);
 
     /**
      * @return the score
      */
-    double getScore();
+    Double getScore();
 
     /**
      * @return the weight
      */
-    double getWeight();
+    Double getWeight();
 
-    /**
-     * @param score The score to set
-     */
-    void setScore(double score);
+    GameObjectiveDefinition getGameObjectiveDefinition();
 
-    /**
-     * @param weight The weight to set
-     */
-    void setWeight(double weight);
-
+    void setGameObjectiveDefinition(GameObjectiveDefinition gameObjectiveDefinition);
 }

@@ -41,4 +41,10 @@ public class GameDefinition {
 
     @JacksonXmlElementWrapper
     private List<GameEndConditionDefinition> endConditions = new ArrayList<>();
+
+    @JacksonXmlElementWrapper
+    private List<GameObjectiveDefinition> objectives = new ArrayList<>();
+
+    @JacksonXmlElementWrapper
+    private GameRendererDefinition renderer;
 }

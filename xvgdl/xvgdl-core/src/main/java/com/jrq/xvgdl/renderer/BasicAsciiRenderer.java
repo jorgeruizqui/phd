@@ -16,12 +16,7 @@ import java.util.Arrays;
  *
  * @author jrquinones
  */
-public class BasicAsciiRenderer implements IGameRenderer {
-
-    /**
-     * Game Context.
-     */
-    private GameContext gameContext;
+public class BasicAsciiRenderer extends AGameRenderer {
 
     @Override
     public void initializeRenderer(GameContext gameContext) {

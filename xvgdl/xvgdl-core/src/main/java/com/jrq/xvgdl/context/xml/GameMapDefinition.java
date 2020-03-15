@@ -37,33 +37,30 @@ public class GameMapDefinition {
     private String file;
 
     /**
-     * Convert to IGameMap interface
-     *
-     * @param definition Game Map Definition
-     * @return Game Map converted from XML to Object
+     * @return Model Game Map from Definition
      */
-    public static IGameMap convert(GameMapDefinition definition) {
-        GameMap gameMap = new GameMap();
+    public IGameMap toModel() {
         try {
-            gameMap.setSizeX(definition.getSizeX());
-            gameMap.setSizeY(definition.getSizeY());
-            gameMap.setSizeZ(definition.getSizeZ());
+            GameMap gameMap = new GameMap();
+            gameMap.setSizeX(this.getSizeX());
+            gameMap.setSizeY(this.getSizeY());
+            gameMap.setSizeZ(this.getSizeZ());
 
-            if (StringUtils.isNotEmpty(definition.getGenerator())) {
+            if (StringUtils.isNotEmpty(this.getGenerator())) {
                 gameMap.setMapGenerator((IGameMapGenerator) Class.forName(
-                        definition.getGenerator()).newInstance());
+                        this.getGenerator()).newInstance());
             }
 
             gameMap.setMapRepresentation(
                     new IGameObject[gameMap.getSizeX()][gameMap.getSizeY()][gameMap.getSizeZ()]);
-            gameMap.setMapType(GameMapType.fromString(definition.getType()));
-            gameMap.setToroidal(Optional.ofNullable(definition.getToroidal()).orElse(Boolean.FALSE));
-            gameMap.setMapFile(definition.getFile());
+            gameMap.setMapType(GameMapType.fromString(this.getType()));
+            gameMap.setIsToroidal(Optional.ofNullable(this.getToroidal()).orElse(Boolean.FALSE));
+            gameMap.setMapFile(this.getFile());
+
+            return gameMap;
         } catch (Exception e) {
             log.error("Exception converting GameMapDefinition to GameMap: " + e.getMessage(), e);
-            gameMap = null;
+            return null;
         }
-
-        return gameMap;
     }
 }

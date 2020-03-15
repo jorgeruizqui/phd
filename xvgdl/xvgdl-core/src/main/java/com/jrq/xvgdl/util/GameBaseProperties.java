@@ -1,8 +1,8 @@
-package com.jrq.xvgdl.context.xml;
+package com.jrq.xvgdl.util;
 
 import java.util.Properties;
 
-public class GameElementBaseDefinition extends Properties {
+public class GameBaseProperties extends Properties {
 
 
     public final Long getLongValue(String attributeName, long defaultValue) {
