@@ -3,6 +3,7 @@ package com.jrq.xvgdl.pacman.genetic;
 import com.jrq.xvgdl.app.XvgdlGameApp;
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.engine.GameEngine;
+import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.model.endcondition.IGameEndCondition;
 import com.jrq.xvgdl.model.objectives.IGameObjective;
 import com.jrq.xvgdl.model.rules.GameRule;
@@ -61,7 +62,7 @@ public class PacmanGeneticAlg {
         this.numberOfDiscardedContext = numberOfDiscardedElements;
     }
 
-    public void startSimulation() {
+    public void startSimulation() throws XvgdlException {
 
         long initTime = System.currentTimeMillis();
 
@@ -100,7 +101,7 @@ public class PacmanGeneticAlg {
     /**
      * Generate elements from the current list of context once the worst elements have been removed
      */
-    private void createNewContexts() {
+    private void createNewContexts() throws XvgdlException {
         int currentNumber = this.currentGameContexts.size();
         PacmanSimulatorContextGenerator generator = new PacmanSimulatorContextGenerator();
 
@@ -140,7 +141,7 @@ public class PacmanGeneticAlg {
     }
 
     private void evolveEndConditions(GameContext c) {
-        c.getEndConditions().stream().forEach(this::evolveEndCondition);
+        c.getGameEndConditions().stream().forEach(this::evolveEndCondition);
     }
 
     private void evolveEndCondition(IGameEndCondition endCondition) {
@@ -229,7 +230,7 @@ public class PacmanGeneticAlg {
         evaluate(c);
     }
 
-    private void loadBaseContexts() {
+    private void loadBaseContexts() throws XvgdlException {
         PacmanSimulatorContextGenerator generator = new PacmanSimulatorContextGenerator();
 
         for (int i = 0; i < this.numberOfCurrentContext; i++) {

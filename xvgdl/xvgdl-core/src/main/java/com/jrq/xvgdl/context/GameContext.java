@@ -33,6 +33,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -43,16 +44,13 @@ import java.util.stream.IntStream;
  *
  * @author jrquinones
  */
+@NoArgsConstructor
 @Getter
 @ToString
-@NoArgsConstructor
 @Slf4j
-public final class GameContext extends GameBaseProperties implements Comparable<GameContext> {
+public final class GameContext implements Comparable<GameContext> {
 
-    /**
-     * Renderer configuration key.
-     */
-    private static final String RENDERER_CONFIGURATION = "rendererConfiguration";
+    private GameDefinition gameDefinition = new GameDefinition();
 
     /**
      * Objects map.
@@ -77,7 +75,6 @@ public final class GameContext extends GameBaseProperties implements Comparable<
     /**
      * Game Map.
      */
-    @Setter
     private IGameMap gameMap;
 
     /**
@@ -111,7 +108,6 @@ public final class GameContext extends GameBaseProperties implements Comparable<
     /**
      * Game Renderer.
      */
-    @Setter
     private IGameRenderer gameRenderer;
 
     /**
@@ -137,63 +133,58 @@ public final class GameContext extends GameBaseProperties implements Comparable<
     private int turns = 0;
 
     /**
-     * Singleton instance.
-     */
-    private static GameContext instance;
-
-    /**
      * Game Context Fitness function score.
      */
     @Setter
     private Double fitnessScore = 0.0d;
 
-    @Getter
-    private Map<Object, Object> objectProperties = new HashMap<>();
+    public void loadGameContext(String configurationFile) throws XvgdlException {
+        loadGameContext(null, configurationFile);
+    }
 
     /**
      *
      * @param configurationFile Configuration file
      */
-    private GameContext(GameContext gc, String configurationFile) {
+    public void loadGameContext(GameContext gc, String configurationFile) throws XvgdlException {
 
         if (configurationFile != null) {
-            try (InputStream f = new FileInputStream(configurationFile)) {
+            try {
 
                 GameDefinitionXMLMapper parser = new GameDefinitionXMLMapper();
-                GameDefinition gameDefinition = parser.parse(configurationFile);
+                this.gameDefinition = parser.parse(configurationFile);
 
-                rollup(gameDefinition);
+                rollup();
 
-                // Generate map position for all elements
-                this.gameMap.generateMap(this);
-
-            } catch (XvgdlException | IOException e) {
-                log.error("Game context configuration file not found: " + configurationFile);
+            } catch (Exception e) {
+                log.error("Game context configuration error with: " + configurationFile);
+                throw new XvgdlException("Error loading Game Context: " + e.getMessage(), e);
             }
         }
 
         if (gc != null) {
-            this.addObjectProperties(gc.entrySet());
-            this.addGameEndConditions(gc.getEndConditions());
+            this.addProperties(gc.getGameDefinition().getProperties());
+            this.addGameEndConditions(gc.getGameEndConditions());
             this.addEvents(gc.getGameEvents());
             this.addRules(gc.getGameRules());
             this.addObjects(gc.getObjectsAsList());
+            this.addGameObjectives(gc.getGameObjectives());
         }
 
     }
 
-    private void rollup(GameDefinition gameDefinition) {
-        // Properties
-        this.putAll(gameDefinition.getProperties());
+    private void rollup() throws XvgdlException {
 
         // Game Map
-        this.setGameMap(gameDefinition.getMap().toModel());
+        this.gameMap = gameDefinition.getMap().toModel();
+        this.gameMap.generateMap(this);
 
         // Objects
         gameDefinition.getObjects().stream().forEach(o -> {
             IntStream.range(0, o.getInstances()).forEach(i -> {
                 IGameObject gameObject = o.toModel(i);
-                this.addObject(gameObject);
+
+                addObject(o.toModel(i));
             });
         });
 
@@ -210,44 +201,19 @@ public final class GameContext extends GameBaseProperties implements Comparable<
         gameDefinition.getEndConditions().stream().forEach(ec -> addEndCondition(ec.toModel()));
 
         // Objectives
-        gameDefinition.getObjectives().stream().forEach(o -> addGameObjective(o.toModel()));
+        gameDefinition.getObjectives().stream().forEach(o -> addObjective(o.toModel()));
     }
 
-    private void addObjectProperties(Set<Map.Entry<Object, Object>> entrySet) {
-        entrySet.forEach(entry -> this.objectProperties.put(entry.getKey(), entry.getValue()));
+    private void addProperties(GameBaseProperties properties) {
+        this.gameDefinition.getProperties().putAll(properties);
     }
 
-    /**
-     * Creates game context.
-     *
-     * @param configurationFile Configuration File
-     */
-    public static GameContext createGameContext(String configurationFile) {
-        instance = new GameContext(null, configurationFile);
-        return instance;
+    public String getProperty(String key) {
+        return this.gameDefinition.getProperties().getProperty(key);
     }
 
-    /**
-     * Creates game context.
-     *
-     * @param configurationFile Configuration File
-     */
-    public static void createGameContext(GameContext gc, String configurationFile) {
-        instance = new GameContext(gc, configurationFile);
-    }
-
-    /**
-     * Creates an empty game context.
-     */
-    public static void createEmptyGameContext() {
-        instance = new GameContext(null, null);
-    }
-
-    /**
-     * @return the instance of the context
-     */
-    public static synchronized GameContext getInstance() {
-        return instance;
+    public void setProperty(String key, String value) {
+        this.gameDefinition.getProperties().setProperty(key, value);
     }
 
     /**
@@ -311,12 +277,16 @@ public final class GameContext extends GameBaseProperties implements Comparable<
      * @param object Object to be added
      */
     public void addObject(IGameObject object) {
-        List<IGameObject> currentList = getObjectsMap().get(object.getObjectType());
-        if (currentList == null) {
-            currentList = new ArrayList<>();
+        if (object != null) {
+            List<IGameObject> currentList = getObjectsMap().get(object.getObjectType());
+            if (currentList == null) {
+                currentList = new ArrayList<>();
+            }
+            currentList.add(object);
+            getObjectsMap().put(object.getObjectType(), currentList);
+        } else {
+            log.error("Error trying to add a null game object to game map. Check object definition");
         }
-        currentList.add(object);
-        getObjectsMap().put(object.getObjectType(), currentList);
     }
 
     /**
@@ -347,16 +317,14 @@ public final class GameContext extends GameBaseProperties implements Comparable<
      * @return Returns the object at the specified position. Null if no object
      * present
      */
-    public IGameObject getObjectAt(int x, int y, int z) {
-        IGameObject rto = null;
+    public IGameObject getObjectAt(Integer x, Integer y, Integer z) {
 
-        for (IGameObject go : getObjectsAsList()) {
-            if (go.getX() == x && go.getY() == y && go.getZ() == z) {
-                rto = go;
-                break;
-            }
-        }
-        return rto;
+        List<IGameObject> listByPosition = getObjectsAsList().stream().filter(
+                go -> go.getX().equals(x) &&
+                        go.getY().equals(y) &&
+                        go.getZ().equals(z)).collect(Collectors.toList());
+
+        return !listByPosition.isEmpty() ? listByPosition.get(0) : null;
     }
 
     /**
@@ -386,7 +354,7 @@ public final class GameContext extends GameBaseProperties implements Comparable<
      * @param events Game Event collections
      */
     public void addEvents(Collection<IGameEvent> events) {
-        events.addAll(events);
+        this.gameEvents.addAll(events);
     }
 
     /**
@@ -399,8 +367,8 @@ public final class GameContext extends GameBaseProperties implements Comparable<
     /**
      * @return Game Events sorted by timestamp
      */
-    public Collection<IGameEvent> getGameSortedEvents() {
-        Comparator<IGameEvent> byTimeStamp = (e1, e2) -> Long.compare(e1.getTimeStamp(), e2.getTimeStamp());
+    public Collection<IGameEvent> getGameSortedEventsByTime() {
+        Comparator<IGameEvent> byTimeStamp = Comparator.comparingLong(IGameEvent::getTimeStamp);
         return this.gameEvents.stream().sorted(byTimeStamp).collect(Collectors.toList());
     }
 
@@ -423,33 +391,24 @@ public final class GameContext extends GameBaseProperties implements Comparable<
     }
 
     /**
-     * @return Game End Conditions
-     */
-    public Collection<IGameEndCondition> getEndConditions() {
-        return this.gameEndConditions;
-    }
-
-    /**
-     * @return Game Objectives
-     */
-    public Collection<IGameObjective> getGameObjectives() {
-        return this.gameObjectives;
-    }
-
-    /**
      * @param go Game Objective
      */
-    public void addGameObjective(IGameObjective go) {
+    public void addObjective(IGameObjective go) {
         this.gameObjectives.add(go);
     }
 
+    /**
+     * @param gameObjectives Game Objectives
+     */
+    public void addGameObjectives(Collection<IGameObjective> gameObjectives) {
+        this.gameObjectives.addAll(gameObjectives);
+    }
     /**
      * @return The total time played
      */
     public long getTimePlayed() {
         return getEndTime() != null ? getEndTime() - getStartTime() : System.currentTimeMillis() - getStartTime();
     }
-
 
     @Override
     public int compareTo(GameContext o) {

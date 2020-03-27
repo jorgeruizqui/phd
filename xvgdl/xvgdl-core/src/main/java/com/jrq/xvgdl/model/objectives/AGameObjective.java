@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 public abstract class AGameObjective implements IGameObjective {
 
-    private Double weight;
-    private Double score;
     private GameObjectiveDefinition gameObjectiveDefinition;
 
     public Double getScore() {

@@ -148,4 +148,6 @@ public interface IGameObject {
     DirectionVector getDirection();
 
     IGameObjectAI getAi();
+
+    void setObjectType(GameObjectType objectType);
 }

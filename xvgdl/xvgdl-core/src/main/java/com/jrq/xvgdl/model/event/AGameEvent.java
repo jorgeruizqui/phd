@@ -4,6 +4,8 @@ import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.context.xml.GameEventDefinition;
 import lombok.Data;
 
+import java.util.Optional;
+
 /**
  * Abstract class representing the superclass of all game events
  *
@@ -40,9 +42,9 @@ public abstract class AGameEvent implements IGameEvent {
     private GameEventDefinition gameEventDefinition;
 
     @Override
-    public void executeEvent() {
+    public void executeEvent(GameContext gameContext) {
         setTimeStamp(System.currentTimeMillis());
-        executor.executeEvent(this, GameContext.getInstance());
+        executor.executeEvent(this, gameContext);
     }
 
     /**
@@ -65,5 +67,9 @@ public abstract class AGameEvent implements IGameEvent {
 
     public Double getValue() {
         return gameEventDefinition.getValue();
+    }
+
+    public Long getTimeStamp() {
+        return Optional.ofNullable(timeStamp).orElse(-1L);
     }
 }

@@ -42,9 +42,9 @@ public class GameMapDefinition {
     public IGameMap toModel() {
         try {
             GameMap gameMap = new GameMap();
-            gameMap.setSizeX(this.getSizeX());
-            gameMap.setSizeY(this.getSizeY());
-            gameMap.setSizeZ(this.getSizeZ());
+            gameMap.setSizeX(Optional.ofNullable(this.getSizeX()).orElse(0));
+            gameMap.setSizeY(Optional.ofNullable(this.getSizeY()).orElse(0));
+            gameMap.setSizeZ(Optional.ofNullable(this.getSizeZ()).orElse(0));
 
             if (StringUtils.isNotEmpty(this.getGenerator())) {
                 gameMap.setMapGenerator((IGameMapGenerator) Class.forName(

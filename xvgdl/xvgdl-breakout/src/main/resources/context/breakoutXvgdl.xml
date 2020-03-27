@@ -5,7 +5,9 @@
 <gameDefinition>
 
     <!-- Timeout configuration in milliseconds. Set to -1 for no timeout -->
-    <property key="TIMEOUT" value="-1" />
+    <properties>
+        <property key="TIMEOUT" value="-1" />
+    </properties>
 
     <layout>
         <component id="gameInfoTop" location="TOP">
@@ -29,7 +31,7 @@
     </players>
     <!-- Defining the Objects present in the game -->
     <objects>
-        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" />
+        <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" instances="50"/>
         <object name="yellowBrick" type="item" dynamic="false" volatile="true" sizeX="1" sizeY="1"  />
         <object name="orangeBrick" type="item" dynamic="false" volatile="true" sizeX="1" sizeY="1"  />
         <object name="redBrick" type="item" dynamic="false" volatile="true" sizeX="1" sizeY="1"  />

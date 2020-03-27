@@ -22,7 +22,7 @@ import java.util.List;
 public class GameDefinition {
 
     @JacksonXmlProperty
-    private GamePropertiesDefinition properties;
+    private GamePropertiesDefinition properties = new GamePropertiesDefinition();
 
     @JacksonXmlProperty
     private GameMapDefinition map;
