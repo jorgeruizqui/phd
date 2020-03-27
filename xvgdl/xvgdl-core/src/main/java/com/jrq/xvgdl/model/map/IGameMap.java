@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.model.map;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.model.object.IGameObject;
 
 /**
@@ -57,5 +58,5 @@ public interface IGameMap {
      *
      * @param gameContext Game Context
      */
-    void generateMap(GameContext gameContext);
+    void generateMap(GameContext gameContext) throws XvgdlException;
 }

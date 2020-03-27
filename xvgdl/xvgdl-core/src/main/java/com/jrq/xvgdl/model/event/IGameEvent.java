@@ -1,5 +1,6 @@
 package com.jrq.xvgdl.model.event;
 
+import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.context.xml.GameEventDefinition;
 
 /**
@@ -29,7 +30,7 @@ public interface IGameEvent {
     /**
      * Executes the event.
      */
-    void executeEvent();
+    void executeEvent(GameContext gameContext);
 
     /**
      * @return the game event definition.
@@ -47,4 +48,8 @@ public interface IGameEvent {
     Boolean isConsumable();
 
     Double getValue();
+
+    void setEventType(GameEventType gameEventType);
+
+    void setTimeStamp(Long timeStamp);
 }

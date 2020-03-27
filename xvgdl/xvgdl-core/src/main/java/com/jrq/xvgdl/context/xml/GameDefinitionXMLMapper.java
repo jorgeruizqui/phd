@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jrq.xvgdl.exception.XvgdlException;
+import com.jrq.xvgdl.util.XvgdlUtils;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
 
 @Slf4j
 public class GameDefinitionXMLMapper {
@@ -16,11 +15,11 @@ public class GameDefinitionXMLMapper {
         XmlMapper xmlMapper = getXmlMapper();
         try {
             return xmlMapper.readValue(
-                    getClass().getResourceAsStream(fileName),
+                    XvgdlUtils.getFileInputStream(fileName),
                     GameDefinition.class);
         } catch (Exception e) {
             log.error("Error parsing GamneContext file: " + e.getMessage(), e);
-            throw new XvgdlException("Exception parsing XML file: " +fileName, e);
+            throw new XvgdlException("Exception parsing XML file: " + fileName, e);
         }
     }
 

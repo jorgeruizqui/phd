@@ -32,7 +32,7 @@ public final class GameEventUtils {
         }
         if (executeEvent) {
             log.debug("Executing game event: " + event.getClass().getName());
-            event.executeEvent();
+            event.executeEvent(gameContext);
         }
     }
 }

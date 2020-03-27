@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.model.map;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.model.object.IGameObject;
 import lombok.Data;
 
@@ -68,7 +69,7 @@ public class GameMap implements IGameMap {
     }
 
     @Override
-    public void generateMap(GameContext gc) {
+    public void generateMap(GameContext gc) throws XvgdlException {
         if (this.mapGenerator != null) {
             this.mapGenerator.generateMapRepresentation(gc, this);
         }

@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.engine;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.input.KeyboardInputListener;
 import com.jrq.xvgdl.model.endcondition.IGameEndCondition;
 import com.jrq.xvgdl.model.event.GameEventType;
@@ -18,7 +19,6 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +26,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
 
 /**
  * Game engine
@@ -61,6 +60,9 @@ public final class GameEngine extends GameBaseProperties {
      */
     private static GameEngine instance;
 
+    @Getter
+    private GameContext gameContext = new GameContext();
+
     /**
      * Game Finished Flag.
      */
@@ -91,10 +93,10 @@ public final class GameEngine extends GameBaseProperties {
         }
     }
 
-    private void loadGameContext(GameContext gc, String configFile) {
+    private void loadGameContext(GameContext gc, String configFile) throws XvgdlException {
         log.debug("Context to be created with file: " + configFile);
         long start = System.currentTimeMillis();
-        GameContext.createGameContext(gc, configFile);
+        gameContext.loadGameContext(gc, configFile);
         long end = System.currentTimeMillis();
         log.debug("Context has been created in " + (end - start)+ " ms.");
     }
@@ -171,13 +173,6 @@ public final class GameEngine extends GameBaseProperties {
     }
 
     /**
-     * @return the game Context
-     */
-    public GameContext getGameContext() {
-        return GameContext.getInstance();
-    }
-
-    /**
      * Main game loop.
      */
     private void gameLoop() {
@@ -216,7 +211,7 @@ public final class GameEngine extends GameBaseProperties {
 
     private void checkEndConditions() {
 
-        for (IGameEndCondition endCondition : getGameContext().getEndConditions()) {
+        for (IGameEndCondition endCondition : getGameContext().getGameEndConditions()) {
             if (endCondition.checkCondition(getGameContext())) {
                 log.info("Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
@@ -234,7 +229,7 @@ public final class GameEngine extends GameBaseProperties {
      */
     private void processEvents() {
 
-        for (IGameEvent event : getGameContext().getGameSortedEvents()) {
+        for (IGameEvent event : getGameContext().getGameSortedEventsByTime()) {
             if (simulationMode && GameEventType.KEYBOARD.equals(event.getEventType())) {
                 log.debug("Keyboard Event not processed. Simulation Mode enabled");
             } else {
@@ -280,8 +275,8 @@ public final class GameEngine extends GameBaseProperties {
      * Render current state.
      */
     private void render() {
-        if (GameContext.getInstance().getGameRenderer() != null) {
-            GameContext.getInstance().getGameRenderer().render();
+        if (getGameContext().getGameRenderer() != null) {
+            getGameContext().getGameRenderer().render();
         }
     }
 
@@ -295,5 +290,4 @@ public final class GameEngine extends GameBaseProperties {
         o.setIsFrozen(true);
         scheduler.schedule(() -> o.setIsFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
     }
-
 }

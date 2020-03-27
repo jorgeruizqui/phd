@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.model.map;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.exception.XvgdlException;
 
 /**
  * Map generator interface
@@ -15,5 +16,5 @@ public interface IGameMapGenerator {
      * @param map Game map to be modified
      * @param gc  Game Context
      */
-    void generateMapRepresentation(GameContext gc, IGameMap map);
+    void generateMapRepresentation(GameContext gc, IGameMap map) throws XvgdlException;
 }

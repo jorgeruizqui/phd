@@ -12,7 +12,7 @@ public class LongContextPropertyBasedGameEndCondition extends AGameEndCondition 
 
         try {
             String prop = getGameEndConditionDefinition().getProperty();
-            Long gameContextValue = c.getLongValue(prop.toUpperCase(), -1);
+            Long gameContextValue = c.getGameDefinition().getProperties().getLongValue(prop.toUpperCase(), -1);
             Long value = Long.parseLong(getGameEndConditionDefinition().getValue());
 
             return gameContextValue.equals(value);

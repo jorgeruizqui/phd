@@ -11,6 +11,7 @@ import com.jrq.xvgdl.engine.GameEngine;
 public class LaunchBreakout {
 
     public static void main(String[] args) {
+
         XvgdlGameApp.launchGameApp("/context/breakoutXvgdl.xml").start();
     }
 

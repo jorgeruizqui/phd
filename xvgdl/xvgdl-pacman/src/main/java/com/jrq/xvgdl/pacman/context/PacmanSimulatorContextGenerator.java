@@ -2,6 +2,7 @@ package com.jrq.xvgdl.pacman.context;
 
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.context.generator.IGameContextGenerator;
+import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.model.endcondition.IGameEndCondition;
 import com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition;
 import com.jrq.xvgdl.model.endcondition.TurnsGameEndCondition;
@@ -18,9 +19,10 @@ public class PacmanSimulatorContextGenerator implements IGameContextGenerator {
     private static final int MAX_TURNS = 100;
 
     @Override
-    public GameContext generateContext(String contextConfigFile) {
+    public GameContext generateContext(String contextConfigFile) throws XvgdlException {
 
-        GameContext gc = GameContext.createGameContext(contextConfigFile);
+        GameContext gc = new GameContext();
+        gc.loadGameContext(contextConfigFile);
 
         generateContextProperties(gc);
         generateMap(gc);

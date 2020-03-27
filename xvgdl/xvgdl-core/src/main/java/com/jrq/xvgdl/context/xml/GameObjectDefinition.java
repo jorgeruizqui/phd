@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Optional;
+
 /**
  * Game Object XML element Definition
  *
@@ -35,7 +37,7 @@ public class GameObjectDefinition {
     @JacksonXmlProperty(isAttribute = true)
     private Integer positionZ;
     @JacksonXmlProperty(isAttribute = true)
-    private Integer instances;
+    private Integer instances = 1;
     @JacksonXmlProperty(isAttribute = true)
     private String ai;
     @JacksonXmlProperty(isAttribute = true)
@@ -65,9 +67,10 @@ public class GameObjectDefinition {
             gameObject.setInstance(instance);
             gameObject.setIsDynamic(this.getIsDynamic());
             gameObject.setIsVolatile(this.getIsVolatile());
-            gameObject.setPosition(this.getPositionX(),
-                    this.getPositionY(),
-                    this.getPositionZ());
+            gameObject.setPosition(
+                    Optional.ofNullable(this.getPositionX()).orElse(0),
+                    Optional.ofNullable(this.getPositionY()).orElse(0),
+                    Optional.ofNullable(this.getPositionZ()).orElse(0));
             gameObject.setSizeX(this.getSizeX());
             gameObject.setSizeY(this.getSizeY());
             gameObject.setSizeZ(this.getSizeZ());
