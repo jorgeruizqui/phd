@@ -2,7 +2,6 @@ package com.jrq.xvgdl.context;
 
 import com.jrq.xvgdl.context.xml.GameDefinition;
 import com.jrq.xvgdl.context.xml.GameDefinitionXMLMapper;
-import com.jrq.xvgdl.context.xml.GameRendererDefinition;
 import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.model.actions.IGameAction;
 import com.jrq.xvgdl.model.endcondition.IGameEndCondition;
@@ -22,19 +21,11 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -177,31 +168,28 @@ public final class GameContext implements Comparable<GameContext> {
 
         // Game Map
         this.gameMap = gameDefinition.getMap().toModel();
-        this.gameMap.generateMap(this);
 
         // Objects
-        gameDefinition.getObjects().stream().forEach(o -> {
-            IntStream.range(0, o.getInstances()).forEach(i -> {
-                IGameObject gameObject = o.toModel(i);
-
-                addObject(o.toModel(i));
-            });
-        });
+        gameDefinition.getObjects().forEach(o -> IntStream.range(0, o.getInstances()).forEach(
+                i -> addObject(o.toModel(i))));
 
         // Players
-        gameDefinition.getPlayers().stream().forEach(p -> addObject(p.toModel()));
+        gameDefinition.getPlayers().forEach(p -> addObject(p.toModel()));
+
+        // Generate map and add objecs and players
+        this.gameMap.generateMap(this);
 
         // Rules
-        gameDefinition.getRules().stream().forEach(r -> addRule(r.toModel()));
+        gameDefinition.getRules().forEach(r -> addRule(r.toModel()));
 
         // Events
-        gameDefinition.getEvents().stream().forEach(e -> addEvent(e.toModel()));
+        gameDefinition.getEvents().forEach(e -> addEvent(e.toModel()));
 
         // End Conditions
-        gameDefinition.getEndConditions().stream().forEach(ec -> addEndCondition(ec.toModel()));
+        gameDefinition.getEndConditions().forEach(ec -> addEndCondition(ec.toModel()));
 
         // Objectives
-        gameDefinition.getObjectives().stream().forEach(o -> addObjective(o.toModel()));
+        gameDefinition.getObjectives().forEach(o -> addObjective(o.toModel()));
     }
 
     private void addProperties(GameBaseProperties properties) {
@@ -410,6 +398,7 @@ public final class GameContext implements Comparable<GameContext> {
         return getEndTime() != null ? getEndTime() - getStartTime() : System.currentTimeMillis() - getStartTime();
     }
 
+    // TODO Create a fitness function comparator
     @Override
     public int compareTo(GameContext o) {
         return getFitnessScore().compareTo(o.getFitnessScore());

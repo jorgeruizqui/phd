@@ -125,14 +125,14 @@ public interface IGameObject {
      *
      * @param frozen
      */
-    void setIsFrozen(Boolean frozen);
+    void setFrozen(boolean frozen);
 
     /**
      * Is frozen flag
      *
      * @return
      */
-    Boolean getIsFrozen();
+    boolean isFrozen();
 
     /**
      * @return <code>true</code> if object is located anywhere in map

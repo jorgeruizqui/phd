@@ -20,6 +20,10 @@
             <groupId>com.jrq.xvgdl</groupId>
             <artifactId>xvgdl-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -1,13 +1,15 @@
 package com.jrq.xvgdl.spaceinvaders;
 
 import com.jrq.xvgdl.app.XvgdlGameApp;
-import com.jrq.xvgdl.engine.GameEngine;
+import com.jrq.xvgdl.exception.XvgdlException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Launcher
  * @author jrquinones
  *
  */
+@Slf4j
 public class LaunchSpaceInvaders {
 
     /**
@@ -16,8 +18,12 @@ public class LaunchSpaceInvaders {
      */
     public static void main(String[] args) {
 
-        GameEngine ge = XvgdlGameApp.launchGameApp("/engine/spaceInvadersEngineConfiguration.xml");
-        ge.start();
+        try {
+            XvgdlGameApp.launchGameApp("/engine/spaceInvadersEngineConfiguration.xml").start();
+        } catch (XvgdlException e) {
+            log.error("Error running XVGDL game.", e);
+            System.exit(-1);
+        }
     }
 
 }

@@ -72,4 +72,8 @@ public abstract class AGameEvent implements IGameEvent {
     public Long getTimeStamp() {
         return Optional.ofNullable(timeStamp).orElse(-1L);
     }
+
+    public Long getTimer() {
+        return Optional.ofNullable(timer).orElse(-1L);
+    }
 }

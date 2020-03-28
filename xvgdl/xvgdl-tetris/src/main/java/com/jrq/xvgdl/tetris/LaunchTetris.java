@@ -1,13 +1,15 @@
 package com.jrq.xvgdl.tetris;
 
 import com.jrq.xvgdl.app.XvgdlGameApp;
-import com.jrq.xvgdl.engine.GameEngine;
+import com.jrq.xvgdl.exception.XvgdlException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Launcher
  *
  * @author jrquinones
  */
+@Slf4j
 public class LaunchTetris {
 
     /**
@@ -17,8 +19,12 @@ public class LaunchTetris {
      */
     public static void main(String[] args) {
 
-        GameEngine ge = XvgdlGameApp.launchGameApp("/engine/tetrisEngineConfiguration.xml");
-        ge.start();
+        try {
+            XvgdlGameApp.launchGameApp("/engine/tetrisEngineConfiguration.xml").start();
+        } catch (XvgdlException e) {
+            log.error("Error running XVGDL game.", e);
+            System.exit(-1);
+        }
     }
 
 }
