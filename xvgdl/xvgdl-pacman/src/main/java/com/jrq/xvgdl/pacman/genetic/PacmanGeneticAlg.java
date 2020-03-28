@@ -223,11 +223,14 @@ public class PacmanGeneticAlg {
 
     private void play(GameContext c) {
         // Execute game simulation for this context
-        this.currentGameEngine = XvgdlGameApp.launchGameApp(c, "/engine/simul/pacmanSimulatorEngineConfiguration.xml");
-        this.currentGameEngine.start();
-
-        // Evaluate the context and store its solution
-        evaluate(c);
+        try {
+            this.currentGameEngine = XvgdlGameApp.launchGameApp(c, "/engine/simul/pacmanSimulatorEngineConfiguration.xml");
+            this.currentGameEngine.start();
+            // Evaluate the context and store its solution
+            evaluate(c);
+        } catch (XvgdlException e) {
+            log.error("Error executing a game context.", e);
+        }
     }
 
     private void loadBaseContexts() throws XvgdlException {

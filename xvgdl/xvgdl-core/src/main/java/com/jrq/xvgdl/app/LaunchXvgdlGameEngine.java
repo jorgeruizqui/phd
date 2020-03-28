@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.app;
 
 import com.jrq.xvgdl.engine.GameEngine;
+import com.jrq.xvgdl.exception.XvgdlException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,6 +24,11 @@ public class LaunchXvgdlGameEngine {
             System.exit(-1);
         }
 
-        XvgdlGameApp.launchGameApp(args[0]).start();
+        try {
+            XvgdlGameApp.launchGameApp(args[0]).start();
+        } catch (XvgdlException e) {
+            log.error("Error running XVGDL game.", e);
+            System.exit(-1);
+        }
     }
 }

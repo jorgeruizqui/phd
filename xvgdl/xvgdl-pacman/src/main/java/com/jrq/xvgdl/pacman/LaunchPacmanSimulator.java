@@ -18,11 +18,11 @@ public class LaunchPacmanSimulator {
      * @param args Arguments
      */
     public static void main(String[] args) {
-        PacmanGeneticAlg alg = new PacmanGeneticAlg(5, 100);
         try {
+            PacmanGeneticAlg alg = new PacmanGeneticAlg(5, 100);
             alg.startSimulation();
         } catch (XvgdlException e) {
-            log.error("Exception caught : " + e.getMessage(), e);
+            log.error("Exception running Pacman Genetic Algorithm.", e);
             System.exit(-1);
         }
     }

@@ -79,7 +79,7 @@ public class GameObject implements IGameObject {
     /**
      * Flag indicating if the object is frozen.
      */
-    private Boolean isFrozen;
+    private boolean frozen;
 
     /**
      * Artificial Intelligence associated with this object.
@@ -93,7 +93,7 @@ public class GameObject implements IGameObject {
 
     @Override
     public void moveTo(int x, int y, int z) {
-        if (!getIsFrozen()) {
+        if (!isFrozen()) {
             intendedPosition.setX(x);
             intendedPosition.setY(y);
             intendedPosition.setZ(z);
@@ -170,7 +170,7 @@ public class GameObject implements IGameObject {
         cloned.setInstance((new Random()).nextInt());
         cloned.setIntendedPosition(getIntendedPosition().getX(), getIntendedPosition().getY(),
                 getIntendedPosition().getZ());
-        cloned.setIsFrozen(false);
+        cloned.setFrozen(false);
         cloned.setX(getPosition().getX());
         cloned.setY(getPosition().getY());
         cloned.setZ(getPosition().getZ());

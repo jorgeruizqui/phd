@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * @author jrquinones
  */
 @Slf4j
-public final class GameEngine extends GameBaseProperties {
+public final class GameEngine {
 
     /**
      * Milliseconds per frame Configuration Key.
@@ -168,14 +168,14 @@ public final class GameEngine extends GameBaseProperties {
     /**
      * Starts the game engine
      */
-    public void start() {
+    public void start() throws XvgdlException {
         gameLoop();
     }
 
     /**
      * Main game loop.
      */
-    private void gameLoop() {
+    private void gameLoop() throws XvgdlException {
 
         log.debug("Launching game loop....");
         getGameContext().setStartTime(System.currentTimeMillis());
@@ -192,13 +192,14 @@ public final class GameEngine extends GameBaseProperties {
                 render();
                 if (!simulationMode) {
                     Thread.sleep(
-                            (long) (getDoubleValue(MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
+                            (long) (gameContext.getGameDefinition().getProperties().getDoubleValue(
+                                    MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
                             - start));
                 }
                 getGameContext().nextTurn();
                 checkEndConditions();
             } catch (Exception e) {
-                log.error("Exception in game loop", e);
+                throw new XvgdlException("Exception in game loop.", e);
             }
         }
         try {
@@ -287,7 +288,7 @@ public final class GameEngine extends GameBaseProperties {
      * @param milliseconds Time to be frozen
      */
     public void freezeObject(IGameObject o, long milliseconds) {
-        o.setIsFrozen(true);
-        scheduler.schedule(() -> o.setIsFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
+        o.setFrozen(true);
+        scheduler.schedule(() -> o.setFrozen(false), milliseconds, TimeUnit.MILLISECONDS);
     }
 }
