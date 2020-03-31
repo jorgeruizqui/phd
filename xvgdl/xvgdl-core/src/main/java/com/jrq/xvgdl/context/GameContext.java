@@ -129,6 +129,11 @@ public final class GameContext implements Comparable<GameContext> {
     @Setter
     private Double fitnessScore = 0.0d;
 
+    @Getter
+    @Setter
+    private boolean winningGame = false;
+
+
     public void loadGameContext(String configurationFile) throws XvgdlException {
         loadGameContext(null, configurationFile);
     }
@@ -174,7 +179,9 @@ public final class GameContext implements Comparable<GameContext> {
                 i -> addObject(o.toModel(i))));
 
         // Players
-        gameDefinition.getPlayers().forEach(p -> addObject(p.toModel()));
+        gameDefinition.getPlayers().stream().filter(
+                gamePlayerDefinition -> gamePlayerDefinition.getInstances() > 0).forEach(
+                        p -> addObject(p.toModel()));
 
         // Generate map and add objecs and players
         this.gameMap.generateMap(this);
@@ -190,6 +197,10 @@ public final class GameContext implements Comparable<GameContext> {
 
         // Objectives
         gameDefinition.getObjectives().forEach(o -> addObjective(o.toModel()));
+
+        // Renderer
+        this.gameRenderer = gameDefinition.getRenderer().toModel();
+        if (this.gameRenderer != null) this.gameRenderer.initializeRenderer(this);
     }
 
     private void addProperties(GameBaseProperties properties) {
@@ -236,11 +247,13 @@ public final class GameContext implements Comparable<GameContext> {
     }
 
     /**
-     * @return Current game player. TODO CHECK HOW TO HANDLE THIS. At the
-     * moment, just one player is available for simulations
+     * @return Current game player.
      */
     public GamePlayer getCurrentGamePlayer() {
-        return (GamePlayer) getObjectsListByType(GameObjectType.PLAYER).get(0);
+        return getObjectsListByType(GameObjectType.PLAYER).size() == 1 ?
+                (GamePlayer) getObjectsListByType(GameObjectType.PLAYER).get(0) :
+                (GamePlayer) getObjectsListByType(GameObjectType.PLAYER).stream().filter(
+                player -> ((GamePlayer) player).isCurrentPlayer()).findFirst().get();
     }
 
     /**

@@ -10,8 +10,4 @@ public abstract class AGameRenderer implements IGameRenderer {
     protected GameContext gameContext;
     private GameRendererDefinition gameRendererDefinition;
 
-    @Override
-    public String getProperty(String key) {
-        return gameRendererDefinition.getProperty(key);
-    }
 }

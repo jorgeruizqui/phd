@@ -7,25 +7,18 @@ import com.jrq.xvgdl.model.endcondition.IGameEndCondition;
 import com.jrq.xvgdl.model.event.GameEventType;
 import com.jrq.xvgdl.model.event.GameEventUtils;
 import com.jrq.xvgdl.model.event.IGameEvent;
-import com.jrq.xvgdl.model.event.KeyboardGameEvent;
 import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.rules.GameRuleType;
 import com.jrq.xvgdl.model.rules.GameRuleUtils;
 import com.jrq.xvgdl.model.rules.IGameRule;
-import com.jrq.xvgdl.util.GameBaseProperties;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Game engine
@@ -43,7 +36,7 @@ public final class GameEngine {
     /**
      * Default value for MS_PER_FRAME
      */
-    private static final double DEFAULT_MS_PER_FRAME = 1000;
+    private static final double DEFAULT_MS_PER_FRAME = 200;
 
     /**
      * Simulation mode configuration key.
@@ -68,9 +61,6 @@ public final class GameEngine {
      */
     private boolean gameFinished = false;
 
-    @Getter
-    private boolean winningGame = false;
-
     /**
      * Game Running in simulation mode Flag.
      */
@@ -83,13 +73,14 @@ public final class GameEngine {
      *
      * @param configFile Configuration File
      */
-    private GameEngine(GameContext gc, String configFile) {
+    private GameEngine(GameContext gc, String configFile) throws XvgdlException {
         try {
             loadGameContext(gc, configFile);
 
             addKeyboardListener();
         } catch (Exception e) {
             log.error("Exception initializing game context with file: " + configFile, e);
+            throw e;
         }
     }
 
@@ -101,36 +92,12 @@ public final class GameEngine {
         log.debug("Context has been created in " + (end - start)+ " ms.");
     }
 
-    private void addKeyboardListener() {
+    private void addKeyboardListener() throws XvgdlException {
         try {
             this.keyboardInputListener = new KeyboardInputListener(getGameContext());
-
-            setNativeHookLogLevelOff();
-
-            GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeKeyListener(this.keyboardInputListener);
-
-            List<KeyboardGameEvent> definedKeyboardGameEvents =
-                    getGameContext().getGameEvents().stream()
-                            .filter(e -> e instanceof KeyboardGameEvent)
-                            .map(o -> (KeyboardGameEvent) o)
-                            .collect(Collectors.toList());
-
-            this.keyboardInputListener.addContextDefinedKeyboardGameEvent(definedKeyboardGameEvents);
-
-        } catch (NativeHookException ex) {
-            log.error("Exception registering hooks", ex);
+        } catch (Exception ex) {
+            throw new XvgdlException("Exception initializing the keyboard input listener", ex);
         }
-    }
-
-    private void setNativeHookLogLevelOff() {
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
-        Handler[] handlers = Logger.getLogger("").getHandlers();
-        for (Handler handler : handlers) {
-            handler.setLevel(Level.OFF);
-        }
-
     }
 
     /**
@@ -140,7 +107,7 @@ public final class GameEngine {
      * @param cg         Game Context
      * @return The game engine instance
      */
-    public static GameEngine createGameEngine(GameContext cg, String configFile) {
+    public static GameEngine createGameEngine(GameContext cg, String configFile) throws XvgdlException {
         instance = new GameEngine(cg, configFile);
         return instance;
     }
@@ -151,7 +118,7 @@ public final class GameEngine {
      * @param configFile Configuration file
      * @return The game engine instance
      */
-    public static GameEngine createGameEngine(String configFile) {
+    public static GameEngine createGameEngine(String configFile) throws XvgdlException {
         return createGameEngine(null, configFile);
     }
 
@@ -170,6 +137,13 @@ public final class GameEngine {
      */
     public void start() throws XvgdlException {
         gameLoop();
+    }
+
+    /**
+     * Ends the game engine
+     */
+    public void end() throws XvgdlException {
+        this.gameContext.setEndTime(System.currentTimeMillis());
     }
 
     /**
@@ -202,10 +176,11 @@ public final class GameEngine {
                 throw new XvgdlException("Exception in game loop.", e);
             }
         }
+        renderGameFinished();
         try {
             GlobalScreen.unregisterNativeHook();
         } catch (NativeHookException e) {
-            log.error("Exception Unregistering Native Hook", e);
+            log.error("Exception Unregistering Native Hook:" + e.getMessage(), e);
         }
 
     }
@@ -217,9 +192,8 @@ public final class GameEngine {
                 log.info("Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 if (endCondition.isWinningCondition()) {
-                    winningGame = true;
+                    gameContext.setWinningGame(true);
                 }
-                getGameContext().setEndTime(System.currentTimeMillis());
                 break;
             }
         }
@@ -278,6 +252,15 @@ public final class GameEngine {
     private void render() {
         if (getGameContext().getGameRenderer() != null) {
             getGameContext().getGameRenderer().render();
+        }
+    }
+
+    /**
+     * Render current state.
+     */
+    private void renderGameFinished() {
+        if (getGameContext().getGameRenderer() != null) {
+            getGameContext().getGameRenderer().renderGameFinished();
         }
     }
 

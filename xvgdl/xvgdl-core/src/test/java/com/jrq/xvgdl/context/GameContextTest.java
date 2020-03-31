@@ -121,19 +121,24 @@ public class GameContextTest {
     @Test
     public void testGetObjecAtIncorrectPosition() throws XvgdlException {
         this.gameContext.loadGameContext("/com/jrq/xvgdl/context/fullContextGameDefinition.xml");
-        assertNull(this.gameContext.getObjectAt(-1, -1, -1));
+        assertNull(this.gameContext.getObjectAt(-5, -5, -5));
     }
 
     @Test
+    public void testGetObjecAtDefaultPosition() throws XvgdlException {
+        this.gameContext.loadGameContext("/com/jrq/xvgdl/context/fullContextGameDefinition.xml");
+        assertNotNull(this.gameContext.getObjectAt(-1, -1, -1));
+    }
+     @Test
     public void testGetObjecAtCorrectPosition() throws XvgdlException {
         this.gameContext.loadGameContext("/com/jrq/xvgdl/context/fullContextGameDefinition.xml");
-        assertNotNull(this.gameContext.getObjectAt(0, 0, 0));
+        assertNotNull(this.gameContext.getObjectAt(1, 1, 1));
     }
 
     @Test
     public void testRemoveObject() throws XvgdlException {
         this.gameContext.loadGameContext("/com/jrq/xvgdl/context/fullContextGameDefinition.xml");
-        IGameObject aGameObject = this.gameContext.getObjectAt(0, 0, 0);
+        IGameObject aGameObject = this.gameContext.getObjectAt(1, 1, 1);
 
         assertTrue(this.gameContext.getObjectsAsList().contains(aGameObject));
         assertNotNull(aGameObject);

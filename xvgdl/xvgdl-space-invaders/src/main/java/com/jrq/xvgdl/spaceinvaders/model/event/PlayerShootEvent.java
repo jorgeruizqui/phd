@@ -15,21 +15,16 @@ import lombok.Setter;
 import java.util.Random;
 
 /**
- * Spawn item event implementation
+ * Player shoot event.
+ * Creates a new object of type PROJECTILE
  *
  */
 public class PlayerShootEvent extends KeyboardGameEvent {
-
-    /** XML Object reference tag. */
-    public static final String XML_OBJECT_NAME = "objectName";
 
     @Getter
     @Setter
     private String objectName;
 
-    /**
-     * Constructor.
-     */
     public PlayerShootEvent() {
         this.executor = new PlayerShootExecutor();
     }
@@ -44,12 +39,6 @@ public class PlayerShootEvent extends KeyboardGameEvent {
         setObjectName(getGameEventDefinition().getObjectName());
     }
 
-    /**
-     * Spawn Item executor
-     * 
-     * @author Jor
-     *
-     */
     public class PlayerShootExecutor implements IGameEventExecutor {
         
         private boolean firstTime = true;
@@ -74,7 +63,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
                 projectile.setIntendedPosition(player.getX(), player.getY(), player.getZ());
                 projectile.setObjectType(GameObjectType.PROJECTILE);
 
-                projectile.setDirection(new DirectionVector(0, 1, 0));
+                projectile.setDirection(new DirectionVector(1, 0, 0));
 
                 // Add to game context
                 context.addObject(projectile);

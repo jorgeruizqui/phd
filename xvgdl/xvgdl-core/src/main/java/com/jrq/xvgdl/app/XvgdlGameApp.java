@@ -2,6 +2,7 @@ package com.jrq.xvgdl.app;
 
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.engine.GameEngine;
+import com.jrq.xvgdl.exception.XvgdlException;
 
 /**
  * The XVGDL Game Application
@@ -11,25 +12,13 @@ import com.jrq.xvgdl.engine.GameEngine;
 public final class XvgdlGameApp {
 
     /**
-     * Instance of the game engine.
-     */
-    private static GameEngine gameEngine;
-
-    /**
-     * Constructor
-     */
-    private XvgdlGameApp() {
-    }
-
-    /**
      * Launches the Game Engine.
      *
      * @param configFile Configuration File
      * @return the created game engine
      */
-    public static GameEngine launchGameApp(String configFile) {
-        gameEngine = GameEngine.createGameEngine(configFile);
-        return gameEngine;
+    public static GameEngine launchGameApp(String configFile) throws XvgdlException {
+        return GameEngine.createGameEngine(configFile);
     }
 
     /**
@@ -39,8 +28,7 @@ public final class XvgdlGameApp {
      * @param gameContext Already created game context
      * @return the created game engine
      */
-    public static GameEngine launchGameApp(GameContext gameContext, String configFile) {
-        gameEngine = GameEngine.createGameEngine(gameContext, configFile);
-        return gameEngine;
+    public static GameEngine launchGameApp(GameContext gameContext, String configFile) throws XvgdlException {
+        return GameEngine.createGameEngine(gameContext, configFile);
     }
 }

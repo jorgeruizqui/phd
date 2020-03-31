@@ -68,9 +68,9 @@ public class GameObjectDefinition {
             gameObject.setIsDynamic(this.getIsDynamic());
             gameObject.setIsVolatile(this.getIsVolatile());
             gameObject.setPosition(
-                    Optional.ofNullable(this.getPositionX()).orElse(0),
-                    Optional.ofNullable(this.getPositionY()).orElse(0),
-                    Optional.ofNullable(this.getPositionZ()).orElse(0));
+                    Optional.ofNullable(this.getPositionX()).orElse(-1),
+                    Optional.ofNullable(this.getPositionY()).orElse(-1),
+                    Optional.ofNullable(this.getPositionZ()).orElse(-1));
             gameObject.setSizeX(this.getSizeX());
             gameObject.setSizeY(this.getSizeY());
             gameObject.setSizeZ(this.getSizeZ());

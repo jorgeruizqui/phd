@@ -8,7 +8,7 @@ public class PlayerWinsObjective extends AGameObjective {
     @Override
     public Double checkObjective(GameContext c) {
         // If player wins, return the weight. If not, return -weight
-        return GameEngine.getInstance().isWinningGame() ? getScore() * getWeight() : getScore() * getWeight() * -1d;
+        return GameEngine.getInstance().getGameContext().isWinningGame() ? getScore() * getWeight() : getScore() * getWeight() * -1d;
     }
 
 }
