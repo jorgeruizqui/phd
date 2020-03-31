@@ -14,7 +14,6 @@ public class GameRendererDefinitionTest {
     public void setUp() throws Exception {
         gameRendererDefinition = new GameRendererDefinition();
         gameRendererDefinition.setClassName("com.jrq.xvgdl.renderer.BasicAsciiRenderer");
-        gameRendererDefinition.setProperty("aProperty", "aValue");
     }
 
     @Test
@@ -22,7 +21,6 @@ public class GameRendererDefinitionTest {
         IGameRenderer gameRenderer = gameRendererDefinition.toModel();
 
         assertNotNull(gameRenderer);
-        assertEquals("Error in field", "aValue", gameRenderer.getProperty("aProperty"));
     }
 
     @Test

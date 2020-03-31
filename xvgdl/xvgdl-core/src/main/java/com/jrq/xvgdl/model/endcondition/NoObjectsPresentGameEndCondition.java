@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.model.endcondition;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.model.object.IGameObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,11 +28,13 @@ public class NoObjectsPresentGameEndCondition extends AGameEndCondition {
 
         // Check if there is any element of the concrete name in the context
         boolean anyObject = false;
-        for (String object : objectList) {
-
-            if (!c.getObjectsListByName(object).isEmpty()) {
-                anyObject = true;
-                break;
+        for (String objectName : objectList) {
+            List<IGameObject> gameObjetcs = c.getObjectsListByName(objectName);
+            if (!gameObjetcs.isEmpty()) {
+                if (gameObjetcs.stream().filter(go -> go.isLocatedAnyWhereInMap()).findFirst().orElse(null) != null) {
+                    anyObject = true;
+                    break;
+                }
             }
         }
 

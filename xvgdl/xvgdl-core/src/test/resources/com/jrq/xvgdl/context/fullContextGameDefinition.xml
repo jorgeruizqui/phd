@@ -19,7 +19,7 @@
 
     <objects>
         <object name="wall" type="wall" isDynamic="false" isVolatile="false"
-                sizeX="1" sizeY="1" instances="60"/>
+                sizeX="1" sizeY="1" instances="60" positionX="1" positionY="1" positionZ="1"/>
         <object name="ghost" type="enemy" isDynamic="true"
                 isVolatile="true" sizeX="1" sizeY="1" instances="4"
                 ai="com.jrq.xvgdl.model.object.ai.PlayerChaserAI"/>

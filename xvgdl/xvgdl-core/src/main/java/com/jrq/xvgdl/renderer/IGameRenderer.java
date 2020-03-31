@@ -10,19 +10,11 @@ import com.jrq.xvgdl.context.xml.GameRendererDefinition;
  */
 public interface IGameRenderer {
 
-    /**
-     * Renderer initializing tasks
-     *
-     * @param gameContext Game Context
-     */
     void initializeRenderer(GameContext gameContext);
 
-    /**
-     * Rendering command.
-     */
     void render();
 
-    String getProperty(String key);
+    void renderGameFinished();
 
     void setGameRendererDefinition(GameRendererDefinition gameRendererDefinition);
 }

@@ -31,6 +31,8 @@ public class GamePlayer extends GameObject {
      */
     private Double score;
 
+    private boolean currentPlayer;
+
     /**
      * Increment player lives.
      */

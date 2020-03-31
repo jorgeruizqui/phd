@@ -9,6 +9,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Basic ascii renderer.
@@ -25,50 +26,53 @@ public class BasicAsciiRenderer extends AGameRenderer {
 
     @Override
     public void render() {
+        clearScreen();
+        printPlayerScore();
+        printSlashs();
+        printMap();
+        printSlashs();
+        printGamePlayTime();
+    }
 
-        if (SystemUtils.IS_OS_WINDOWS) {
-            try {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        } else if (SystemUtils.IS_OS_LINUX) {
-            try {
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
+    @Override
+    public void renderGameFinished() {
+        clearScreen();
+        printSlashs();
+        IntStream.range(0, 5).forEach(i -> printWhites());
+        printEndGame();
+        IntStream.range(0, 5).forEach(i -> printWhites());
+        printSlashs();
+        printPlayerScore();
+    }
+
+    private void printGamePlayTime() {
+        System.out.println(
+                "Gameplay Time: "
+                        + GameEngine.getInstance().getGameContext().getTimePlayed() / 1000
+                        + " Seg.");
+    }
+
+    private void printEndGame() {
+        if (gameContext.isWinningGame()) {
+            System.out.println("Player Wins :) !!!");
+        } else {
+            System.out.println("Game Over :( ");
         }
+    }
 
-        // 1- Take Layout
-        // 2. Rendering:
-        // 2.1 Render the Top|Right|Left|bottom components
-        GamePlayer gp = this.gameContext.getCurrentGamePlayer();
-        System.out.println("Score: " + gp.getScore() + " - Lives: " + gp.getLives());
+    protected void printMap() {
+        char[][] array = new char[this.gameContext.getGameMap().getSizeX()][this.gameContext.getGameMap().getSizeY()];
 
-        // 2.2 Render the game screen.
-
-        char[] arraySlash = new char[this.gameContext.getGameMap().getSizeX()];
-        Arrays.fill(arraySlash, 0, arraySlash.length, '-');
-        System.out.println(arraySlash);
-
-        char[][] array = new char[this.gameContext.getGameMap().getSizeY()][this.gameContext.getGameMap().getSizeX()];
-
-        // 2.2.1 Render Map Walls
-        // 2.2.2 Render Map Items
-        // 2.2.3 Render Map Enemies
-        // 2.2.4 Render Map Player
-
-        for (int yCoord = array.length - 1; yCoord >= 0; yCoord--) {
-            for (int x = 0; x < array[yCoord].length; x++) {
-                IGameObject gameObject = this.gameContext.getObjectAt(x, yCoord + 1, 0);
+        for (int row = array.length - 1; row >= 0; row--) {
+            for (int col = 0; col < array[row].length; col++) {
+                IGameObject gameObject = this.gameContext.getObjectAt(row + 1, col, 0);
                 if (gameObject != null) {
                     char c = gameObject.getObjectType().equals(GameObjectType.PROJECTILE) ?
                             '*'
                             : gameObject.getName().charAt(0);
-                    array[yCoord][x] = c;
+                    array[row][col] = c;
                 } else {
-                    array[yCoord][x] = ' ';
+                    array[row][col] = ' ';
                 }
             }
         }
@@ -76,11 +80,39 @@ public class BasicAsciiRenderer extends AGameRenderer {
         for (int i = array.length - 1; i >= 0; i--) {
             System.out.println(array[i]);
         }
+    }
 
-        // Print latest row with slashes
+    private void printSlashs() {
+        char[] arraySlash = new char[this.gameContext.getGameMap().getSizeY()];
+        Arrays.fill(arraySlash, 0, arraySlash.length, '-');
         System.out.println(arraySlash);
-        System.out.println(
-                "Gameplay Time: " + GameEngine.getInstance().getGameContext().getTimePlayed() / 1000 + " Seg.");
+    }
+
+    private void printWhites() {
+        char[] arrayWhites = new char[this.gameContext.getGameMap().getSizeY()];
+        Arrays.fill(arrayWhites, 0, arrayWhites.length, ' ');
+        System.out.println(arrayWhites);
+    }
+
+    private void printPlayerScore() {
+        GamePlayer gp = this.gameContext.getCurrentGamePlayer();
+        System.out.println("Score: " + gp.getScore() + " - Lives: " + gp.getLives());
+    }
+
+    private void clearScreen() {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

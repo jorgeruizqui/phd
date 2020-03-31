@@ -13,10 +13,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Data
 @Slf4j
-public class GameRendererDefinition extends GameBaseProperties {
+public class GameRendererDefinition {
+
+    @JacksonXmlProperty (isAttribute = true)
+    private String className;
 
     @JacksonXmlProperty
-    private String className;
+    private GamePropertiesDefinition properties = new GamePropertiesDefinition();
 
     /**
      * @return Game Renderer initialized

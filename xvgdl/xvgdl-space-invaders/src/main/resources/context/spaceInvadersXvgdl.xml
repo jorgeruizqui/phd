@@ -4,12 +4,10 @@
 
 <gameDefinition>
 
-    <!-- Renderer configuration -->
-    <property key="rendererConfiguration"
-        value="/context/spaceInvadersAsciiRendererConfiguration.xml" />
-
-    <!-- Timeout configuration in milliseconds. Set to -1 for no timeout -->
-    <property key="TIMEOUT" value="-1" />
+    <properties>
+        <property key="msPerFrame">60</property>
+        <property key="simulationMode">false</property>
+    </properties>
 
     <layout>
         <component id="gameInfoTop" location="TOP">
@@ -24,15 +22,16 @@
     </layout>
 
     <!-- Map Definition -->
-    <map type="2D" sizeX="40" sizeY="20" toroidal="false" 
+    <map type="2D" sizeX="20" sizeY="40" toroidal="false"
         generator="com.jrq.xvgdl.spaceinvaders.model.map.FileBasedGameMapGenerator"
-    	file="/context/spaceInvadersMap.txt">
+    	file="/context/spaceInvadersMapSimple.txt">
     </map>
 
     <!-- Players Definition -->
     <players number="1" maxNumber="1" minNumber="1">
         <player name="player" score="0" lives="3" sizeX="1" sizeY="1"/>
     </players>
+
     <!-- Defining the Objects present in the game -->
     <objects>
         <object name="redEnemy" type="enemy" dynamic="true" volatile="true" sizeX="1" sizeY="1" 
@@ -51,17 +50,9 @@
         <object name="wall" type="wall" dynamic="false" volatile="false" sizeX="1" sizeY="1" />
     </objects>
 
-    <!-- Defining Game physics. Movements and collisions Define set of possible
-        physics action: gravitational pull, friction, repulsion forces, bouncing
-        effects, stickiness, etc Define the -->
     <physics>
     </physics>
 
-    <!-- Defining game events. Events sent from the player via input devices,
-        timed or random events, and object collision triggered events that affect
-        the game. May be as an example some item appears randomly. It can use a timer
-        (not before X milliseconds) or a random value to be executed -->
-        
     <events>
         <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
             objectName="disc" x="3" y="38" timer="15000" />
@@ -69,76 +60,102 @@
             className="com.jrq.xvgdl.spaceinvaders.model.event.PlayerShootEvent" />
     </events>
 
-    <!-- Defining rules. -->
     <rules>
-
         <rule name="enemyProjectileHitsPlayer" type="collision">
-            <ruleAction objectName="fireEnemy"  result="disappear" />
-            <ruleAction objectName="player" result="livesDown" value="1" />
+            <ruleActions>
+                <ruleAction objectName="fireEnemy"  result="disappear" />
+                <ruleAction objectName="player" result="livesDown" value="1" />
+            </ruleActions>
         </rule>
         <rule name="enemyProjectileHitsShield" type="collision">
-            <ruleAction objectName="fireEnemy"  result="disappear" />
-            <ruleAction objectName="shield" result="disappear" />
+            <ruleActions>
+                <ruleAction objectName="fireEnemy"  result="disappear" />
+                <ruleAction objectName="shield" result="disappear" />
+            </ruleActions>
         </rule>
         <rule name="enemyProjectileHitsWall" type="collision">
-            <ruleAction objectName="fireEnemy"  result="disappear" />
-            <ruleAction objectName="wall" result="" />
+            <ruleActions>
+                <ruleAction objectName="fireEnemy"  result="disappear" />
+                <ruleAction objectName="wall" result="" />
+            </ruleActions>
         </rule>
 
         <rule name="playerProjectileHitsWall" type="collision">
-            <ruleAction objectName="wall"  result="" />
-            <ruleAction objectName="firePlayer" result="disappear" />
+            <ruleActions>
+                <ruleAction objectName="wall"  result="" />
+                <ruleAction objectName="firePlayer" result="disappear" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsRedEnemy" type="collision">
-            <ruleAction objectName="redEnemy"  result="" />
-            <ruleAction objectName="firePlayer" result="scoreUp" value="100" />
+            <ruleActions>
+                <ruleAction objectName="redEnemy"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreUp" value="100" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsBlueEnemy" type="collision">
-            <ruleAction objectName="blueEnemy"  result="" />
-            <ruleAction objectName="firePlayer" result="scoreUp" value="200" />
+            <ruleActions>
+                <ruleAction objectName="blueEnemy"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreUp" value="200" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsYellowEnemy" type="collision">
-            <ruleAction objectName="yellowEnemy"  result="" />
-            <ruleAction objectName="firePlayer" result="scoreUp" value="300" />
+            <ruleActions>
+                <ruleAction objectName="yellowEnemy"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreUp" value="300" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsRedEnemyAndDisappear" type="collision">
-            <ruleAction objectName="redEnemy"  result="disappear" />
-            <ruleAction objectName="firePlayer" result="disappear" />
+            <ruleActions>
+                <ruleAction objectName="redEnemy"  result="disappear" />
+                <ruleAction objectName="firePlayer" result="disappear" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsBlueEnemyAndDisappear" type="collision">
-            <ruleAction objectName="blueEnemy"  result="disappear" />
-            <ruleAction objectName="firePlayer" result="disappear" />
+            <ruleActions>
+                <ruleAction objectName="blueEnemy"  result="disappear" />
+                <ruleAction objectName="firePlayer" result="disappear" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsBlueEnemyAndDisappear" type="collision">
-            <ruleAction objectName="yellowEnemy"  result="disappear" />
-            <ruleAction objectName="firePlayer" result="disappear" />
+            <ruleActions>
+                <ruleAction objectName="yellowEnemy"  result="disappear" />
+                <ruleAction objectName="firePlayer" result="disappear" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsDisc" type="collision">
-            <ruleAction objectName="disc"  result="" />
-            <ruleAction objectName="firePlayer" result="scoreUp" value="300" />
+            <ruleActions>
+                <ruleAction objectName="disc"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreUp" value="300" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsDiscAndDisappear" type="collision">
-            <ruleAction objectName="disc"  result="disappear" />
-            <ruleAction objectName="firePlayer" result="disappear" />
+            <ruleActions>
+                <ruleAction objectName="disc"  result="disappear" />
+                <ruleAction objectName="firePlayer" result="disappear" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsShield" type="collision">
-            <ruleAction objectName="shield"  result="" />
-            <ruleAction objectName="firePlayer" result="scoreDown" value="50" />
+            <ruleActions>
+                <ruleAction objectName="shield"  result="" />
+                <ruleAction objectName="firePlayer" result="scoreDown" value="50" />
+            </ruleActions>
         </rule>
         <rule name="playerProjectileHitsShieldAndDisappear" type="collision">
-            <ruleAction objectName="shield"  result="disappear" />
-            <ruleAction objectName="firePlayer" result="disappear" />
+            <ruleActions>
+                <ruleAction objectName="shield"  result="disappear" />
+                <ruleAction objectName="firePlayer" result="disappear" />
+            </ruleActions>
         </rule>
 
     </rules>
 
-    <!-- Game End Conditions -->
     <endConditions>
-        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition"
-            property="timeout" value="10000"/>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition" value="100000"/>
         <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
-            objectNames="redEnemy,blueEnemy,yellowEnemy,disc" winning="true" />
+            objectNames="redEnemy,blueEnemy,yellowEnemy,disc" winningCondition="true" />
         <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition" />
     </endConditions>
+
+    <renderer className="com.jrq.xvgdl.spaceinvaders.model.renderer.SpaceInvadersAsciiRenderer"/>
 
 </gameDefinition>

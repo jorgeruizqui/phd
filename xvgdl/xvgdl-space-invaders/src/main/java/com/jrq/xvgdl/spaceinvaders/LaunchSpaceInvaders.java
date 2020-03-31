@@ -19,7 +19,11 @@ public class LaunchSpaceInvaders {
     public static void main(String[] args) {
 
         try {
-            XvgdlGameApp.launchGameApp("/engine/spaceInvadersEngineConfiguration.xml").start();
+            String configurationFile = "/context/spaceInvadersXvgdl.xml";
+            if (args.length > 0) {
+                configurationFile = args[0];
+            }
+            XvgdlGameApp.launchGameApp(configurationFile).start();
         } catch (XvgdlException e) {
             log.error("Error running XVGDL game.", e);
             System.exit(-1);

@@ -247,13 +247,11 @@ public class GameDefinitionXMLMapperTest {
         /*
             <renderer>
                 <className>aClassName</className>
-                <aRendererProperty>aRendererValue</aRendererProperty>
             </renderer>
          */
 
         assertNotNull(cg);
         assertNotNull(cg.getRenderer());
-        assertEquals("aRendererValue", cg.getRenderer().get("aRendererProperty"));
-        assertEquals("aClassName", cg.getRenderer().get("className"));
+        assertEquals("aClassName", cg.getRenderer().getClassName());
     }
 }
