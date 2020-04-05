@@ -11,6 +11,7 @@ import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.rules.GameRuleType;
 import com.jrq.xvgdl.model.rules.GameRuleUtils;
 import com.jrq.xvgdl.model.rules.IGameRule;
+import com.jrq.xvgdl.renderer.IGameRenderer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jnativehook.GlobalScreen;
@@ -34,9 +35,14 @@ public final class GameEngine {
     private static final String MS_PER_FRAME_KEY = "msPerFrame";
 
     /**
-     * Default value for MS_PER_FRAME
+     * Default value for MS_PER_FRAME. This value means that the game is rendered at 60f/sec
      */
-    private static final double DEFAULT_MS_PER_FRAME = 200;
+    private static final long DEFAULT_MS_PER_FRAME = 200;
+
+    /**
+     * Game speed factor of 1.0 means the objects with speed factor 1 will move 1 time per second.
+     */
+    public static final double GAME_ENGINE_SPEED_FACTOR = 1000.0d;
 
     /**
      * Simulation mode configuration key.
@@ -69,6 +75,11 @@ public final class GameEngine {
     private KeyboardInputListener keyboardInputListener;
 
     /**
+     * Game Renderer.
+     */
+    private IGameRenderer gameRenderer;
+
+    /**
      * Constructor.
      *
      * @param configFile Configuration File
@@ -77,11 +88,18 @@ public final class GameEngine {
         try {
             loadGameContext(gc, configFile);
 
+            initializeGameRenderer();
+
             addKeyboardListener();
         } catch (Exception e) {
             log.error("Exception initializing game context with file: " + configFile, e);
             throw e;
         }
+    }
+
+    private void initializeGameRenderer() {
+        this.gameRenderer = gameContext.getGameDefinition().getRenderer().toModel();
+        if (this.gameRenderer != null) this.gameRenderer.initializeRenderer(this.gameContext);
     }
 
     private void loadGameContext(GameContext gc, String configFile) throws XvgdlException {
@@ -153,22 +171,21 @@ public final class GameEngine {
 
         log.debug("Launching game loop....");
         getGameContext().setStartTime(System.currentTimeMillis());
+        getGameContext().setLoopTime(gameContext.getStartTime());
 
         updateState();
         // TODO Check also 'pause' option
         while (!gameFinished) {
             try {
-                double start = System.currentTimeMillis();
+                getGameContext().setLoopTime(System.currentTimeMillis());
                 processEvents();
-                processAI();
                 processRules();
                 updateState();
                 render();
+
+                // Render at the Frames Per Second Ratio
                 if (!simulationMode) {
-                    Thread.sleep(
-                            (long) (gameContext.getGameDefinition().getProperties().getDoubleValue(
-                                    MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME) + System.currentTimeMillis()
-                            - start));
+                    Thread.sleep(getMillisecondsPerFrame() + timeToProcessGameLoop(getGameContext().getLoopTime()));
                 }
                 getGameContext().nextTurn();
                 checkEndConditions();
@@ -183,6 +200,15 @@ public final class GameEngine {
             log.error("Exception Unregistering Native Hook:" + e.getMessage(), e);
         }
 
+    }
+
+    private long getMillisecondsPerFrame() {
+        return gameContext.getGameDefinition().getProperties().getLongValue(
+                MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME);
+    }
+
+    private long timeToProcessGameLoop(long loopStartTime) {
+        return System.currentTimeMillis() - loopStartTime;
     }
 
     private void checkEndConditions() {
@@ -232,35 +258,21 @@ public final class GameEngine {
     }
 
     /**
-     * Processes Artificial Intelligence.
-     */
-    private void processAI() {
-        // Apply Artificial Intelligence to all elements that have AI configured
-        getGameContext().getObjectsAsList().forEach(go -> go.applyAI(getGameContext()));
-    }
-
-    /**
-     * Updates context state.
+     * Updates context state for all game objects.
      */
     private void updateState() {
-        getGameContext().getObjectsAsList().forEach(IGameObject::update);
+        getGameContext().getObjectsAsList().forEach(go -> go.updateState(this.gameContext));
     }
 
-    /**
-     * Render current state.
-     */
     private void render() {
-        if (getGameContext().getGameRenderer() != null) {
-            getGameContext().getGameRenderer().render();
+        if (this.gameRenderer != null) {
+            this.gameRenderer.render();
         }
     }
 
-    /**
-     * Render current state.
-     */
     private void renderGameFinished() {
-        if (getGameContext().getGameRenderer() != null) {
-            getGameContext().getGameRenderer().renderGameFinished();
+        if (this.gameRenderer != null) {
+            this.gameRenderer.renderGameFinished();
         }
     }
 

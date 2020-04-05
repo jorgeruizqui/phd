@@ -46,6 +46,8 @@ public class GameObjectDefinition {
     private Boolean isDynamic;
     @JacksonXmlProperty(isAttribute = true)
     private String direction;
+    @JacksonXmlProperty(isAttribute = true)
+    private Double speedFactor;
 
     /**
      * @param instance         Instance of the object
@@ -76,6 +78,7 @@ public class GameObjectDefinition {
             gameObject.setSizeZ(this.getSizeZ());
             gameObject.setIntendedPosition(gameObject.getX(), gameObject.getY(), gameObject.getZ());
             gameObject.setObjectType(GameObjectType.fromString(this.getType()));
+            gameObject.setSpeedFactor(Optional.ofNullable(this.getSpeedFactor()).orElse(1.0));
 
             if (StringUtils.isNotEmpty(this.getAi())) {
                 gameObject.setAi(

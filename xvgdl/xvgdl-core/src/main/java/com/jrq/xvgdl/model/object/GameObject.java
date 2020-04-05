@@ -1,6 +1,7 @@
 package com.jrq.xvgdl.model.object;
 
 import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.engine.GameEngine;
 import com.jrq.xvgdl.model.location.DirectionVector;
 import com.jrq.xvgdl.model.location.Position;
 import com.jrq.xvgdl.model.object.ai.IGameObjectAI;
@@ -56,10 +57,11 @@ public class GameObject implements IGameObject {
      * Game Object Type.
      */
     private GameObjectType objectType;
+
     /**
      * Speed factor.
      */
-    private Double speedFactor = 1d;
+    private Double speedFactor = 1.0;
     /**
      * Direction Vector. If it's 0,0,0 means that the object is stopped.
      */
@@ -86,6 +88,8 @@ public class GameObject implements IGameObject {
      */
     private IGameObjectAI ai;
 
+    private long updatedAt = 0;
+
     @Override
     public String getId() {
         return getName() + "-" + getInstance();
@@ -107,8 +111,7 @@ public class GameObject implements IGameObject {
         intendedPosition.setZ(getPosition().getZ());
     }
 
-    @Override
-    public void applyAI(GameContext gameContext) {
+    private void applyAI(GameContext gameContext) {
         if (ai != null) {
             ai.applyAIonObject(gameContext, this);
         }
@@ -142,18 +145,27 @@ public class GameObject implements IGameObject {
     }
 
     @Override
-    public void update() {
-        setX(getIntendedPosition().getX());
-        setY(getIntendedPosition().getY());
-        setZ(getIntendedPosition().getZ());
+    public void updateState(GameContext gameContext) {
+        if ((gameContext.getLoopTime() - updatedAt) >= getMySpeedFactorInMilliseconds()) {
+            if (updatedAt > 0) applyAI(gameContext);
 
-        // If direction vector is informed, object is moving in that direction according the speed factor
-        if (direction.notZero()) {
-            setX((int) (getX() + (speedFactor * direction.getX())));
-            setY((int) (getY() + (speedFactor * direction.getY())));
-            setZ((int) (getZ() + (speedFactor * direction.getZ())));
-            setIntendedPosition(getX(), getY(), getZ());
+            setX(getIntendedPosition().getX());
+            setY(getIntendedPosition().getY());
+            setZ(getIntendedPosition().getZ());
+
+            // If direction vector is informed, object is moving in that direction according the speed factor
+            if (direction.notZero()) {
+                setX(getX() + (direction.getX()));
+                setY(getY() + (direction.getY()));
+                setZ(getZ() + (direction.getZ()));
+                setIntendedPosition(getX(), getY(), getZ());
+            }
+            setUpdatedAt(gameContext.getLoopTime());
         }
+    }
+
+    private double getMySpeedFactorInMilliseconds() {
+        return GameEngine.GAME_ENGINE_SPEED_FACTOR / getSpeedFactor();
     }
 
     @Override

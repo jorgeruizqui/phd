@@ -25,6 +25,8 @@ public class PlayerShootEvent extends KeyboardGameEvent {
     @Setter
     private String objectName;
 
+    private static final int MAX_NUMBER_OF_SHOOTS = 4;
+
     public PlayerShootEvent() {
         this.executor = new PlayerShootExecutor();
     }
@@ -39,8 +41,12 @@ public class PlayerShootEvent extends KeyboardGameEvent {
         setObjectName(getGameEventDefinition().getObjectName());
     }
 
+    private boolean isAllowedToShoot(GameContext gameContext) {
+        return gameContext.getObjectsListByName(getObjectName()).size() < MAX_NUMBER_OF_SHOOTS;
+    }
+
     public class PlayerShootExecutor implements IGameEventExecutor {
-        
+
         private boolean firstTime = true;
 
         @Override
@@ -50,7 +56,8 @@ public class PlayerShootEvent extends KeyboardGameEvent {
             
             // Create the game object
             IGameObject player = context.getCurrentGamePlayer();
-            if (player != null && !firstTime) {
+            context.getObjectsListByName("firePlayer");
+            if (player != null && !firstTime && isAllowedToShoot(context)) {
                 GameObject projectile = new GameObject();
                 projectile.moveTo(player.getX(), player.getY(), player.getZ());
                 projectile.setName(definition.getObjectName());
@@ -62,6 +69,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
                 projectile.setSizeZ(1);
                 projectile.setIntendedPosition(player.getX(), player.getY(), player.getZ());
                 projectile.setObjectType(GameObjectType.PROJECTILE);
+                projectile.setSpeedFactor(5.0d);
 
                 projectile.setDirection(new DirectionVector(1, 0, 0));
 
@@ -71,4 +79,5 @@ public class PlayerShootEvent extends KeyboardGameEvent {
             firstTime = false;
         }
     }
+
 }

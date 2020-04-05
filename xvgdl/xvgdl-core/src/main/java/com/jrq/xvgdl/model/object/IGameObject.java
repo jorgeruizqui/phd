@@ -102,16 +102,10 @@ public interface IGameObject {
     void resetMove();
 
     /**
-     * Applies the Artificial Intelligence configured for this game object
-     *
-     * @param gameContext Game Context
-     */
-    void applyAI(GameContext gameContext);
-
-    /**
      * Updates intended positions to consolided positions.
+     * Also applies the AI set in the object, if any
      */
-    void update();
+    void updateState(GameContext gameContext);
 
     /**
      * Clones a game object
