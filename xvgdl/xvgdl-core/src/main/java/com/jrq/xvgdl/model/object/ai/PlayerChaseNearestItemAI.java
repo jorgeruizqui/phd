@@ -17,18 +17,11 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
     public void applyAIonObject(GameContext gameContext, IGameObject player) {
 
         List<IGameObject> items = gameContext.getObjectsMap().get(GameObjectType.ITEM);
-        int shortestDinstance = Integer.MAX_VALUE;
-        IGameObject shortestDistanceItem = null;
 
-        for (IGameObject item : items) {
-            int distance = distanceTo(player, item);
-            if (distance < shortestDinstance) {
-                shortestDistanceItem = item;
-                shortestDinstance = distance;
-            }
-        }
+        items.sort(new DistanceComparator(player));
 
-        if (shortestDistanceItem != null) {
+        if (!items.isEmpty()) {
+            IGameObject shortestDistanceItem = items.get(0);
             boolean moved = false;
             int newX = player.getX();
             if (player.getX() < shortestDistanceItem.getX()) {

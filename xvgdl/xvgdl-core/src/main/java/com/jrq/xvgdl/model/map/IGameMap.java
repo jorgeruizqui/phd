@@ -2,17 +2,11 @@ package com.jrq.xvgdl.model.map;
 
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.exception.XvgdlException;
-import com.jrq.xvgdl.model.object.IGameObject;
 
 /**
  * Game Map
  */
 public interface IGameMap {
-
-    /**
-     * @return complete Map
-     */
-    IGameObject[][][] getMapRepresentation();
 
     /**
      * @return Map type

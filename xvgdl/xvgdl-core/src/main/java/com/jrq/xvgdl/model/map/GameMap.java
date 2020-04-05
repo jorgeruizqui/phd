@@ -14,11 +14,6 @@ import lombok.Data;
 public class GameMap implements IGameMap {
 
     /**
-     * Game map instance.
-     */
-    private IGameObject[][][] mapRepresentation;
-
-    /**
      * Map Type.
      */
     private GameMapType mapType;

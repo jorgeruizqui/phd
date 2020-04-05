@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of pacman game -->
+
+<gameDefinition>
+
+    <renderer className="com.jrq.xvgdl.pacman.renderer.PacmanAsciiRenderer"/>
+
+    <properties>
+        <property key="msPerFrame">60</property>
+        <property key="simulationMode">false</property>
+    </properties>
+
+    <layout>
+        <component id="gameInfoTop" location="TOP">
+            <contextProperty id="score"/>
+            <contextProperty id="hiScore"/>
+        </component>
+
+        <component id="gameInfoDown" location="DOWN">
+            <contextProperty id="lives"/>
+            <contextProperty id="playerItems"/>
+        </component>
+    </layout>
+
+    <map type="2D" sizeX="20" sizeY="40" toroidal="false"
+         generator="com.jrq.xvgdl.model.map.RandomLocationGameMapGenerator">
+    </map>
+
+    <players number="1" maxNumber="1" minNumber="1">
+        <player name="pacman" score="0" lives="3" livePercentage="100"
+                ai="com.jrq.xvgdl.model.object.ai.PlayerChaseNearestItemAI"/>
+    </players>
+
+    <objects>
+        <object name="wall" type="wall" dynamic="false" volatile="false"
+                sizeX="1" sizeY="1" instances="60"/>
+        <object name="ghost" type="enemy" dynamic="true"
+                volatile="true" size="1,1" instances="4"
+                ai="com.jrq.xvgdl.model.object.ai.PlayerChaserAI"/>
+        <object name="smallDot" type="item" dynamic="true"
+                volatile="true" size="1,1" instances="2"/>
+        <object name="bigDot" type="item" dynamic="true"
+                volatile="true" size="1,1" instances="2"/>
+        <object name="cherry" type="item" dynamic="true"
+                volatile="true" size="1,1" instances="1"/>
+    </objects>
+
+    <physics>
+    </physics>
+
+    <events>
+        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
+               objectName="cherry" timer="5000"/>
+        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
+               objectName="ghost" timer="1000"/>
+    </events>
+
+    <rules>
+        <rule name="eatSmallDot" type="collision">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="scoreUp"
+                            value="100"/>
+                <ruleAction objectName="smallDot" result="disappear"/>
+            </ruleActions>
+        </rule>
+        <rule name="eatBigDot" type="collision">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="scoreUp"
+                            value="300"/>
+                <ruleAction objectName="bigDot" result="disappear"/>
+            </ruleActions>
+        </rule>
+        <rule name="eatCherry" type="collision">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="scoreUp"
+                            value="500"/>
+                <ruleAction objectName="cherry" result="disappear"/>
+            </ruleActions>
+        </rule>
+        <rule name="ghostCatchPacman" type="collision">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="teletransport"/>
+                <ruleAction objectName="ghost" result="disappear"/>
+            </ruleActions>
+        </rule>
+    </rules>
+
+    <endConditions>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition" value="100000"/>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
+                      objectNames="bigDot,smallDot" winningCondition="true"/>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
+    </endConditions>
+
+</gameDefinition>
