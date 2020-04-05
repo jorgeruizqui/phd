@@ -91,15 +91,16 @@ public final class GameContext implements Comparable<GameContext> {
     private Long endTime;
 
     /**
+     * Game Loop time.
+     */
+    @Setter
+    private Long loopTime;
+
+    /**
      * Timeout configuration key. Set to -1 for no timeout.
      */
     @Setter
     private Long timeout = -1L;
-
-    /**
-     * Game Renderer.
-     */
-    private IGameRenderer gameRenderer;
 
     /**
      * Physics key.
@@ -198,9 +199,6 @@ public final class GameContext implements Comparable<GameContext> {
         // Objectives
         gameDefinition.getObjectives().forEach(o -> addObjective(o.toModel()));
 
-        // Renderer
-        this.gameRenderer = gameDefinition.getRenderer().toModel();
-        if (this.gameRenderer != null) this.gameRenderer.initializeRenderer(this);
     }
 
     private void addProperties(GameBaseProperties properties) {

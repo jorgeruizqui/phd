@@ -16,6 +16,7 @@ import java.util.Map;
 public class SpaceInvadersAsciiRenderer extends BasicAsciiRenderer {
 
     private static final Map<String, Character> renderCodes = Map.of(
+            "disc", Character.valueOf('\u15e2'),
             "redEnemy", Character.valueOf('\u15e2'),
             "yellowEnemy", Character.valueOf('\u15e2'),
             "blueEnemy", Character.valueOf('\u15e2'),

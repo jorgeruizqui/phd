@@ -29,7 +29,7 @@
 
     <!-- Players Definition -->
     <players number="1" maxNumber="1" minNumber="1">
-        <player name="player" score="0" lives="3" sizeX="1" sizeY="1"/>
+        <player name="player" score="0" lives="3" sizeX="1" sizeY="1" speedFactor="5"/>
     </players>
 
     <!-- Defining the Objects present in the game -->
@@ -54,8 +54,10 @@
     </physics>
 
     <events>
+        <!--
         <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
             objectName="disc" x="3" y="38" timer="15000" />
+        -->
         <event type="keyboard" keyCode="57"  objectName="firePlayer"
             className="com.jrq.xvgdl.spaceinvaders.model.event.PlayerShootEvent" />
     </events>

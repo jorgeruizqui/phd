@@ -54,6 +54,7 @@ public class EnemySpaceshipAI implements IGameObjectAI {
         projectile.setSizeZ(1);
         projectile.setIntendedPosition(object.getX() - 1, object.getY(), object.getZ());
         projectile.setObjectType(GameObjectType.PROJECTILE);
+        projectile.setSpeedFactor(5.0d);
 
         projectile.setDirection(new DirectionVector(-1, 0, 0));
 
