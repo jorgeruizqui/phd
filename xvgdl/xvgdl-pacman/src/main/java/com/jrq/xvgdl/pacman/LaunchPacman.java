@@ -20,7 +20,11 @@ public class LaunchPacman {
     public static void main(String[] args) {
 
         try {
-            XvgdlGameApp.launchGameApp("/engine/pacmanEngineConfiguration.xml").start();
+            String configurationFile = "/context/pacmanXvgdl.xml";
+            if (args.length > 0) {
+                configurationFile = args[0];
+            }
+            XvgdlGameApp.launchGameApp(configurationFile).start();
         } catch (XvgdlException e) {
             log.error("Exception running XVGDL game.", e);
             System.exit(-1);

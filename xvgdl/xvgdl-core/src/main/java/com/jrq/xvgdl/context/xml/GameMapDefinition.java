@@ -51,8 +51,6 @@ public class GameMapDefinition {
                         this.getGenerator()).newInstance());
             }
 
-            gameMap.setMapRepresentation(
-                    new IGameObject[gameMap.getSizeX()][gameMap.getSizeY()][gameMap.getSizeZ()]);
             gameMap.setMapType(GameMapType.fromString(this.getType()));
             gameMap.setIsToroidal(Optional.ofNullable(this.getToroidal()).orElse(Boolean.FALSE));
             gameMap.setMapFile(this.getFile());
