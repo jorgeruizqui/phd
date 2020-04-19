@@ -40,6 +40,6 @@ public class GameRuleActionDefinitionTest {
 
         IGameRuleAction gameRuleAction = gameRuleActionDefinition.toModel();
 
-        assertNull(gameRuleAction);
+        assertEquals(GameRuleResultType.NONE, gameRuleAction.getResultType());
     }
 }

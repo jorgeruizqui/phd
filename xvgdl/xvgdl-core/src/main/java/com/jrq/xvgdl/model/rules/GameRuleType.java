@@ -8,25 +8,11 @@ import java.util.Arrays;
  * @author jrquinones
  */
 public enum GameRuleType {
-    /**
-     * GENERIC. A rule with no objects involved. Just implies a result.
-     */
+
     GENERIC,
-    /**
-     * Collision.
-     */
     COLLISION,
-    /**
-     * Proximity.
-     */
     PROXIMITY,
-    /**
-     * Distant.
-     */
     DISTANT,
-    /**
-     * End Condition
-     */
     END_CONDITION;
 
     /**

@@ -3,7 +3,11 @@ package com.jrq.xvgdl.model.event;
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.context.xml.GameEventDefinition;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,9 +18,6 @@ import java.util.Optional;
 @Data
 public abstract class AGameEvent implements IGameEvent {
 
-    /**
-     * Game Event Type.
-     */
     private GameEventType eventType;
 
     /**
@@ -31,14 +32,10 @@ public abstract class AGameEvent implements IGameEvent {
      */
     private Long timer;
 
-    /**
-     * Game Event Executor.
-     */
+    private List<String> gameStates = new ArrayList<>();
+
     protected IGameEventExecutor executor;
 
-    /**
-     * Game Event definition. Needed by event executors.
-     */
     private GameEventDefinition gameEventDefinition;
 
     @Override
@@ -47,9 +44,6 @@ public abstract class AGameEvent implements IGameEvent {
         executor.executeEvent(this, gameContext);
     }
 
-    /**
-     * @param gameEventDefinition Game event definition to set
-     */
     public void setGameEventDefinition(GameEventDefinition gameEventDefinition) {
         this.gameEventDefinition = gameEventDefinition;
         updateDefinitionFields();
@@ -58,9 +52,6 @@ public abstract class AGameEvent implements IGameEvent {
     protected void updateDefinitionFields() {
     }
 
-    /**
-     * @return Game event definition
-     */
     public GameEventDefinition getGameEventDefinition() {
         return gameEventDefinition;
     }
@@ -75,5 +66,18 @@ public abstract class AGameEvent implements IGameEvent {
 
     public Long getTimer() {
         return Optional.ofNullable(timer).orElse(-1L);
+    }
+
+    @Override
+    public List<String> getGameStates() {
+        return gameStates;
+    }
+
+    public void addGameState(String gameState) {
+        if(StringUtils.isNotEmpty(gameState)) {
+            this.gameStates.addAll(Arrays.asList(gameState.split(",")));
+        } else {
+            this.gameStates.add(GameContext.DEFAULT_STATE);
+        }
     }
 }

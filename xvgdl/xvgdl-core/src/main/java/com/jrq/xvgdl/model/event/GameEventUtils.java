@@ -11,28 +11,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class GameEventUtils {
 
-    /**
-     * Private constructor.
-     */
     private GameEventUtils() {
     }
 
-    /**
-     * @param gameContext Game Context
-     * @param event       Game Event
-     */
-    public static void processGameEvent(GameContext gameContext, IGameEvent event) {
+    public static boolean processGameEvent(GameContext gameContext, IGameEvent event) {
 
-        long lastEventExecutionTime = event.getTimeStamp();
-        long eventTimer = event.getTimer();
+        log.debug("Proessing Game Event: " + event);
         long currentTime = System.currentTimeMillis();
+        long lastEventExecutionTime = event.getTimeStamp() > 0 ? event.getTimeStamp() : currentTime;
+        long eventTimer = event.getTimer();
         boolean executeEvent = true;
-        if (eventTimer > 0 && (currentTime - lastEventExecutionTime < eventTimer)) {
+
+        if (eventTimer > 0 && ((currentTime - lastEventExecutionTime) < eventTimer)) {
             executeEvent = false;
         }
+
         if (executeEvent) {
             log.debug("Executing game event: " + event.getClass().getName());
             event.executeEvent(gameContext);
         }
+        return executeEvent;
     }
 }

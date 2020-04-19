@@ -27,59 +27,63 @@
     </map>
 
     <players number="1" maxNumber="1" minNumber="1">
-        <player name="pacman" score="0" lives="3" livePercentage="100"
-                ai="com.jrq.xvgdl.model.object.ai.PlayerChaseNearestItemAI"/>
+        <player name="pacman" score="0" lives="3" livePercentage="100" speedFactor="5"/>
+                <!--ai="com.jrq.xvgdl.model.object.ai.PlayerChaseNearestItemAI"/>-->
     </players>
 
     <objects>
         <object name="wall" type="wall" dynamic="false" volatile="false"
                 sizeX="1" sizeY="1" instances="60"/>
         <object name="ghost" type="enemy" dynamic="true"
-                volatile="true" size="1,1" instances="4"
+                volatile="true" size="1,1" instances="4" speedFactor="3"
                 ai="com.jrq.xvgdl.model.object.ai.PlayerChaserAI"/>
         <object name="smallDot" type="item" dynamic="true"
                 volatile="true" size="1,1" instances="2"/>
         <object name="bigDot" type="item" dynamic="true"
-                volatile="true" size="1,1" instances="2"/>
-        <object name="cherry" type="item" dynamic="true"
-                volatile="true" size="1,1" instances="1"/>
+                volatile="true" size="1,1" instances="4"/>
     </objects>
 
     <physics>
     </physics>
 
     <events>
-        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
-               objectName="cherry" timer="5000"/>
-        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
-               objectName="ghost" timer="1000"/>
+           <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
+                   objectName="ghost" timer="100000"/>
     </events>
 
     <rules>
         <rule name="eatSmallDot" type="collision">
             <ruleActions>
-                <ruleAction objectName="pacman" result="scoreUp"
-                            value="100"/>
+                <ruleAction objectName="pacman" result="scoreUp" value="100"/>
                 <ruleAction objectName="smallDot" result="disappear"/>
             </ruleActions>
         </rule>
-        <rule name="eatBigDot" type="collision">
+
+        <rule name="eatBigDot" type="collision" gameState="default,pacmanPowerUp">
             <ruleActions>
-                <ruleAction objectName="pacman" result="scoreUp"
-                            value="300"/>
+                <ruleAction objectName="pacman" value="300" result=""
+                            className="com.jrq.xvgdl.pacman.model.rules.PacmanPowerUpRuleAction"/>
                 <ruleAction objectName="bigDot" result="disappear"/>
             </ruleActions>
         </rule>
-        <rule name="eatCherry" type="collision">
-            <ruleActions>
-                <ruleAction objectName="pacman" result="scoreUp"
-                            value="500"/>
-                <ruleAction objectName="cherry" result="disappear"/>
-            </ruleActions>
-        </rule>
+
         <rule name="ghostCatchPacman" type="collision">
             <ruleActions>
                 <ruleAction objectName="pacman" result="teletransport"/>
+                <ruleAction objectName="ghost" result=""/>
+            </ruleActions>
+        </rule>
+
+        <rule name="ghostCatchPacmanLivesDown" type="collision">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="livesDown"/>
+                <ruleAction objectName="ghost" result=""/>
+            </ruleActions>
+        </rule>
+
+        <rule name="pacmanCatchGhost" type="collision" gameState="pacmanPowerUp">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="scoreUp" value="1000"/>
                 <ruleAction objectName="ghost" result="disappear"/>
             </ruleActions>
         </rule>

@@ -11,12 +11,6 @@ import java.util.Optional;
 
 public class Speedup extends AGameEvent {
 
-    /**
-     * XML Object reference tag.
-     */
-    public static final String XML_OBJECT_NAME = "objectName";
-    private static final String XML_VALUE = "value";
-
     @Getter
     @Setter
     private String objectName;

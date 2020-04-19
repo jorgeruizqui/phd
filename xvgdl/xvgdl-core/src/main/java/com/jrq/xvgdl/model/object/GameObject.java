@@ -5,6 +5,7 @@ import com.jrq.xvgdl.engine.GameEngine;
 import com.jrq.xvgdl.model.location.DirectionVector;
 import com.jrq.xvgdl.model.location.Position;
 import com.jrq.xvgdl.model.object.ai.IGameObjectAI;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,77 +18,25 @@ import java.util.Random;
  *
  * @author jrquinones
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Slf4j
 public class GameObject implements IGameObject {
 
-    /**
-     * Name of the game object.
-     */
     private String name;
-    /**
-     * Instance.
-     */
     private Integer instance;
-    /**
-     * Position.
-     */
-    @Setter(lombok.AccessLevel.NONE)
     private Position position = new Position(-1, -1, -1);
-    /**
-     * Intended position.
-     */
-    @Setter(lombok.AccessLevel.NONE)
     private Position intendedPosition = new Position(-1, -1, -1);
-    /**
-     * Size x .
-     */
     private Integer sizeX;
-    /**
-     * Size y.
-     */
     private Integer sizeY;
-    /**
-     * Size z.
-     */
     private Integer sizeZ;
-    /**
-     * Game Object Type.
-     */
     private GameObjectType objectType;
-
-    /**
-     * Speed factor.
-     */
     private Double speedFactor = 1.0;
-    /**
-     * Direction Vector. If it's 0,0,0 means that the object is stopped.
-     */
+    private Double initialSpeedFactor = 1.0;
     private DirectionVector direction = new DirectionVector(0, 0, 0);
-
-    /**
-     * Is dynamic flag. Indicates if object can move during game or is fixed
-     * forever.
-     */
     private Boolean isDynamic;
-    /**
-     * Is volatile flag. Indicates if object can appear/disappear during game or
-     * is present forever.
-     */
     private Boolean isVolatile;
-
-    /**
-     * Flag indicating if the object is frozen.
-     */
     private boolean frozen;
-
-    /**
-     * Artificial Intelligence associated with this object.
-     */
     private IGameObjectAI ai;
-
     private long updatedAt = 0;
 
     @Override
@@ -111,12 +60,6 @@ public class GameObject implements IGameObject {
         intendedPosition.setZ(getPosition().getZ());
     }
 
-    private void applyAI(GameContext gameContext) {
-        if (ai != null) {
-            ai.applyAIonObject(gameContext, this);
-        }
-    }
-
     public void setPosition(Integer x, Integer y, Integer z) {
         position.setX(x);
         position.setY(y);
@@ -138,10 +81,10 @@ public class GameObject implements IGameObject {
         return position.getZ();
     }
 
-    public void setIntendedPosition(Integer x, Integer y, Integer z) {
-        intendedPosition.setX(x);
-        intendedPosition.setY(y);
-        intendedPosition.setZ(z);
+    @Override
+    public Boolean isLocatedAnyWhereInMap() {
+        return (getX() >= 0 && getY() >= 0 && getZ() >= 0) || (getIntendedPosition().getX() >= 0
+                && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
     }
 
     @Override
@@ -164,8 +107,19 @@ public class GameObject implements IGameObject {
         }
     }
 
-    private double getMySpeedFactorInMilliseconds() {
-        return GameEngine.GAME_ENGINE_SPEED_FACTOR / getSpeedFactor();
+    @Override
+    public void increaseSpeedFactor(Double factorToIncrease) {
+        this.speedFactor += factorToIncrease;
+    }
+
+    @Override
+    public void decreaseSpeedFactor(Double factorToDecrease) {
+        this.speedFactor -= factorToDecrease;
+    }
+
+    @Override
+    public void resetSpeedFactor() {
+        this.speedFactor = this.initialSpeedFactor;
     }
 
     @Override
@@ -173,9 +127,9 @@ public class GameObject implements IGameObject {
         GameObject cloned = new GameObject();
         try {
             if (this.ai != null) {
-                cloned.setAi(this.ai.getClass().newInstance());
+                cloned.setAi(this.ai.getClass().getConstructor().newInstance());
             }
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             log.error("Exception setting object class AI: ", e);
         }
         cloned.setIsDynamic(getIsDynamic());
@@ -195,6 +149,18 @@ public class GameObject implements IGameObject {
         return cloned;
     }
 
+    public void setIntendedPosition(Integer x, Integer y, Integer z) {
+        intendedPosition.setX(x);
+        intendedPosition.setY(y);
+        intendedPosition.setZ(z);
+    }
+
+    private void applyAI(GameContext gameContext) {
+        if (ai != null) {
+            ai.applyAIonObject(gameContext, this);
+        }
+    }
+
     private void setX(int x) {
         position.setX(x);
     }
@@ -207,9 +173,7 @@ public class GameObject implements IGameObject {
         position.setZ(z);
     }
 
-    @Override
-    public Boolean isLocatedAnyWhereInMap() {
-        return (getX() >= 0 && getY() >= 0 && getZ() >= 0) || (getIntendedPosition().getX() >= 0
-                && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
+    private double getMySpeedFactorInMilliseconds() {
+        return GameEngine.GAME_ENGINE_SPEED_FACTOR / getSpeedFactor();
     }
 }

@@ -38,10 +38,10 @@ public class GameRuleDefinition {
             GameRule gameRule = new GameRule();
             gameRule.setName(this.getName());
             gameRule.setType(GameRuleType.fromString(this.getType()));
-            gameRule.setGameState(this.getGameState());
             if (this.getRuleActions() != null) this.getRuleActions().forEach(
                     ra -> gameRule.addRuleAction(ra.toModel()));
 
+            gameRule.addGameState(gameState);
             return gameRule;
         } catch (Exception e) {
             log.error("Exception converting GameRuleDefinition to GameRule: " + e.getMessage(), e);

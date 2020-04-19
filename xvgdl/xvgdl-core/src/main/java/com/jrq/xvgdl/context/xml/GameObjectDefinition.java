@@ -79,6 +79,7 @@ public class GameObjectDefinition {
             gameObject.setIntendedPosition(gameObject.getX(), gameObject.getY(), gameObject.getZ());
             gameObject.setObjectType(GameObjectType.fromString(this.getType()));
             gameObject.setSpeedFactor(Optional.ofNullable(this.getSpeedFactor()).orElse(1.0));
+            gameObject.setInitialSpeedFactor(Optional.ofNullable(this.getSpeedFactor()).orElse(1.0));
 
             if (StringUtils.isNotEmpty(this.getAi())) {
                 gameObject.setAi(

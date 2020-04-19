@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 /**
  * Game Rule Utils
@@ -17,107 +16,101 @@ import java.util.stream.Collectors;
 @Slf4j
 public final class GameRuleUtils {
 
-    /**
-     * Private constructor.
-     */
+    private static final Random RANDOM = new Random();
+
     private GameRuleUtils() {
     }
 
-    /**
-     * Apply game rule
-     *
-     * @param gameContext Game Context
-     * @param gameRule    Game Rule to be applied
-     * @return {@link Boolean} <code>true</code> if the rule is applied
-     * correctly. <code>false</code> otherwise
-     */
-    public static boolean applyGameRule(GameContext gameContext, IGameRule gameRule) {
-
-        boolean rto = true;
-        if (GameRuleType.COLLISION.equals(gameRule.getType())) {
-            // Take rule actions and see objects involved in the rule
-            List<String> objectNames = gameRule.getRuleActions().stream().map(IGameRuleAction::getObjectName)
-                    .collect(Collectors.toList());
-
-            // TODO Assuming there are two objects
-            if (objectNames.size() == 2) {
-                List<IGameObject> objects1 = gameContext.getObjectsListByName(objectNames.get(0));
-                List<IGameObject> objects2 = gameContext.getObjectsListByName(objectNames.get(1));
-                for (IGameObject object1 : objects1) {
-                    for (IGameObject object2 : objects2) {
-                        if (object1.getX() == object2.getX() && object1.getY() == object2.getY()
-                                && object1.getZ() == object2.getZ()) {
-                            log.debug("Collision Rule " + gameRule.getName() + " satisfied for two objects ["
-                                    + object1.getId() + ", " + object2.getId() + "]");
-
-                            GameRuleUtils.executeResult(gameContext, object1,
-                                    gameRule.getRuleActionByObjectName(object1.getName()));
-                            GameRuleUtils.executeResult(gameContext, object2,
-                                    gameRule.getRuleActionByObjectName(object2.getName()));
-
-                        }
-                    }
-                }
-            } else {
-                log.error("Error applying Collision Rule " + gameRule.getName()
-                        + ". Two Action objects must be specified for this kind of rules.");
-                rto = false;
-            }
-        } else if (GameRuleType.END_CONDITION.equals(gameRule.getType())) {
-
-        }
-
-        return rto;
-    }
-
-    /**
-     * @param gameContext    Game Context
-     * @param gameObject     Game Object
-     * @param gameRuleAction Game Rule Action
-     */
-    public static void executeResult(GameContext gameContext, IGameObject gameObject, IGameRuleAction gameRuleAction) {
+    public static boolean executeResult(GameContext gameContext, IGameObject gameObject, IGameRuleAction gameRuleAction) {
         if (gameRuleAction != null) {
-            if (GameRuleResultType.TELETRANSPORT.equals(gameRuleAction.getResultType())) {
-                applyTeletransportRuleResult(gameContext, gameObject, gameRuleAction);
-            } else if (GameRuleResultType.DISAPPEAR.equals(gameRuleAction.getResultType())) {
-                gameContext.removeGameObject(gameObject);
-            } else if (GameRuleResultType.CANT_MOVE.equals(gameRuleAction.getResultType())) {
-                gameObject.resetMove();
-            } else if (GameRuleResultType.BOUNCE.equals(gameRuleAction.getResultType())) {
-            } else if (GameRuleResultType.DUPLICATE.equals(gameRuleAction.getResultType())) {
-            } else if (GameRuleResultType.FREEZE.equals(gameRuleAction.getResultType())) {
-                GameEngine.getInstance().freezeObject(gameObject, gameRuleAction.getValueAsLong());
-            } else if (GameRuleResultType.LIVES_DOWN.equals(gameRuleAction.getResultType())) {
-                gameContext.getCurrentGamePlayer().livesDown();
-            } else if (GameRuleResultType.LIVES_RESET.equals(gameRuleAction.getResultType())) {
-                gameContext.getCurrentGamePlayer().liveReset();
-            } else if (GameRuleResultType.LIVES_UP.equals(gameRuleAction.getResultType())) {
-                gameContext.getCurrentGamePlayer().livesUp();
-            } else if (GameRuleResultType.SCORE_DOWN.equals(gameRuleAction.getResultType())) {
-                gameContext.getCurrentGamePlayer().scoreDown(gameRuleAction.getValueAsLong());
-            } else if (GameRuleResultType.SCORE_RESET.equals(gameRuleAction.getResultType())) {
-                gameContext.getCurrentGamePlayer().scoreSetTo(0);
-            } else if (GameRuleResultType.SCORE_SET_TO.equals(gameRuleAction.getResultType())) {
-                gameContext.getCurrentGamePlayer().scoreSetTo(gameRuleAction.getValueAsLong());
-            } else if (GameRuleResultType.SCORE_UP.equals(gameRuleAction.getResultType())) {
-                gameContext.getCurrentGamePlayer().scoreUp(gameRuleAction.getValueAsLong());
-            } else if (GameRuleResultType.TIME_DOWN.equals(gameRuleAction.getResultType())) {
-            } else if (GameRuleResultType.TIME_RESET.equals(gameRuleAction.getResultType())) {
-            } else if (GameRuleResultType.TIME_UP.equals(gameRuleAction.getResultType())) {
-            } else if (GameRuleResultType.TRANSFORM.equals(gameRuleAction.getResultType())) {
-            } else if (GameRuleResultType.CHANGE_DIRECTION.equals(gameRuleAction.getResultType())) {
-                gameObject.getDirection().invert();
+
+            log.debug("GRU: Executing result [" + gameRuleAction.getResultType() + " for game object [" + gameObject.getName() + "]");
+            switch (gameRuleAction.getResultType()) {
+                case TELETRANSPORT:
+                    applyTeletransportRuleResult(gameContext, gameObject, gameRuleAction);
+                    break;
+                case DISAPPEAR:
+                    gameContext.removeGameObject(gameObject);
+                    break;
+                case CANT_MOVE:
+                    gameObject.resetMove();
+                    break;
+                case FREEZE:
+                    GameEngine.getInstance().freezeObject(gameObject, gameRuleAction.getValueAsLong());
+                    break;
+                case LIVES_DOWN:
+                    gameContext.getCurrentGamePlayer().livesDown();
+                    break;
+                case LIVES_UP:
+                    gameContext.getCurrentGamePlayer().livesUp();
+                    break;
+                case LIVES_RESET:
+                    gameContext.getCurrentGamePlayer().liveReset();
+                    break;
+                case SCORE_DOWN:
+                    gameContext.getCurrentGamePlayer().scoreDown(gameRuleAction.getValueAsLong());
+                    break;
+                case SCORE_RESET:
+                    gameContext.getCurrentGamePlayer().scoreSetTo(0);
+                    break;
+                case SCORE_SET_TO:
+                    gameContext.getCurrentGamePlayer().scoreSetTo(gameRuleAction.getValueAsLong());
+                    break;
+                case SCORE_UP:
+                    gameContext.getCurrentGamePlayer().scoreUp(gameRuleAction.getValueAsLong());
+                    break;
+                case TIME_DOWN:
+                    gameContext.setTimeout(gameContext.getTimeout() - gameRuleAction.getValueAsLong());
+                    break;
+                case TIME_UP:
+                    gameContext.setTimeout(gameContext.getTimeout() + gameRuleAction.getValueAsLong());
+                    break;
+                case CHANGE_DIRECTION:
+                    gameObject.getDirection().invert();
+                     break;
+                case STATE_TRANSITION:
+                    gameContext.setCurrentGameState(gameRuleAction.getValue());
+                    break;
+                case LIVES_PERCENTAGE_UP:
+                    gameContext.getCurrentGamePlayer().setLivePercentage(
+                            gameContext.getCurrentGamePlayer().getLivePercentage() + gameRuleAction.getValueAsInteger());
+                    break;
+                case LIVES_PERCENTAGE_DOWN:
+                    gameContext.getCurrentGamePlayer().setLivePercentage(
+                            gameContext.getCurrentGamePlayer().getLivePercentage() - gameRuleAction.getValueAsInteger());
+                    break;
+                case LIVES_PERCENTAGE_RESET:
+                    gameContext.getCurrentGamePlayer().setLivePercentage(100);
+                    break;
+                case SPEED_UP:
+                    gameContext.getObjectsListByName(gameRuleAction.getObjectName()).forEach(iGameObject ->
+                            iGameObject.increaseSpeedFactor(gameRuleAction.getValueAsDouble()));
+                    break;
+                case SPEED_DOWN:
+                    gameContext.getObjectsListByName(gameRuleAction.getObjectName()).forEach(iGameObject ->
+                            iGameObject.decreaseSpeedFactor(gameRuleAction.getValueAsDouble()));
+                    break;
+                case SPEED_RESET:
+                    gameContext.getObjectsListByName(gameRuleAction.getObjectName()).forEach(
+                            IGameObject::resetSpeedFactor);
+                    break;
+                case BOUNCE:
+                case DUPLICATE:
+                case TIME_RESET:
+                case TRANSFORM:
+                case NONE:
+                default:
             }
         }
+        return true;
     }
 
     private static void applyTeletransportRuleResult(GameContext gameContext, IGameObject gameObject,
                                                      IGameRuleAction gameRuleAction) {
         String value = gameRuleAction.getValue();
         if (value == null || value.isEmpty()) {
-            Random r = new Random();
-            gameObject.moveTo(r.nextInt(gameContext.getGameMap().getSizeX()),
-                    r.nextInt(gameContext.getGameMap().getSizeY()), 0);
+            gameObject.moveTo(RANDOM.nextInt(gameContext.getGameMap().getSizeX()),
+                    RANDOM.nextInt(gameContext.getGameMap().getSizeY()), 0);
         } else {
             List<IGameObject> objects = GameEngine.getInstance().getGameContext().getObjectsListByName(value);
             if (objects != null && !objects.isEmpty()) {
@@ -134,22 +127,11 @@ public final class GameRuleUtils {
 
     public static void evolutionOfRuleAction(IGameRuleAction gameRuleAction) {
         if (gameRuleAction != null) {
-            if (GameRuleResultType.BOUNCE.equals(gameRuleAction.getResultType())) {
-                // Actualizar salto
-            } else if (GameRuleResultType.FREEZE.equals(gameRuleAction.getResultType())) {
-                // Actualizar tiempo de freeze
-            } else if (GameRuleResultType.SCORE_DOWN.equals(gameRuleAction.getResultType())) {
-                // Actualizar valor de score down
-            } else if (GameRuleResultType.SCORE_SET_TO.equals(gameRuleAction.getResultType())) {
-                // Actualizar valor de score set to
-            } else if (GameRuleResultType.SCORE_UP.equals(gameRuleAction.getResultType())) {
-                // Actualizar valor de score down
-            } else if (GameRuleResultType.TIME_DOWN.equals(gameRuleAction.getResultType())) {
-                // Actualizar valor de time down
-            } else if (GameRuleResultType.TIME_UP.equals(gameRuleAction.getResultType())) {
-                // Actualizar valor de time up
+            switch (gameRuleAction.getResultType()) {
+                // TODO To be implemented for each of the rules
+                default:
+                    break;
             }
         }
     }
-
 }
