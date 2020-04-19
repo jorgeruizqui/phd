@@ -1,5 +1,8 @@
 package com.jrq.xvgdl.model.rules;
 
+import com.jrq.xvgdl.context.GameContext;
+import com.jrq.xvgdl.model.object.IGameObject;
+
 /**
  * Game Rule Action interface.
  *
@@ -7,29 +10,18 @@ package com.jrq.xvgdl.model.rules;
  */
 public interface IGameRuleAction {
 
-    /**
-     * @return The object Reference Name
-     */
     String getObjectName();
+    void setObjectName(String objectName);
 
-    /**
-     * @return Game Rule Result Type
-     */
     GameRuleResultType getResultType();
+    void setResultType(GameRuleResultType gameRuleResultType);
 
-    /**
-     * @return Result Value
-     */
     String getValue();
+    void setValue(String value);
 
-    /**
-     * @return Value as long. Default 0
-     */
     Long getValueAsLong();
-
-    /**
-     * @return Value as Double. Default 0
-     */
     Double getValueAsDouble();
+    Integer getValueAsInteger();
 
+    boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject);
 }

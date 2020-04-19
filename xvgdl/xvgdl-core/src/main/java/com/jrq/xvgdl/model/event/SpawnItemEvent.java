@@ -13,11 +13,6 @@ import java.util.Random;
  */
 public class SpawnItemEvent extends AGameEvent {
 
-    /**
-     * XML Object reference tag.
-     */
-    public static final String XML_OBJECT_NAME = "objectName";
-
     @Getter
     @Setter
     private String objectName;
@@ -39,11 +34,6 @@ public class SpawnItemEvent extends AGameEvent {
         setObjectName(getGameEventDefinition().getObjectName());
     }
 
-    /**
-     * Spawn Item executor
-     *
-     * @author Jor
-     */
     public class SpawnItemExecutor implements IGameEventExecutor {
 
         @Override

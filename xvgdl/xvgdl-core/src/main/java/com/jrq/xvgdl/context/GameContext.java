@@ -13,7 +13,6 @@ import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.objectives.IGameObjective;
 import com.jrq.xvgdl.model.physics.IGamePhysic;
 import com.jrq.xvgdl.model.rules.IGameRule;
-import com.jrq.xvgdl.renderer.IGameRenderer;
 import com.jrq.xvgdl.util.GameBaseProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,101 +38,46 @@ import java.util.stream.IntStream;
 @Getter
 @ToString
 @Slf4j
-public final class GameContext implements Comparable<GameContext> {
+public class GameContext implements Comparable<GameContext> {
 
+    public static final String DEFAULT_STATE = "default";
     private GameDefinition gameDefinition = new GameDefinition();
-
-    /**
-     * Objects map.
-     */
-    private EnumMap<GameObjectType, List<IGameObject>> objectsMap = new EnumMap<>(GameObjectType.class);
-
-    /**
-     * Game Events.
-     */
-    private Collection<IGameEvent> gameEvents = new CopyOnWriteArrayList<>();
-
-    /**
-     * Game End Conditions.
-     */
-    private Collection<IGameEndCondition> gameEndConditions = new CopyOnWriteArrayList<>();
-
-    /**
-     * Game Action.
-     */
-    private Collection<IGameAction> gameActions = new CopyOnWriteArrayList<>();
-
-    /**
-     * Game Map.
-     */
+    private final EnumMap<GameObjectType, List<IGameObject>> objectsMap = new EnumMap<>(GameObjectType.class);
+    private final Collection<IGameEvent> gameEvents = new CopyOnWriteArrayList<>();
+    private final Collection<IGameEndCondition> gameEndConditions = new CopyOnWriteArrayList<>();
+    private final Collection<IGameAction> gameActions = new CopyOnWriteArrayList<>();
     private IGameMap gameMap;
+    private final Collection<IGameRule> gameRules = new CopyOnWriteArrayList<>();
+    private final Collection<IGameObjective> gameObjectives = new CopyOnWriteArrayList<>();
+    private final Collection<IGamePhysic> gamePhysics = new CopyOnWriteArrayList<>();
+    private int turns = 0;
 
-    /**
-     * Game Rules.
-     */
-    private Collection<IGameRule> gameRules = new CopyOnWriteArrayList<>();
+    @Setter
+    private String currentGameState = GameContext.DEFAULT_STATE;
 
-    /**
-     * Game Objectives.
-     */
-    private Collection<IGameObjective> gameObjectives = new CopyOnWriteArrayList<>();
-
-    /**
-     * Game Startup time.
-     */
     @Setter
     private Long startTime;
 
-    /**
-     * Game End time.
-     */
     @Setter
     private Long endTime;
 
-    /**
-     * Game Loop time.
-     */
     @Setter
     private Long loopTime;
 
-    /**
-     * Timeout configuration key. Set to -1 for no timeout.
-     */
     @Setter
     private Long timeout = -1L;
 
-    /**
-     * Physics key.
-     */
-    private Collection<IGamePhysic> gamePhysics = new CopyOnWriteArrayList<>();
-
-    /**
-     * Player AI Enabled.
-     */
     @Setter
     private boolean playerAiEnabled = false;
 
-    /**
-     * Game Paused flag.
-     */
     @Setter
     private boolean gamePaused = false;
 
-    /**
-     * Game Turns.
-     */
-    private int turns = 0;
-
-    /**
-     * Game Context Fitness function score.
-     */
     @Setter
     private Double fitnessScore = 0.0d;
 
-    @Getter
     @Setter
     private boolean winningGame = false;
-
 
     public void loadGameContext(String configurationFile) throws XvgdlException {
         loadGameContext(null, configurationFile);
@@ -292,7 +236,7 @@ public final class GameContext implements Comparable<GameContext> {
      * @param objects Objects to be added
      */
     public void addObjects(Collection<IGameObject> objects) {
-        objects.stream().forEach(this::addObject);
+        objects.forEach(this::addObject);
     }
 
     /**

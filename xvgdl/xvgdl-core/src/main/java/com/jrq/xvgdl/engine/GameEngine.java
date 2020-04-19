@@ -9,7 +9,6 @@ import com.jrq.xvgdl.model.event.GameEventUtils;
 import com.jrq.xvgdl.model.event.IGameEvent;
 import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.rules.GameRuleType;
-import com.jrq.xvgdl.model.rules.GameRuleUtils;
 import com.jrq.xvgdl.model.rules.IGameRule;
 import com.jrq.xvgdl.renderer.IGameRenderer;
 import lombok.Getter;
@@ -231,14 +230,19 @@ public final class GameEngine {
     private void processEvents() {
 
         for (IGameEvent event : getGameContext().getGameSortedEventsByTime()) {
-            if (simulationMode && GameEventType.KEYBOARD.equals(event.getEventType())) {
-                log.debug("Keyboard Event not processed. Simulation Mode enabled");
-            } else {
-                GameEventUtils.processGameEvent(getGameContext(), event);
-            }
+            if (event.getGameStates().isEmpty() || event.getGameStates().contains(gameContext.getCurrentGameState())) {
+                boolean executed = false;
+                log.debug("Event to be processed: " + event);
+                if (simulationMode && GameEventType.KEYBOARD.equals(event.getEventType())) {
+                    log.debug("Keyboard Event not processed. Simulation Mode enabled");
+                    executed = true;
+                } else {
+                    executed = GameEventUtils.processGameEvent(getGameContext(), event);
+                }
 
-            if (event.isConsumable()) {
-                getGameContext().eventProcessed(event);
+                if (event.isConsumable() && executed) {
+                    getGameContext().eventProcessed(event);
+                }
             }
         }
     }
@@ -249,10 +253,12 @@ public final class GameEngine {
     private void processRules() {
 
         for (IGameRule rule : getGameContext().getGameRules()) {
-            boolean ruleResult = GameRuleUtils.applyGameRule(getGameContext(), rule);
+            if (rule.getGameStates().contains(gameContext.getCurrentGameState())) {
+                boolean ruleResult = rule.applyGameRule(getGameContext());
 
-            if (ruleResult && rule.getType().equals(GameRuleType.END_CONDITION)) {
-                this.gameFinished = true;
+                if (ruleResult && rule.getType().equals(GameRuleType.END_CONDITION)) {
+                    this.gameFinished = true;
+                }
             }
         }
     }

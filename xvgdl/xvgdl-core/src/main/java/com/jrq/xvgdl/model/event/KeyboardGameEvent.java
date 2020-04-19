@@ -17,14 +17,8 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 @Setter
 public class KeyboardGameEvent extends AGameEvent {
 
-    /**
-     * Key Code.
-     */
     private int keyCode;
 
-    /**
-     * @param keyCode Key Code
-     */
     public KeyboardGameEvent(int keyCode) {
         this.keyCode = keyCode;
         this.setEventType(GameEventType.KEYBOARD);
@@ -36,9 +30,6 @@ public class KeyboardGameEvent extends AGameEvent {
         return true;
     }
 
-    /**
-     * Keyboard Event executor Game
-     */
     public class KeyboardGameExecutor implements IGameEventExecutor {
 
         @Override

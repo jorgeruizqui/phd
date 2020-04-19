@@ -7,23 +7,10 @@ package com.jrq.xvgdl.model.event;
  */
 public enum GameEventType {
 
-    /**
-     * Engine event.
-     */
     ENGINE,
-    /**
-     * Mouse
-     */
     MOUSE,
-    /**
-     * Keyboard
-     */
     KEYBOARD;
 
-    /**
-     * @param typeSt Type as string
-     * @return The GameObjectType according to the typeSt
-     */
     public static GameEventType fromString(String typeSt) {
         GameEventType type = null;
 

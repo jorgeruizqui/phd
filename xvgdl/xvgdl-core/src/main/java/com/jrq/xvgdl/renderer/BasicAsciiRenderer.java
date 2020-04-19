@@ -27,7 +27,7 @@ public class BasicAsciiRenderer extends AGameRenderer {
     @Override
     public void render() {
         clearScreen();
-        printPlayerScore();
+        printPlayerInfo();
         printSlashs();
         printMap();
         printSlashs();
@@ -42,7 +42,7 @@ public class BasicAsciiRenderer extends AGameRenderer {
         printEndGame();
         IntStream.range(0, 5).forEach(i -> printWhites());
         printSlashs();
-        printPlayerScore();
+        printPlayerInfo();
     }
 
     private void printGamePlayTime() {
@@ -94,7 +94,7 @@ public class BasicAsciiRenderer extends AGameRenderer {
         System.out.println(arrayWhites);
     }
 
-    private void printPlayerScore() {
+    protected void printPlayerInfo() {
         GamePlayer gp = this.gameContext.getCurrentGamePlayer();
         System.out.println("Score: " + gp.getScore() + " - Lives: " + gp.getLives());
     }

@@ -31,6 +31,8 @@ public class GameEventDefinition {
     private Integer keyCode;
     @JacksonXmlProperty(isAttribute = true)
     private Double value;
+    @JacksonXmlProperty(isAttribute = true)
+    private String gameState;
 
     /**
      * @return Game Event initialized
@@ -42,7 +44,7 @@ public class GameEventDefinition {
             gameEvent.setEventType(GameEventType.fromString(this.getType()));
             gameEvent.setTimer(Optional.ofNullable(this.getTimer()).orElse(0L));
             gameEvent.setGameEventDefinition(this);
-
+            gameEvent.addGameState(this.getGameState());
             if (gameEvent instanceof KeyboardGameEvent) {
                 ((KeyboardGameEvent) gameEvent).setKeyCode(this.getKeyCode());
             }

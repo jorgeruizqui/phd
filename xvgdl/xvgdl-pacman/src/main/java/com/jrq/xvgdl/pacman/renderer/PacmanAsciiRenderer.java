@@ -1,6 +1,8 @@
 package com.jrq.xvgdl.pacman.renderer;
 
+import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.model.object.GameObjectType;
+import com.jrq.xvgdl.model.object.GamePlayer;
 import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.renderer.BasicAsciiRenderer;
 
@@ -41,5 +43,14 @@ public class PacmanAsciiRenderer extends BasicAsciiRenderer {
         for (int i = array.length - 1; i >= 0; i--) {
             System.out.println(array[i]);
         }
+    }
+
+    protected void printPlayerInfo() {
+        GamePlayer gp = this.gameContext.getCurrentGamePlayer();
+        String state = "";
+        if (!this.getGameContext().getCurrentGameState().equals(GameContext.DEFAULT_STATE)) {
+            state = "Power UP!";
+        }
+        System.out.println(state + " - Score: " + gp.getScore() + " - Lives: " + gp.getLives());
     }
 }
