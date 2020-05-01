@@ -54,25 +54,7 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
     }
 
     /**
-     * @param player Player
-     * @param item   Item
-     * @return Distance between two game objects
-     */
-    private int distanceTo(IGameObject player, IGameObject item) {
-        int distX = Math.abs(player.getX() - item.getX());
-        int distY = Math.abs(player.getY() - item.getY());
-        int distZ = Math.abs(player.getZ() - item.getZ());
-        return distX + distY + distZ;
-    }
-
-    /**
-     * Check if an object can move to a concrete square
-     *
-     * @param gc
-     * @param x
-     * @param y
-     * @param z
-     * @return
+     * Check if an object can move to an specific position, not occupied by a WALL
      */
     private boolean canMove(GameContext gc, int x, int y, int z) {
         IGameObject elementAt = gc.getObjectAt(x, y, z);

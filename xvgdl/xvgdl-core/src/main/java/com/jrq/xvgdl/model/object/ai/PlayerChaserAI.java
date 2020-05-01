@@ -34,14 +34,32 @@ public class PlayerChaserAI implements IGameObjectAI {
             if (player.getY() > object.getY()) {
                 if (canMove(gameContext, object.getX(), object.getY() + 1, object.getZ())) {
                     newY = object.getY() + 1;
+                    moved = true;
                 }
             } else if (player.getY() < object.getY()) {
                 if (canMove(gameContext, object.getX(), object.getY() - 1, object.getZ())) {
                     newY = object.getY() - 1;
+                    moved = true;
                 }
             }
         }
 
+        // At least, try to move to postition different from the last one
+        if (!moved) {
+            if (canMove(gameContext, object.getX() + 1, object.getY(), object.getZ())
+              && object.getLastPosition().getX() != object.getX() + 1) {
+                newX = object.getX() + 1;
+            } else if (canMove(gameContext, object.getX(), object.getY() + 1, object.getZ())
+                    && object.getLastPosition().getY() != object.getY() + 1) {
+                newY = object.getY() + 1;
+            } else if (canMove(gameContext, object.getX() - 1, object.getY(), object.getZ())
+                    && object.getLastPosition().getX() != object.getX() - 1) {
+                newX = object.getX() - 1;
+            } else if (canMove(gameContext, object.getX(), object.getY() - 1, object.getZ())
+                    && object.getLastPosition().getY() != object.getY() - 1) {
+                newY = object.getY() - 1;
+            }
+        }
         object.moveTo(newX, newY, 0);
 
     }

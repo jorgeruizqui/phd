@@ -9,41 +9,25 @@ import lombok.ToString;
 @AllArgsConstructor
 public class DirectionVector {
 
-    /**
-     * x vector direction.
-     */
-    private int x;
-    /**
-     * y vector direction.
-     */
-    private int y;
-    /**
-     * z vector direction.
-     */
-    private int z;
+    Position position = new Position(0, 0, 0);
 
     public boolean notZero() {
-        return x != 0 || y != 0 || z != 0;
+        return position.getX() != 0
+                || position.getY() != 0
+                || position.getZ() != 0;
     }
 
-    /**
-     * Parse property in format x,y,z
-     *
-     * @param property value
-     * @return
-     */
     public static DirectionVector parseFromString(String property) {
         String[] values = property.split(",");
-        DirectionVector dv = new DirectionVector(
+        return new DirectionVector(new Position(
                 Integer.parseInt(values[0]),
                 Integer.parseInt(values[1]),
-                Integer.parseInt(values[2]));
-        return dv;
+                Integer.parseInt(values[2])));
     }
 
     public void invert() {
-        x *= -1;
-        y *= -1;
-        z *= -1;
+        position.setX(position.getX() * -1);
+        position.setY(position.getY() * -1);
+        position.setZ(position.getZ() * -1);
     }
 }

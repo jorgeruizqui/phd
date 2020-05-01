@@ -1,12 +1,16 @@
 package com.jrq.xvgdl.model.location;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
 @ToString
 @AllArgsConstructor
+@EqualsAndHashCode
+@Builder
 public class Position {
 
     /**
@@ -21,4 +25,5 @@ public class Position {
      * z position.
      */
     private Integer z;
+
 }
