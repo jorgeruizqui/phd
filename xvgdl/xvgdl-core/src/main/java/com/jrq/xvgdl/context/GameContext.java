@@ -46,6 +46,7 @@ public class GameContext implements Comparable<GameContext> {
     private final Collection<IGameEvent> gameEvents = new CopyOnWriteArrayList<>();
     private final Collection<IGameEndCondition> gameEndConditions = new CopyOnWriteArrayList<>();
     private final Collection<IGameAction> gameActions = new CopyOnWriteArrayList<>();
+    @Setter
     private IGameMap gameMap;
     private final Collection<IGameRule> gameRules = new CopyOnWriteArrayList<>();
     private final Collection<IGameObjective> gameObjectives = new CopyOnWriteArrayList<>();

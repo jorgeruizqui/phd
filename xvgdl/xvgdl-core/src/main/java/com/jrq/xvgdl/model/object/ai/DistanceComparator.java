@@ -1,5 +1,6 @@
 package com.jrq.xvgdl.model.object.ai;
 
+import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.model.object.IGameObject;
 import lombok.AllArgsConstructor;
 

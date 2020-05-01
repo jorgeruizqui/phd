@@ -19,10 +19,10 @@ public class PacmanAsciiRenderer extends BasicAsciiRenderer {
 
     private static final Map<String, Character> renderCodes = Map.of(
             "smallDot", Character.valueOf('\u25cb'),
-            "bigDot", Character.valueOf('\u25c9'),
+            "bigDot", Character.valueOf('\u25cf'),
             "ghost", Character.valueOf('\u15e3'),
             "pacman", Character.valueOf('\u2687'),
-            "wall", Character.valueOf('\u2263'),
+            "wall", Character.valueOf('#'),
             "cherry", Character.valueOf('\u2730')
     );
 

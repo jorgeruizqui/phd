@@ -6,6 +6,7 @@ import com.jrq.xvgdl.model.event.IGameEvent;
 import com.jrq.xvgdl.model.event.IGameEventExecutor;
 import com.jrq.xvgdl.model.event.KeyboardGameEvent;
 import com.jrq.xvgdl.model.location.DirectionVector;
+import com.jrq.xvgdl.model.location.Position;
 import com.jrq.xvgdl.model.object.GameObject;
 import com.jrq.xvgdl.model.object.GameObjectType;
 import com.jrq.xvgdl.model.object.IGameObject;
@@ -71,7 +72,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
                 projectile.setObjectType(GameObjectType.PROJECTILE);
                 projectile.setSpeedFactor(5.0d);
 
-                projectile.setDirection(new DirectionVector(1, 0, 0));
+                projectile.setDirection(new DirectionVector(new Position(1, 0, 0)));
 
                 // Add to game context
                 context.addObject(projectile);

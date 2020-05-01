@@ -41,10 +41,13 @@ public class GameObjectDefinitionTest {
         assertEquals("Incorrect Field", gameObject.getName(), gameObjectDefinition.getName());
         assertEquals("Incorrect Field", gameObject.getObjectType(), GameObjectType.fromString(gameObjectDefinition.getType()));
         assertEquals("Incorrect Field", gameObject.getDirection(), DirectionVector.parseFromString(gameObjectDefinition.getDirection()));
-        assertEquals("Incorrect Field", gameObject.getInstance(), new Integer(5));
-        assertEquals("Incorrect Field", gameObject.getX(), gameObjectDefinition.getPositionX());
-        assertEquals("Incorrect Field", gameObject.getY(), gameObjectDefinition.getPositionY());
-        assertEquals("Incorrect Field", gameObject.getZ(), gameObjectDefinition.getPositionZ());
+        assertEquals("Incorrect Field", gameObject.getInstance(), Integer.valueOf(5));
+        assertEquals("Incorrect Field", gameObject.getIntendedPosition().getX(), gameObjectDefinition.getPositionX());
+        assertEquals("Incorrect Field", gameObject.getIntendedPosition().getY(), gameObjectDefinition.getPositionY());
+        assertEquals("Incorrect Field", gameObject.getIntendedPosition().getZ(), gameObjectDefinition.getPositionZ());
+        assertEquals("Incorrect Field", gameObject.getPosition().getX(), gameObjectDefinition.getPositionX());
+        assertEquals("Incorrect Field", gameObject.getPosition().getY(), gameObjectDefinition.getPositionY());
+        assertEquals("Incorrect Field", gameObject.getPosition().getZ(), gameObjectDefinition.getPositionZ());
         assertTrue("Incorrect Field", gameObject.getIsDynamic());
         assertTrue("Incorrect Field", gameObject.getIsVolatile());
     }

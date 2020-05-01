@@ -116,8 +116,24 @@ public class GameRule implements IGameRule {
         return rto;
     }
 
+    /**
+     * Objects are collisioning if
+     * 1. They are in the same position
+     * 2. They interchange their positions
+     * @param object1
+     * @param object2
+     * @return
+     */
     private boolean objectsAreCollisioning(IGameObject object1, IGameObject object2) {
-        return object1.getX().equals(object2.getX()) && object1.getY().equals(object2.getY())
-                && object1.getZ().equals(object2.getZ());
+        return locatedInSamePosition(object1, object2) || exchangingPosition(object1, object2);
+    }
+
+    private boolean locatedInSamePosition(IGameObject object1, IGameObject object2) {
+        return object1.getPosition().equals(object2.getPosition());
+    }
+
+    private boolean exchangingPosition(IGameObject object1, IGameObject object2) {
+        return object1.getPosition().equals(object2.getLastPosition())
+                && object1.getLastPosition().equals(object2.getPosition());
     }
 }

@@ -18,7 +18,9 @@ public interface IGameObject {
 
     Integer getInstance();
 
+    void setPosition(Position position);
     Position getPosition();
+    Position getLastPosition();
 
     Integer getX();
 

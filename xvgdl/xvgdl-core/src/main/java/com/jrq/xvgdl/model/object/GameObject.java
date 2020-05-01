@@ -25,6 +25,7 @@ public class GameObject implements IGameObject {
     private String name;
     private Integer instance;
     private Position position = new Position(-1, -1, -1);
+    private Position lastPosition = new Position(-1, -1, -1);
     private Position intendedPosition = new Position(-1, -1, -1);
     private Integer sizeX;
     private Integer sizeY;
@@ -32,7 +33,7 @@ public class GameObject implements IGameObject {
     private GameObjectType objectType;
     private Double speedFactor = 1.0;
     private Double initialSpeedFactor = 1.0;
-    private DirectionVector direction = new DirectionVector(0, 0, 0);
+    private DirectionVector direction = new DirectionVector(new Position(0, 0, 0));
     private Boolean isDynamic;
     private Boolean isVolatile;
     private boolean frozen;
@@ -61,9 +62,13 @@ public class GameObject implements IGameObject {
     }
 
     public void setPosition(Integer x, Integer y, Integer z) {
+        lastPosition.setX(position.getX());
+        lastPosition.setY(position.getY());
+        lastPosition.setZ(position.getZ());
         position.setX(x);
         position.setY(y);
         position.setZ(z);
+        setIntendedPosition(getX(), getY(), getZ());
     }
 
     @Override
@@ -90,21 +95,54 @@ public class GameObject implements IGameObject {
     @Override
     public void updateState(GameContext gameContext) {
         if ((gameContext.getLoopTime() - updatedAt) >= getMySpeedFactorInMilliseconds()) {
+
             if (updatedAt > 0) applyAI(gameContext);
 
-            setX(getIntendedPosition().getX());
-            setY(getIntendedPosition().getY());
-            setZ(getIntendedPosition().getZ());
-
-            // If direction vector is informed, object is moving in that direction according the speed factor
-            if (direction.notZero()) {
-                setX(getX() + (direction.getX()));
-                setY(getY() + (direction.getY()));
-                setZ(getZ() + (direction.getZ()));
-                setIntendedPosition(getX(), getY(), getZ());
-            }
+            moveBasedOnIntendedPosition(gameContext);
+            moveBaseOnDirectionVector(gameContext);
             setUpdatedAt(gameContext.getLoopTime());
         }
+    }
+
+    private void moveBaseOnDirectionVector(GameContext gameContext) {
+        if (canMoveToDirectionVectorPosition(gameContext)) {
+            if (direction.notZero()) {
+                setPosition(
+                        getX() + direction.getPosition().getX(),
+                        getY() + direction.getPosition().getY(),
+                        getZ() + direction.getPosition().getZ());
+            }
+        }
+    }
+
+    private void moveBasedOnIntendedPosition(GameContext gameContext) {
+        if (canMoveToIntendedPosition(gameContext)) {
+            setPosition(
+                    getIntendedPosition().getX(),
+                    getIntendedPosition().getY(),
+                    getIntendedPosition().getZ());
+        }
+    }
+
+    private boolean canMoveToDirectionVectorPosition(GameContext gameContext) {
+        return canMoveToPosition(gameContext, getDirection().getPosition());
+    }
+
+    private boolean canMoveToIntendedPosition(GameContext gameContext) {
+        return canMoveToPosition(gameContext, getIntendedPosition());
+    }
+
+    private boolean canMoveToPosition(GameContext gameContext, Position position) {
+        boolean canMove = true;
+
+        IGameObject objectAtPosition = gameContext.getObjectAt(
+                position.getX(),
+                position.getY(),
+                position.getZ());
+        if (objectAtPosition != null && objectAtPosition.getObjectType().equals(GameObjectType.WALL)) {
+            canMove = false;
+        }
+        return canMove;
     }
 
     @Override
@@ -140,12 +178,15 @@ public class GameObject implements IGameObject {
         cloned.setX(getPosition().getX());
         cloned.setY(getPosition().getY());
         cloned.setZ(getPosition().getZ());
+        cloned.setLastPosition(new Position(
+                getLastPosition().getX(), getLastPosition().getY(), getLastPosition().getZ()));
         cloned.setName(getName());
         cloned.setSizeX(getSizeX());
         cloned.setSizeY(getSizeY());
         cloned.setSizeZ(getSizeZ());
         cloned.setObjectType(getObjectType());
         cloned.setIsVolatile(getIsVolatile());
+        cloned.setSpeedFactor(getSpeedFactor());
         return cloned;
     }
 
