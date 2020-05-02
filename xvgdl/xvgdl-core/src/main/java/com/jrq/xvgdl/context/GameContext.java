@@ -264,9 +264,9 @@ public class GameContext implements Comparable<GameContext> {
     public IGameObject getObjectAt(Integer x, Integer y, Integer z) {
 
         List<IGameObject> listByPosition = getObjectsAsList().stream().filter(
-                go -> go.getX().equals(x) &&
-                        go.getY().equals(y) &&
-                        go.getZ().equals(z)).collect(Collectors.toList());
+                go -> go.getPosition().getX() == x &&
+                        go.getPosition().getY() == y &&
+                        go.getPosition().getZ() == z).collect(Collectors.toList());
 
         return !listByPosition.isEmpty() ? listByPosition.get(0) : null;
     }

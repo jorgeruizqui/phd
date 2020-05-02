@@ -177,9 +177,9 @@ public final class GameEngine {
         while (!gameFinished) {
             try {
                 getGameContext().setLoopTime(System.currentTimeMillis());
+                updateState();
                 processEvents();
                 processRules();
-                updateState();
                 render();
 
                 // Render at the Frames Per Second Ratio

@@ -15,30 +15,30 @@ public class PlayerChaserAI implements IGameObjectAI {
     public void applyAIonObject(GameContext gameContext, IGameObject object) {
 
         IGameObject player = gameContext.getObjectsMap().get(GameObjectType.PLAYER).get(0);
-        int newX = object.getX();
+        int newX = object.getPosition().getX();
         boolean moved = false;
-        if (player.getX() > object.getX()) {
-            if (canMove(gameContext, object.getX() + 1, object.getY(), object.getZ())) {
-                newX = object.getX() + 1;
+        if (player.getPosition().getX() > object.getPosition().getX()) {
+            if (canMove(gameContext, object.getPosition().getX() + 1, object.getPosition().getY(), object.getPosition().getZ())) {
+                newX = object.getPosition().getX() + 1;
                 moved = true;
             }
-        } else if (player.getX() < object.getX()) {
-            if (canMove(gameContext, object.getX() - 1, object.getY(), object.getZ())) {
-                newX = object.getX() - 1;
+        } else if (player.getPosition().getX() < object.getPosition().getX()) {
+            if (canMove(gameContext, object.getPosition().getX() - 1, object.getPosition().getY(), object.getPosition().getZ())) {
+                newX = object.getPosition().getX() - 1;
                 moved = true;
             }
         }
 
-        int newY = object.getY();
+        int newY = object.getPosition().getY();
         if (!moved) {
-            if (player.getY() > object.getY()) {
-                if (canMove(gameContext, object.getX(), object.getY() + 1, object.getZ())) {
-                    newY = object.getY() + 1;
+            if (player.getPosition().getY() > object.getPosition().getY()) {
+                if (canMove(gameContext, object.getPosition().getX(), object.getPosition().getY() + 1, object.getPosition().getZ())) {
+                    newY = object.getPosition().getY() + 1;
                     moved = true;
                 }
-            } else if (player.getY() < object.getY()) {
-                if (canMove(gameContext, object.getX(), object.getY() - 1, object.getZ())) {
-                    newY = object.getY() - 1;
+            } else if (player.getPosition().getY() < object.getPosition().getY()) {
+                if (canMove(gameContext, object.getPosition().getX(), object.getPosition().getY() - 1, object.getPosition().getZ())) {
+                    newY = object.getPosition().getY() - 1;
                     moved = true;
                 }
             }
@@ -46,18 +46,18 @@ public class PlayerChaserAI implements IGameObjectAI {
 
         // At least, try to move to postition different from the last one
         if (!moved) {
-            if (canMove(gameContext, object.getX() + 1, object.getY(), object.getZ())
-              && object.getLastPosition().getX() != object.getX() + 1) {
-                newX = object.getX() + 1;
-            } else if (canMove(gameContext, object.getX(), object.getY() + 1, object.getZ())
-                    && object.getLastPosition().getY() != object.getY() + 1) {
-                newY = object.getY() + 1;
-            } else if (canMove(gameContext, object.getX() - 1, object.getY(), object.getZ())
-                    && object.getLastPosition().getX() != object.getX() - 1) {
-                newX = object.getX() - 1;
-            } else if (canMove(gameContext, object.getX(), object.getY() - 1, object.getZ())
-                    && object.getLastPosition().getY() != object.getY() - 1) {
-                newY = object.getY() - 1;
+            if (canMove(gameContext, object.getPosition().getX() + 1, object.getPosition().getY(), object.getPosition().getZ())
+              && object.getLastPosition().getX() != object.getPosition().getX() + 1) {
+                newX = object.getPosition().getX() + 1;
+            } else if (canMove(gameContext, object.getPosition().getX(), object.getPosition().getY() + 1, object.getPosition().getZ())
+                    && object.getLastPosition().getY() != object.getPosition().getY() + 1) {
+                newY = object.getPosition().getY() + 1;
+            } else if (canMove(gameContext, object.getPosition().getX() - 1, object.getPosition().getY(), object.getPosition().getZ())
+                    && object.getLastPosition().getX() != object.getPosition().getX() - 1) {
+                newX = object.getPosition().getX() - 1;
+            } else if (canMove(gameContext, object.getPosition().getX(), object.getPosition().getY() - 1, object.getPosition().getZ())
+                    && object.getLastPosition().getY() != object.getPosition().getY() - 1) {
+                newY = object.getPosition().getY() - 1;
             }
         }
         object.moveTo(newX, newY, 0);

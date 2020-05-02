@@ -23,17 +23,17 @@ public class EnemySpaceshipAI implements IGameObjectAI {
     @Override
     public void applyAIonObject(GameContext gameContext, IGameObject object) {
         // Moves the spaceship to the left
-        if (object.getX() % 2 == 0) {
-            if (object.getY() >= 2) {
-                    object.moveTo(object.getX(), object.getY() - 1, object.getZ());
+        if (object.getPosition().getX() % 2 == 0) {
+            if (object.getPosition().getY() >= 2) {
+                    object.moveTo(object.getPosition().getX(), object.getPosition().getY() - 1, object.getPosition().getZ());
             } else {
-                object.moveTo(object.getX() - 1, object.getY(), object.getZ());
+                object.moveTo(object.getPosition().getX() - 1, object.getPosition().getY(), object.getPosition().getZ());
             }
         } else {
-            if (object.getY() < gameContext.getGameMap().getSizeY() - 1) {
-                object.moveTo(object.getX(), object.getY() + 1, object.getZ());
+            if (object.getPosition().getY() < gameContext.getGameMap().getSizeY() - 1) {
+                object.moveTo(object.getPosition().getX(), object.getPosition().getY() + 1, object.getPosition().getZ());
             } else {
-                object.moveTo(object.getX() - 1, object.getY(), object.getZ());
+                object.moveTo(object.getPosition().getX() - 1, object.getPosition().getY(), object.getPosition().getZ());
             }
         }
 
@@ -45,7 +45,7 @@ public class EnemySpaceshipAI implements IGameObjectAI {
 
     private void createEnemyProjectile(IGameObject object, GameContext context) {
         GameObject projectile = new GameObject();
-        projectile.moveTo(object.getX() - 1, object.getY(), object.getZ());
+        projectile.moveTo(object.getPosition().getX() - 1, object.getPosition().getY(), object.getPosition().getZ());
         projectile.setName("fireEnemy");
         projectile.setInstance(new Random().nextInt());
         projectile.setIsDynamic(true);
@@ -53,7 +53,7 @@ public class EnemySpaceshipAI implements IGameObjectAI {
         projectile.setSizeX(1);
         projectile.setSizeY(1);
         projectile.setSizeZ(1);
-        projectile.setIntendedPosition(object.getX() - 1, object.getY(), object.getZ());
+        projectile.setIntendedPosition(object.getPosition().getX() - 1, object.getPosition().getY(), object.getPosition().getZ());
         projectile.setObjectType(GameObjectType.PROJECTILE);
         projectile.setSpeedFactor(5.0d);
 

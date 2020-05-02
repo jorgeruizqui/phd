@@ -48,8 +48,8 @@
     </physics>
 
     <events>
-           <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
-                   objectName="ghost" timer="1000000"/>
+        <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
+               objectName="ghost" timer="1000000"/>
     </events>
 
     <rules>

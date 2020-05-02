@@ -33,6 +33,10 @@ public class PacmanAI implements IGameObjectAI {
     @Override
     public void applyAIonObject(GameContext gameContext, IGameObject player) {
 
+        if (!player.getPosition().equals(player.getIntendedPosition())) {
+            return;
+        }
+
         PlayerNextMoveComparator playerNextMoveComparator = new PlayerNextMoveComparator(gameContext, DEFAULT_RADIUS);
         List<PlayerNextMoveComparator.ItemMovementSolution> solutions = playerNextMoveComparator.orderedSolutions();
 
@@ -40,7 +44,7 @@ public class PacmanAI implements IGameObjectAI {
         for (PlayerNextMoveComparator.ItemMovementSolution solution : solutions) {
             if (solution.getPath().size() >= 1) {
                 Pair<Integer, Integer> nextNode = solution.getPath().get(1);
-                player.moveTo(nextNode.getLeft(), nextNode.getRight(), player.getZ());
+                player.moveTo(nextNode.getLeft(), nextNode.getRight(), player.getPosition().getZ());
                 moved = true;
                 break;
             }

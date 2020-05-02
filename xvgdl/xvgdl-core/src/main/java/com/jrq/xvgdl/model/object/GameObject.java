@@ -6,9 +6,6 @@ import com.jrq.xvgdl.model.location.DirectionVector;
 import com.jrq.xvgdl.model.location.Position;
 import com.jrq.xvgdl.model.object.ai.IGameObjectAI;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Random;
@@ -27,6 +24,7 @@ public class GameObject implements IGameObject {
     private Position position = new Position(-1, -1, -1);
     private Position lastPosition = new Position(-1, -1, -1);
     private Position intendedPosition = new Position(-1, -1, -1);
+    private Position initialPosition = new Position(-1, -1, -1);
     private Integer sizeX;
     private Integer sizeY;
     private Integer sizeZ;
@@ -71,18 +69,15 @@ public class GameObject implements IGameObject {
         setIntendedPosition(getX(), getY(), getZ());
     }
 
-    @Override
-    public Integer getX() {
+    private Integer getX() {
         return position.getX();
     }
 
-    @Override
-    public Integer getY() {
+    private Integer getY() {
         return position.getY();
     }
 
-    @Override
-    public Integer getZ() {
+    private Integer getZ() {
         return position.getZ();
     }
 
@@ -172,14 +167,10 @@ public class GameObject implements IGameObject {
         }
         cloned.setIsDynamic(getIsDynamic());
         cloned.setInstance((new Random()).nextInt());
-        cloned.setIntendedPosition(getIntendedPosition().getX(), getIntendedPosition().getY(),
-                getIntendedPosition().getZ());
         cloned.setFrozen(false);
-        cloned.setX(getPosition().getX());
-        cloned.setY(getPosition().getY());
-        cloned.setZ(getPosition().getZ());
-        cloned.setLastPosition(new Position(
-                getLastPosition().getX(), getLastPosition().getY(), getLastPosition().getZ()));
+
+        clonePositions(cloned);
+
         cloned.setName(getName());
         cloned.setSizeX(getSizeX());
         cloned.setSizeY(getSizeY());
@@ -187,13 +178,39 @@ public class GameObject implements IGameObject {
         cloned.setObjectType(getObjectType());
         cloned.setIsVolatile(getIsVolatile());
         cloned.setSpeedFactor(getSpeedFactor());
+        cloned.setInitialSpeedFactor(Double.valueOf(getInitialSpeedFactor()));
         return cloned;
     }
 
-    public void setIntendedPosition(Integer x, Integer y, Integer z) {
+    private void clonePositions(GameObject cloned) {
+        cloned.setIntendedPosition(
+                getIntendedPosition().getX(),
+                getIntendedPosition().getY(),
+                getIntendedPosition().getZ());
+        cloned.setX(getPosition().getX());
+        cloned.setY(getPosition().getY());
+        cloned.setZ(getPosition().getZ());
+        cloned.setLastPosition(
+                new Position(
+                        getLastPosition().getX(),
+                        getLastPosition().getY(),
+                        getLastPosition().getZ()));
+        cloned.setInitialPosition(
+                getInitialPosition().getX(),
+                getInitialPosition().getY(),
+                getInitialPosition().getZ());
+    }
+
+    public void setIntendedPosition(int x, int y, int z) {
         intendedPosition.setX(x);
         intendedPosition.setY(y);
         intendedPosition.setZ(z);
+    }
+
+    public void setInitialPosition(int x, int y, int z) {
+        initialPosition.setX(x);
+        initialPosition.setY(y);
+        initialPosition.setZ(z);
     }
 
     private void applyAI(GameContext gameContext) {

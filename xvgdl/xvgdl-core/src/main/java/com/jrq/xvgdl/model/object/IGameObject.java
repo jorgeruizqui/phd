@@ -19,14 +19,11 @@ public interface IGameObject {
     Integer getInstance();
 
     void setPosition(Position position);
+    void setInitialPosition(int x, int y, int z);
+    void setIntendedPosition(int x, int y, int z);
     Position getPosition();
     Position getLastPosition();
-
-    Integer getX();
-
-    Integer getY();
-
-    Integer getZ();
+    Position getInitialPosition();
 
     Position getIntendedPosition();
 
@@ -66,4 +63,5 @@ public interface IGameObject {
     void increaseSpeedFactor(Double factorToIncrease);
     void decreaseSpeedFactor(Double factorToDecrease);
     void resetSpeedFactor();
+
 }

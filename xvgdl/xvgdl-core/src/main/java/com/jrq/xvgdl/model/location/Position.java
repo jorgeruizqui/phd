@@ -16,14 +16,14 @@ public class Position {
     /**
      * x position.
      */
-    private Integer x;
+    private int x;
     /**
      * y position.
      */
-    private Integer y;
+    private int y;
     /**
      * z position.
      */
-    private Integer z;
+    private int z;
 
 }
