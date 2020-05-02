@@ -29,6 +29,11 @@ public final class GameRuleUtils {
                 case TELETRANSPORT:
                     applyTeletransportRuleResult(gameContext, gameObject, gameRuleAction);
                     break;
+                case INITIAL_POSITION:
+                    gameObject.moveTo(gameObject.getInitialPosition().getX(),
+                            gameObject.getInitialPosition().getY(),
+                            gameObject.getInitialPosition().getZ());
+                    break;
                 case DISAPPEAR:
                     gameContext.removeGameObject(gameObject);
                     break;
@@ -115,7 +120,9 @@ public final class GameRuleUtils {
             List<IGameObject> objects = GameEngine.getInstance().getGameContext().getObjectsListByName(value);
             if (objects != null && !objects.isEmpty()) {
                 IGameObject objectReferenced = objects.get(0);
-                gameObject.moveTo(objectReferenced.getX(), objectReferenced.getY(), objectReferenced.getZ());
+                gameObject.moveTo(objectReferenced.getPosition().getX(),
+                        objectReferenced.getPosition().getY(),
+                        objectReferenced.getPosition().getZ());
             } else {
                 // allows format "x,y,z"
                 String[] position = value.split(",");

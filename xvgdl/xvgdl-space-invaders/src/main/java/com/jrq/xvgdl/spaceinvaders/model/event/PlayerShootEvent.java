@@ -60,7 +60,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
             context.getObjectsListByName("firePlayer");
             if (player != null && !firstTime && isAllowedToShoot(context)) {
                 GameObject projectile = new GameObject();
-                projectile.moveTo(player.getX(), player.getY(), player.getZ());
+                projectile.moveTo(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
                 projectile.setName(definition.getObjectName());
                 projectile.setInstance(new Random().nextInt());
                 projectile.setIsDynamic(true);
@@ -68,7 +68,7 @@ public class PlayerShootEvent extends KeyboardGameEvent {
                 projectile.setSizeX(1);
                 projectile.setSizeY(1);
                 projectile.setSizeZ(1);
-                projectile.setIntendedPosition(player.getX(), player.getY(), player.getZ());
+                projectile.setIntendedPosition(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
                 projectile.setObjectType(GameObjectType.PROJECTILE);
                 projectile.setSpeedFactor(5.0d);
 

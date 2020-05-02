@@ -2,6 +2,7 @@ package com.jrq.xvgdl.pacman.model.map;
 
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.exception.XvgdlException;
+import com.jrq.xvgdl.model.location.Position;
 import com.jrq.xvgdl.model.map.IGameMap;
 import com.jrq.xvgdl.model.map.IGameMapGenerator;
 import com.jrq.xvgdl.model.object.GamePlayer;
@@ -57,10 +58,14 @@ public class FileBasedGameMapGenerator implements IGameMapGenerator {
         if (go != null) {
             if (go.isLocatedAnyWhereInMap()) {
                 IGameObject newInstance = go.copy();
-                newInstance.moveTo(numberOfRows - y -1, x,0);
+                go.setInitialPosition(numberOfRows - y -1, x, 0);
+                go.setIntendedPosition(numberOfRows - y -1, x, 0);
+                go.setPosition(Position.builder().x(numberOfRows - y -1).y(x).z(0).build());
                 gc.addObject(newInstance);
             } else {
-                go.moveTo(numberOfRows - y -1, x,0);
+                go.setInitialPosition(numberOfRows - y -1, x, 0);
+                go.setPosition(Position.builder().x(numberOfRows - y -1).y(x).z(0).build());
+                go.setIntendedPosition(numberOfRows - y -1, x, 0);
                 setPlayerAsCurrent(go);
             }
         }

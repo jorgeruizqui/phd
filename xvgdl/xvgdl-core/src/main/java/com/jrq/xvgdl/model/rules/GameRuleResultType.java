@@ -27,6 +27,7 @@ public enum GameRuleResultType {
     DISAPPEAR,
     DUPLICATE,
     TELETRANSPORT,
+    INITIAL_POSITION,
     CHANGE_DIRECTION,
     FREEZE,
     TRANSFORM,

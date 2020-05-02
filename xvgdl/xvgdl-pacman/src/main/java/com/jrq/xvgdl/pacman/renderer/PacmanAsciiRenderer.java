@@ -31,7 +31,7 @@ public class PacmanAsciiRenderer extends BasicAsciiRenderer {
 
         for (int row = array.length - 1; row >= 0; row--) {
             for (int col = 0; col < array[row].length; col++) {
-                IGameObject gameObject = this.gameContext.getObjectAt(row + 1, col, 0);
+                IGameObject gameObject = this.gameContext.getObjectAt(row, col, 0);
                 if (gameObject != null) {
                     array[row][col] = renderCodes.get(gameObject.getName());
                 } else {

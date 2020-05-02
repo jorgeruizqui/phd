@@ -56,8 +56,8 @@ public class MinimumDistance {
             return;
         }
         // Base case, get to destination
-        if (destination.getX().equals(x) &&
-                destination.getY().equals(y)) {
+        if (destination.getX() == x &&
+                destination.getY() == y) {
             alreadyVisited.add(x + "," + y);
             if (alreadyVisited.size() < solution.size() || solution.isEmpty()) solution = alreadyVisited;
             return;

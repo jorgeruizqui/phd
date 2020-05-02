@@ -76,7 +76,12 @@ public class GameObjectDefinition {
             gameObject.setSizeX(this.getSizeX());
             gameObject.setSizeY(this.getSizeY());
             gameObject.setSizeZ(this.getSizeZ());
-            gameObject.setIntendedPosition(gameObject.getX(), gameObject.getY(), gameObject.getZ());
+            gameObject.setIntendedPosition(gameObject.getPosition().getX(),
+                    gameObject.getPosition().getY(),
+                    gameObject.getPosition().getZ());
+            gameObject.setInitialPosition(gameObject.getPosition().getX(),
+                    gameObject.getPosition().getY(),
+                    gameObject.getPosition().getZ());
             gameObject.setObjectType(GameObjectType.fromString(this.getType()));
             gameObject.setSpeedFactor(Optional.ofNullable(this.getSpeedFactor()).orElse(1.0));
             gameObject.setInitialSpeedFactor(Optional.ofNullable(this.getSpeedFactor()).orElse(1.0));

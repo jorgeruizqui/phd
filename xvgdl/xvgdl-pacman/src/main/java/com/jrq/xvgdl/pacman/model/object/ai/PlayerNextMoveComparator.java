@@ -98,9 +98,9 @@ public class PlayerNextMoveComparator {
     }
 
     private boolean isInRadius(IGameObject gameObject1, IGameObject gameObject2, int radius) {
-        return Math.abs(gameObject1.getX() - gameObject2.getPosition().getX()) <= radius &&
-                Math.abs(gameObject1.getY() - gameObject2.getPosition().getY()) <= radius &&
-                Math.abs(gameObject1.getZ() - gameObject2.getPosition().getZ()) <= radius;
+        return Math.abs(gameObject1.getPosition().getX() - gameObject2.getPosition().getX()) <= radius &&
+                Math.abs(gameObject1.getPosition().getY() - gameObject2.getPosition().getY()) <= radius &&
+                Math.abs(gameObject1.getPosition().getZ() - gameObject2.getPosition().getZ()) <= radius;
     }
 
     private int[][] getArrayRepresentationOfMap() {

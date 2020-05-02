@@ -14,7 +14,7 @@ public class EnemyDiscAI implements IGameObjectAI {
 
     @Override
     public void applyAIonObject(GameContext gameContext, IGameObject object) {
-        object.moveTo(object.getX() + 1, object.getY(), object.getZ());
+        object.moveTo(object.getPosition().getX() + 1, object.getPosition().getY(), object.getPosition().getZ());
     }
 
 }

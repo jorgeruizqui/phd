@@ -23,28 +23,28 @@ public class PlayerChaseNearestItemAI implements IGameObjectAI {
         if (!items.isEmpty()) {
             IGameObject shortestDistanceItem = items.get(0);
             boolean moved = false;
-            int newX = player.getX();
-            if (player.getX() < shortestDistanceItem.getX()) {
-                if (canMove(gameContext, player.getX() + 1, player.getY(), player.getZ())) {
-                    newX = player.getX() + 1;
+            int newX = player.getPosition().getX();
+            if (player.getPosition().getX() < shortestDistanceItem.getPosition().getX()) {
+                if (canMove(gameContext, player.getPosition().getX() + 1, player.getPosition().getY(), player.getPosition().getZ())) {
+                    newX = player.getPosition().getX() + 1;
                     moved = true;
                 }
-            } else if (player.getX() > shortestDistanceItem.getX()) {
-                if (canMove(gameContext, player.getX() - 1, player.getY(), player.getZ())) {
-                    newX = player.getX() - 1;
+            } else if (player.getPosition().getX() > shortestDistanceItem.getPosition().getX()) {
+                if (canMove(gameContext, player.getPosition().getX() - 1, player.getPosition().getY(), player.getPosition().getZ())) {
+                    newX = player.getPosition().getX() - 1;
                     moved = true;
                 }
             }
 
-            int newY = player.getY();
+            int newY = player.getPosition().getY();
             if (!moved) {
-                if (player.getY() < shortestDistanceItem.getY()) {
-                    if (canMove(gameContext, player.getX(), player.getY() + 1, player.getZ())) {
-                        newY = player.getY() + 1;
+                if (player.getPosition().getY() < shortestDistanceItem.getPosition().getY()) {
+                    if (canMove(gameContext, player.getPosition().getX(), player.getPosition().getY() + 1, player.getPosition().getZ())) {
+                        newY = player.getPosition().getY() + 1;
                     }
-                } else if (player.getY() > shortestDistanceItem.getY()) {
-                    if (canMove(gameContext, player.getX(), player.getY() - 1, player.getZ())) {
-                        newY = player.getY() - 1;
+                } else if (player.getPosition().getY() > shortestDistanceItem.getPosition().getY()) {
+                    if (canMove(gameContext, player.getPosition().getX(), player.getPosition().getY() - 1, player.getPosition().getZ())) {
+                        newY = player.getPosition().getY() - 1;
                     }
                 }
             }
