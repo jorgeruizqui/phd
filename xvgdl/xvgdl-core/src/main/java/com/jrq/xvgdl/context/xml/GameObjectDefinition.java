@@ -1,5 +1,6 @@
 package com.jrq.xvgdl.context.xml;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.jrq.xvgdl.model.location.DirectionVector;
 import com.jrq.xvgdl.model.object.GameObject;
@@ -18,6 +19,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Data
+@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class GameObjectDefinition {
 
     @JacksonXmlProperty(isAttribute = true)

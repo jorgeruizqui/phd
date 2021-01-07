@@ -34,7 +34,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.jrq.xvgdl.pacman.LaunchPacman</mainClass>
+                            <mainClass>com.jrq.xvgdl.pacman.experiment.optimization.LaunchPacmanOptimization</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

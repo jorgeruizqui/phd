@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +35,9 @@ public class PlayerNextMoveComparator {
         long startTime = System.currentTimeMillis();
         log.debug("Starting orderedSolutionsAlgorithm");
         IGameObject player = getPlayer();
-        List<IGameObject> items = getItemsInRadius(player);
+        int maxRadius = gameContext.getGameMap().getSizeX() > gameContext.getGameMap().getSizeY() ?
+                gameContext.getGameMap().getSizeX() : gameContext.getGameMap().getSizeY();
+        List<IGameObject> items = getItemsInRadius(player, maxRadius);
 
         List<ItemMovementSolution> solutions = new ArrayList<>();
         for (IGameObject item : items) {
@@ -48,8 +51,10 @@ public class PlayerNextMoveComparator {
             aSolution.setDistance(solutionPath.size() - 1);
             aSolution.setGameObjectToGo(item);
             aSolution.setPathFromList(solutionPath);
-            List<IGameObject> enemies = getEnemiesInRadius(item);
-            aSolution.setNumberOfEnemiesSurrounding(enemies.size());
+
+            aSolution.setNumberOfEnemiesSurrounding(getEnemiesInRadius(item).size());
+            aSolution.setEnemiesInPath(getEnemiesInPath(aSolution.getPath()));
+
             solutions.add(aSolution);
         }
         Collections.sort(solutions);
@@ -58,7 +63,17 @@ public class PlayerNextMoveComparator {
         return solutions;
     }
 
-    private List<IGameObject> getItemsInRadius(IGameObject player) {
+    private boolean getEnemiesInPath(List<Pair<Integer, Integer>> path) {
+        AtomicBoolean thereAreEnemiesInPath = new AtomicBoolean(false);
+        path.forEach(pair -> {
+            if (gameContext.getObjectAt(pair.getLeft(), pair.getRight(), 0) != null) {
+                thereAreEnemiesInPath.set(true);
+            }
+        });
+        return thereAreEnemiesInPath.get();
+    }
+
+    private List<IGameObject> getItemsInRadius(IGameObject player, int maxRadius) {
         List<IGameObject> itemsInRadius = new ArrayList<>();
 
         if (gameContext.getObjectsMap().get(GameObjectType.ITEM) != null) {
@@ -67,6 +82,7 @@ public class PlayerNextMoveComparator {
 
             if (items.size() <= 1) {
                 itemsInRadius.addAll(items);
+                searchRadius = maxRadius;
                 return itemsInRadius;
             }
             // We need at least two items to decide where to go
@@ -78,6 +94,7 @@ public class PlayerNextMoveComparator {
                 }
             }
         }
+        log.debug ("Trying to find items in radius, we have for radius [" + searchRadius + "] a total of " + itemsInRadius.size() + " items.");
         return itemsInRadius;
     }
 
@@ -124,12 +141,13 @@ public class PlayerNextMoveComparator {
         List<Pair<Integer, Integer>> path = new ArrayList<>();
         IGameObject gameObjectToGo;
         int numberOfEnemiesSurrounding;
+        boolean enemiesInPath;
 
         @Override
         public int compareTo(ItemMovementSolution anotherSolution) {
             return Integer.compare(
-                    distance + (10 * numberOfEnemiesSurrounding),
-                    anotherSolution.getDistance()  + (10 * anotherSolution.getNumberOfEnemiesSurrounding()));
+                    this.distance + this.getEnemiesModifier(),
+                    anotherSolution.getDistance()  + anotherSolution.getEnemiesModifier());
         }
 
         public void setPathFromList(List<String> listOfPairs) {
@@ -138,6 +156,14 @@ public class PlayerNextMoveComparator {
                         Integer.valueOf(pair.split(",")[0]),
                         Integer.valueOf(pair.split(",")[1])));
             });
+        }
+
+        private int getEnemiesModifier() {
+            boolean pacmanPowerUp = gameContext.getCurrentGameState().equalsIgnoreCase("pacmanPowerUp");
+            int enemiesInPathPenalty = enemiesInPath ? 100 : 0;
+
+            int total = enemiesInPathPenalty + (10 * getNumberOfEnemiesSurrounding());
+            return pacmanPowerUp ? total * -1 : total;
         }
     }
 }

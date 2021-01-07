@@ -50,7 +50,7 @@ public class PacmanAI implements IGameObjectAI {
             }
         }
         if (!moved) {
-            log.error("Player couldn't move!!!!");
+            log.error("Player couldn't move!!!! with this list of solutions: " + solutions);
         }
     }
 }
