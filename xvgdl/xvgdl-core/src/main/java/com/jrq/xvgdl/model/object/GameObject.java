@@ -59,7 +59,7 @@ public class GameObject implements IGameObject {
         intendedPosition.setZ(getPosition().getZ());
     }
 
-    public void setPosition(Integer x, Integer y, Integer z) {
+    public void setPosition(int x, int y, int z) {
         lastPosition.setX(position.getX());
         lastPosition.setY(position.getY());
         lastPosition.setZ(position.getZ());

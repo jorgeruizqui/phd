@@ -2,7 +2,6 @@ package com.jrq.xvgdl.context.xml;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.jrq.xvgdl.model.objectives.IGameObjective;
-import com.jrq.xvgdl.util.GameBaseProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 

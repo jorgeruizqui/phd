@@ -29,6 +29,7 @@ public class LaunchPacman {
             log.error("Exception running XVGDL game.", e);
             System.exit(-1);
         }
+
     }
 
 }

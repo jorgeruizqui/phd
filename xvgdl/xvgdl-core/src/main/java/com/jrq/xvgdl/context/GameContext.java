@@ -105,12 +105,16 @@ public class GameContext implements Comparable<GameContext> {
         }
 
         if (gc != null) {
+            this.addObjects(gc.getObjectsAsList());
+            if (gc.getGameMap() != null) {
+                gc.getGameMap().generateMap(this);
+            }
             this.addProperties(gc.getGameDefinition().getProperties());
             this.addGameEndConditions(gc.getGameEndConditions());
             this.addEvents(gc.getGameEvents());
             this.addRules(gc.getGameRules());
-            this.addObjects(gc.getObjectsAsList());
             this.addGameObjectives(gc.getGameObjectives());
+            if (gc.getTimeout() > 0) this.setTimeout(gc.getTimeout());
         }
 
     }
@@ -118,7 +122,9 @@ public class GameContext implements Comparable<GameContext> {
     private void rollup() throws XvgdlException {
 
         // Game Map
-        this.gameMap = gameDefinition.getMap().toModel();
+        if (gameDefinition.getMap() != null) {
+            this.gameMap = gameDefinition.getMap().toModel();
+        }
 
         // Objects
         gameDefinition.getObjects().forEach(o -> IntStream.range(0, o.getInstances()).forEach(
@@ -130,7 +136,9 @@ public class GameContext implements Comparable<GameContext> {
                         p -> addObject(p.toModel()));
 
         // Generate map and add objecs and players
-        this.gameMap.generateMap(this);
+        if (this.getGameMap() != null) {
+            this.gameMap.generateMap(this);
+        }
 
         // Rules
         gameDefinition.getRules().forEach(r -> addRule(r.toModel()));

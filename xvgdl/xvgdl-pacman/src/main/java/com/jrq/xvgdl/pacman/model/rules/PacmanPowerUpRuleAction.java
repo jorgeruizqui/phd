@@ -3,7 +3,6 @@ package com.jrq.xvgdl.pacman.model.rules;
 import com.jrq.xvgdl.context.GameContext;
 import com.jrq.xvgdl.model.event.AGameEvent;
 import com.jrq.xvgdl.model.event.GameEventType;
-import com.jrq.xvgdl.model.event.StateTransitionEvent;
 import com.jrq.xvgdl.model.object.GameObjectType;
 import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.rules.GameRuleAction;
@@ -36,7 +35,7 @@ public class PacmanPowerUpRuleAction extends GameRuleAction {
     private void createTransitionToDefaultGameState(GameContext gameContext) {
         AGameEvent transitionEvent = new PacmanStateTransitionEvent();
         transitionEvent.setEventType(GameEventType.ENGINE);
-        transitionEvent.setTimer(10000L);
+        transitionEvent.setTimer(1000L);
         transitionEvent.setGameStates(Arrays.asList("pacmanPowerUp"));
         transitionEvent.setTimeStamp(System.currentTimeMillis());
         gameContext.addEvent(transitionEvent);
@@ -48,7 +47,7 @@ public class PacmanPowerUpRuleAction extends GameRuleAction {
     }
 
     private void playerSpeedUp(IGameObject gameObject) {
-        gameObject.increaseSpeedFactor(3.0);
+        gameObject.increaseSpeedFactor(5.0);
     }
 
     private void playerScoreUp(GameContext gameContext) {
@@ -57,7 +56,7 @@ public class PacmanPowerUpRuleAction extends GameRuleAction {
 
     private void ghostsSpeedDown(GameContext gameContext) {
         gameContext.getObjectsListByType(GameObjectType.ENEMY).forEach(o -> {
-            o.decreaseSpeedFactor(2.0d);
+            o.decreaseSpeedFactor(1.0d);
         });
     }
 }

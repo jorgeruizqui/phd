@@ -37,16 +37,6 @@ public class MinimumDistanceTest {
     }
 
     @Test
-    public void calculateMinimumDistanceToAWall() {
-        Position position1 = Position.builder().x(0).y(0).z(0).build();
-        Position position2 = Position.builder().x(3).y(2).z(0).build();
-
-        List<String> distance = MinimumDistance.calculateMinimumDistance(mapArray, position1, position2);
-        assertEquals(0, distance.size());
-        assertTrue(distance.isEmpty());
-    }
-
-    @Test
     public void calculateMinimumDistanceWallsEasy() {
         Position position1 = Position.builder().x(0).y(0).z(0).build();
         Position position2 = Position.builder().x(2).y(2).z(0).build();

@@ -41,7 +41,7 @@ public final class GameEngine {
     /**
      * Game speed factor of 1.0 means the objects with speed factor 1 will move 1 time per second.
      */
-    public static final double GAME_ENGINE_SPEED_FACTOR = 1000.0d;
+    public static final double GAME_ENGINE_SPEED_FACTOR = 100.0d;
 
     /**
      * Simulation mode configuration key.
@@ -69,7 +69,7 @@ public final class GameEngine {
     /**
      * Game Running in simulation mode Flag.
      */
-    private boolean simulationMode = false;
+    private boolean simulationMode = true;
 
     private KeyboardInputListener keyboardInputListener;
 
@@ -97,8 +97,10 @@ public final class GameEngine {
     }
 
     private void initializeGameRenderer() {
-        this.gameRenderer = gameContext.getGameDefinition().getRenderer().toModel();
-        if (this.gameRenderer != null) this.gameRenderer.initializeRenderer(this.gameContext);
+        if (gameContext.getGameDefinition().getRenderer() != null) {
+            this.gameRenderer = gameContext.getGameDefinition().getRenderer().toModel();
+            if (this.gameRenderer != null) this.gameRenderer.initializeRenderer(this.gameContext);
+        }
     }
 
     private void loadGameContext(GameContext gc, String configFile) throws XvgdlException {
@@ -214,7 +216,7 @@ public final class GameEngine {
 
         for (IGameEndCondition endCondition : getGameContext().getGameEndConditions()) {
             if (endCondition.checkCondition(getGameContext())) {
-                log.info("Game end condition reached: " + endCondition.toString());
+                log.debug("Game end condition reached: " + endCondition.toString());
                 gameFinished = true;
                 if (endCondition.isWinningCondition()) {
                     gameContext.setWinningGame(true);

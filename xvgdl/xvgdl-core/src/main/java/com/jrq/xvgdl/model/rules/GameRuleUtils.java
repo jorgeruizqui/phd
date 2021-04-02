@@ -22,7 +22,7 @@ public final class GameRuleUtils {
     }
 
     public static boolean executeResult(GameContext gameContext, IGameObject gameObject, IGameRuleAction gameRuleAction) {
-        if (gameRuleAction != null) {
+        if (gameRuleAction != null && gameRuleAction.getResultType() != null) {
 
             log.debug("GRU: Executing result [" + gameRuleAction.getResultType() + " for game object [" + gameObject.getName() + "]");
             switch (gameRuleAction.getResultType()) {
@@ -30,7 +30,7 @@ public final class GameRuleUtils {
                     applyTeletransportRuleResult(gameContext, gameObject, gameRuleAction);
                     break;
                 case INITIAL_POSITION:
-                    gameObject.moveTo(gameObject.getInitialPosition().getX(),
+                    gameObject.setPosition(gameObject.getInitialPosition().getX(),
                             gameObject.getInitialPosition().getY(),
                             gameObject.getInitialPosition().getZ());
                     break;

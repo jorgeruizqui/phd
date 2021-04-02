@@ -19,6 +19,7 @@ public interface IGameObject {
     Integer getInstance();
 
     void setPosition(Position position);
+    void setPosition(int x, int y, int z);
     void setInitialPosition(int x, int y, int z);
     void setIntendedPosition(int x, int y, int z);
     Position getPosition();
