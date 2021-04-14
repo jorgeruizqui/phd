@@ -13,7 +13,6 @@
 	<description>PHD Doctorate Program University of Malaga: Xml Video Game Description Language implementation</description>
 	<inceptionYear>2017</inceptionYear>
 
-
 	<properties>
 
 		<!-- Default Properties. Can be overwritten using -D in maven execution -->
@@ -182,12 +181,6 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-			</plugin>
-
-
 			<!-- Allow execute junits -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -204,24 +197,6 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/lib</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 		</plugins>
 	</build>
 
@@ -275,6 +250,7 @@
                 <module>../xvgdl-breakout</module>
 				<module>../xvgdl-tetris</module>
 				<module>../xvgdl-clashroyale</module>
+				<module>../xvgdl-datastore</module>
 			</modules>
 
 			<properties>
