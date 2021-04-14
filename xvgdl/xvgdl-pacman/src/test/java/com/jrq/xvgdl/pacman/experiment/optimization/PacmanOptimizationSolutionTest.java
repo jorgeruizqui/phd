@@ -101,11 +101,6 @@ public class PacmanOptimizationSolutionTest {
 
     @Test
     public void testScoreNotWinningGame() {
-        // winning false: 0 points
-        // Timeout differnce 20000 -> 90000 - 20000 = 70000 / 100 = 700
-        // Dots present 10 -> 1900 - 100 = 1800
-        // Lives 0 -> -100 Points
-        // Total 2500
         PacmanOptimizationSolution aSolution = PacmanOptimizationSolution.builder().
                 configuredTimeout(70000).
                 dotsPresent(10).
@@ -113,16 +108,11 @@ public class PacmanOptimizationSolutionTest {
                 lives(0).
                 winningGame(false).build();
 
-        Assert.assertEquals(2400, aSolution.getScore());
+        Assert.assertEquals(2700, aSolution.getScore());
     }
 
     @Test
     public void testScoreWinningGame() {
-        // winning true: 100 points
-        // Timeout differnce 20000 -> 90000 - 20000 = 70000 / 100 = 700
-        // Dots present 0 -> 1900 - 0 = 1900
-        // Lives 1 -> 500 Points
-        // Total 3200
         PacmanOptimizationSolution aSolution = PacmanOptimizationSolution.builder().
                 configuredTimeout(70000).
                 dotsPresent(0).
@@ -130,16 +120,11 @@ public class PacmanOptimizationSolutionTest {
                 lives(1).
                 winningGame(true).build();
 
-        Assert.assertEquals(3200, aSolution.getScore());
+        Assert.assertEquals(4400, aSolution.getScore());
     }
 
     @Test
     public void testSpecificData1() {
-        // There's an specific test data resulted from one real executed game to be tested:
-        // winning false
-        // Timeout differnce  : (57577 - 308432)
-        // Dots present 73
-        // Lives 1
         PacmanOptimizationSolution aSolution = PacmanOptimizationSolution.builder().
                 configuredTimeout(57577).
                 dotsPresent(73).
@@ -147,7 +132,7 @@ public class PacmanOptimizationSolutionTest {
                 lives(1).
                 winningGame(false).build();
 
-        Assert.assertEquals(5078, aSolution.getScore());
+        Assert.assertEquals(5378, aSolution.getScore());
     }
 
 
