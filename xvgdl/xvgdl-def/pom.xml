@@ -77,6 +77,18 @@
                 <artifactId>xvgdl-space-invaders</artifactId>
                 <version>${xvgdl.version}</version>
             </dependency>
+			<dependency>
+				<groupId>com.amazonaws</groupId>
+				<artifactId>aws-java-sdk-bom</artifactId>
+				<version>1.11.837</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-net</groupId>
+				<artifactId>commons-net</artifactId>
+				<version>3.6</version>
+			</dependency>
 
 			<!-- Third-party dependencies -->
 			<dependency>
@@ -90,9 +102,9 @@
 				<version>${apache.commons.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>es.indra.eplatform</groupId>
-				<artifactId>eplatform-commons</artifactId>
-				<version>${eplatform.commons.version}</version>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>0.9.12</version>
 			</dependency>
 			<!-- Project Lombok -->
 			<dependency>

@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jrq.xvgdl.exception.XvgdlException;
 import com.jrq.xvgdl.util.XvgdlUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +28,16 @@ public class GameDefinitionXMLMapper {
         } catch (Exception e) {
             log.error("Error parsing GamneContext file: " + e.getMessage(), e);
             throw new XvgdlException("Exception parsing XML file: " + fileName, e);
+        }
+    }
+
+    public void storeXml(String path, GameDefinition gameDefinition) {
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        try {
+            xmlMapper.writeValue(new File(path), gameDefinition);
+        } catch (IOException e) {
+            log.error("Trying to store GameRuleDefinition in file {}", path, e);
         }
     }
 

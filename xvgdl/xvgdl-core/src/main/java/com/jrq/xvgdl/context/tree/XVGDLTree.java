@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class XVGDLTree {
 
-    XVGDLNode root;
+    private XVGDLNode root;
 
     public static XVGDLTree createXvgdlTree() {
         XVGDLTree theTree = new XVGDLTree();

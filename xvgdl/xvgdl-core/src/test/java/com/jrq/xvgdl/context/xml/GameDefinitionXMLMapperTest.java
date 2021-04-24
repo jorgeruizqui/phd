@@ -3,6 +3,10 @@ package com.jrq.xvgdl.context.xml;
 import com.jrq.xvgdl.exception.XvgdlException;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -253,5 +257,20 @@ public class GameDefinitionXMLMapperTest {
         assertNotNull(cg);
         assertNotNull(cg.getRenderer());
         assertEquals("aClassName", cg.getRenderer().getClassName());
+    }
+
+    @Test
+    public void ruleDefinitionStoredInAFile() throws XvgdlException, IOException {
+        String path = "testRuleDefinitionPath.xml";
+        GameDefinitionXMLMapper mapper = new GameDefinitionXMLMapper();
+        GameDefinition cg = mapper.parse("/com/jrq/xvgdl/context/xml/rulesGameDefinition.xml");
+
+        mapper.storeXml(path, cg);
+        File file = new File(path);
+
+        assertNotNull(cg);
+        assertNotNull(cg.getRules());
+        assertNotNull(file);
+        Files.delete(file.toPath());
     }
 }
