@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of pacman game -->
+
+<gameDefinition>
+
+    <map type="2D" sizeX="15" sizeY="28" toroidal="false"
+         generator="com.jrq.xvgdl.pacman.model.map.FileBasedGameMapGenerator"
+         file="/context/optimization/pacmanMapOptimization.txt">
+    </map>
+
+    <objects>
+        <object name="wall" type="wall" dynamic="false" volatile="false"
+                sizeX="1" sizeY="1"/>
+    </objects>
+
+    <rules>
+        <rule name="eatSmallDot" type="collision" gameState="default,pacmanPowerUp">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="scoreUp" value="100"/>
+                <ruleAction objectName="smallDot" result="disappear"/>
+            </ruleActions>
+        </rule>
+
+        <rule name="eatBigDot" type="collision" gameState="default,pacmanPowerUp">
+            <ruleActions>
+                <ruleAction objectName="pacman" value="300" result=""
+                            className="com.jrq.xvgdl.pacman.model.rules.PacmanPowerUpRuleAction"/>
+                <ruleAction objectName="bigDot" result="disappear"/>
+            </ruleActions>
+        </rule>
+
+        <rule name="ghostCatchPacmanLivesDown" type="collision">
+            <ruleActions>
+                <ruleAction objectName="pacman" result=""
+                            className="com.jrq.xvgdl.pacman.model.rules.PacmanCheckLivesDownRuleAction"/>
+                <ruleAction objectName="ghost" result=""/>
+            </ruleActions>
+        </rule>
+
+        <rule name="pacmanCatchGhost" type="collision" gameState="pacmanPowerUp">
+            <ruleActions>
+                <ruleAction objectName="pacman" result="scoreUp" value="1000"/>
+                <ruleAction objectName="ghost" result="initialPosition"/>
+            </ruleActions>
+        </rule>
+    </rules>
+
+    <endConditions>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
+                      objectNames="bigDot,smallDot" winningCondition="true"/>
+        <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
+    </endConditions>
+
+</gameDefinition>

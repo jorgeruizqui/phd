@@ -209,6 +209,7 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
+
 		</plugins>
 	</build>
 
@@ -263,6 +264,7 @@
 				<module>../xvgdl-tetris</module>
 				<module>../xvgdl-clashroyale</module>
 				<module>../xvgdl-datastore</module>
+				<module>../xvgdl-fx</module>
 			</modules>
 
 			<properties>
