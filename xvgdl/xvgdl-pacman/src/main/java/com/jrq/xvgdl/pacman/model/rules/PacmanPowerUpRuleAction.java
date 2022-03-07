@@ -22,9 +22,9 @@ import java.util.Arrays;
 public class PacmanPowerUpRuleAction extends GameRuleAction {
 
     @Override
-    public boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject) {
+    public boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject1, IGameObject gameObject2) {
         log.debug("Executing PacmanPowerUpRuleAction rule action");
-        playerSpeedUp(gameObject);
+        playerSpeedUp(gameObject1);
         playerScoreUp(gameContext);
         ghostsSpeedDown(gameContext);
         setPacmanPowerUpContext(gameContext);
@@ -35,7 +35,7 @@ public class PacmanPowerUpRuleAction extends GameRuleAction {
     private void createTransitionToDefaultGameState(GameContext gameContext) {
         AGameEvent transitionEvent = new PacmanStateTransitionEvent();
         transitionEvent.setEventType(GameEventType.ENGINE);
-        transitionEvent.setTimer(1000L);
+        transitionEvent.setTimer(5000L);
         transitionEvent.setGameStates(Arrays.asList("pacmanPowerUp"));
         transitionEvent.setTimeStamp(System.currentTimeMillis());
         gameContext.addEvent(transitionEvent);
@@ -47,7 +47,7 @@ public class PacmanPowerUpRuleAction extends GameRuleAction {
     }
 
     private void playerSpeedUp(IGameObject gameObject) {
-        gameObject.increaseSpeedFactor(5.0);
+        gameObject.increaseSpeedFactor(1.0);
     }
 
     private void playerScoreUp(GameContext gameContext) {

@@ -24,6 +24,12 @@ public class MinimumDistance {
         return calculateMinimumDistance(distances, p1, p2, searchRadius);
     }
 
+    public static List<String> calculateMinimumDistanceFixedRadius(int [][] distances, Position p1, Position p2, int radius) {
+        initialize(p2, radius);
+        calculateMinimumDistanceRecursive(new ArrayList<>(), distances, p1.getX(), p1.getY());
+        return solution;
+    }
+
     public static List<String> calculateMinimumDistance(int [][] distances, Position p1, Position p2, int radius) {
         initialize(p2, radius);
         while (solution.isEmpty()) {
@@ -69,7 +75,6 @@ public class MinimumDistance {
         // Mark Node as visited
         alreadyVisited.add(x + "," + y);
 
-        log.debug("Calculating minimum distance to destination " + destination + " with already visited: " + alreadyVisited);
         // Check all possible neighbours
         if (!alreadyVisited.contains((x+1) + "," + y)) {
             calculateMinimumDistanceRecursive(new ArrayList<>(alreadyVisited), distances, x + 1, y);

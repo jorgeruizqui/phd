@@ -28,6 +28,8 @@ public class GameRuleDefinition {
     private String type;
     @JacksonXmlProperty(isAttribute = true)
     private String gameState;
+    @JacksonXmlProperty(isAttribute = true)
+    private Boolean fixed;
 
     /**
      * @return Game Rule initialized with Actions
@@ -38,6 +40,7 @@ public class GameRuleDefinition {
             GameRule gameRule = new GameRule();
             gameRule.setName(this.getName());
             gameRule.setType(GameRuleType.fromString(this.getType()));
+            gameRule.setFixed(this.getFixed());
             if (this.getRuleActions() != null) this.getRuleActions().forEach(
                     ra -> gameRule.addRuleAction(ra.toModel()));
 

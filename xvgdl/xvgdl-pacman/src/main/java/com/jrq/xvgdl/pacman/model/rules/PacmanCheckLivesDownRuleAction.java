@@ -18,15 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 public class PacmanCheckLivesDownRuleAction extends GameRuleAction {
 
     @Override
-    public boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject) {
+    public boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject1, IGameObject gameObject2) {
 
-        if (!items(gameContext) || (itemInSamePosition(gameContext, gameObject.getPosition()) && isLastItem(gameContext))) {
+        if (!items(gameContext) || (itemInSamePosition(gameContext, gameObject1.getPosition()) && isLastItem(gameContext))) {
             log.info("Last item caught at the same moment Pacman was caught. Lives won't be down");
         } else {
             gameContext.getCurrentGamePlayer().livesDown();
-            gameObject.setPosition(gameObject.getInitialPosition().getX(),
-                    gameObject.getInitialPosition().getY(),
-                    gameObject.getInitialPosition().getZ());
+//            gameObject1.setPosition(gameObject1.getInitialPosition().getX(),
+//                    gameObject1.getInitialPosition().getY(),
+//                    gameObject1.getInitialPosition().getZ());
+//            gameObject2.setPosition(gameObject2.getInitialPosition().getX(),
+//                gameObject2.getInitialPosition().getY(),
+//                gameObject2.getInitialPosition().getZ());
         }
         return true;
     }

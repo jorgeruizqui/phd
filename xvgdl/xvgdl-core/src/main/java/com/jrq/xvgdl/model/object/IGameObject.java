@@ -13,7 +13,7 @@ import com.jrq.xvgdl.model.object.ai.IGameObjectAI;
 public interface IGameObject {
 
     String getId();
-
+    String getSpriteName();
     String getName();
 
     Integer getInstance();
@@ -42,7 +42,7 @@ public interface IGameObject {
 
     void moveTo(int x, int y, int z);
 
-    void resetMove();
+    void resetMove(IGameObject collisioning);
 
     void updateState(GameContext gameContext);
 
@@ -60,9 +60,10 @@ public interface IGameObject {
 
     void setObjectType(GameObjectType objectType);
 
-    void setSpeedFactor(Double value);
+    void setSpeedFactor(double value);
     void increaseSpeedFactor(Double factorToIncrease);
     void decreaseSpeedFactor(Double factorToDecrease);
     void resetSpeedFactor();
 
+    double getInitialSpeedFactor();
 }

@@ -7,14 +7,13 @@ import com.jrq.xvgdl.generator.strategy.RuleActionStrategy;
 import com.jrq.xvgdl.generator.strategy.RuleActionStrategyFactory;
 import com.jrq.xvgdl.model.rules.GameRuleResultType;
 import com.jrq.xvgdl.model.rules.GameRuleType;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RuleDefinitionGeneratorUtils {
@@ -39,19 +38,19 @@ public class RuleDefinitionGeneratorUtils {
 
         GameRuleDefinition gameRuleDefinition = new GameRuleDefinition();
         gameRuleDefinition.setGameState(DEFAULT_GAME_STATE);
-        gameRuleDefinition.setName(gameRuleTypeName + "-" + UUID.randomUUID().toString().substring(0,5));
+        gameRuleDefinition.setName(gameRuleTypeName + "-" + UUID.randomUUID().toString().substring(0, 5));
         gameRuleDefinition.setType(gameRuleTypeName);
         gameRuleDefinition.setRuleActions(generateGameRuleActions());
+        gameRuleDefinition.setFixed(false);
         return gameRuleDefinition;
     }
 
     public static List<GameRuleActionDefinition> generateGameRuleActions() {
-        
+
         List<GameRuleActionDefinition> gameRuleActionDefinitionList = new ArrayList<>();
         gameRuleActionDefinitionList.add(generateGameRuleAction(objects.get(random.nextInt(objects.size() - 1))));
         gameRuleActionDefinitionList.add(generateGameRuleAction(objects.get(random.nextInt(objects.size() - 1))));
         return gameRuleActionDefinitionList;
-        
     }
 
     public static GameRuleActionDefinition generateGameRuleAction(String objectName) {
@@ -73,11 +72,18 @@ public class RuleDefinitionGeneratorUtils {
     }
 
     private static GameRuleType getRandomRuleType() {
-        return GameRuleType.values()[random.nextInt(GameRuleType.values().length)];
+        GameRuleType generated = GameRuleType.GENERIC;
+        boolean isGenerated = false;
+        while (!isGenerated) {
+            generated = GameRuleType.values()[random.nextInt(GameRuleType.values().length)];
+            if (!GameRuleType.END_CONDITION.equals(generated)) {
+                isGenerated = true;
+            }
+        }
+        return generated;
     }
 
     private static GameRuleResultType getRandomRuleResultType() {
         return GameRuleResultType.values()[random.nextInt(GameRuleResultType.values().length)];
     }
-
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of pacman game -->
+
+<gameDefinition>
+
+  <renderer className="com.jrq.xvgdl.pacman.renderer.PacmanAsciiRenderer"/>
+
+    <map type="2D" sizeX="30" sizeY="28" toroidal="false"
+      generator="com.jrq.xvgdl.pacman.model.map.FileBasedGameMapGenerator"
+      file="/context/geneticprogramming/pacmanMapGeneticProgrammingOriginal.txt">
+    </map>
+<!--  <map type="2D" sizeX="15" sizeY="28" toroidal="false"-->
+<!--    generator="com.jrq.xvgdl.pacman.model.map.FileBasedGameMapGenerator"-->
+<!--    file="/context/geneticprogramming/pacmanMapGeneticProgramming.txt">-->
+<!--  </map>-->
+
+  <players number="1" maxNumber="1" minNumber="1">
+    <player name="pacman" score="0" lives="3" livePercentage="100" speedFactor="1.0d"
+      ai="com.jrq.xvgdl.pacman.model.object.ai.PacmanAI"/>
+  </players>
+
+  <objects>
+    <object name="wall" type="wall" dynamic="false" volatile="false"
+      sizeX="1" sizeY="1"/>
+    <object name="smallDot" type="item" dynamic="false" volatile="true"
+      sizeX="1" sizeY="1"/>
+    <object name="bigDot" type="item" dynamic="false" volatile="true"
+      sizeX="1" sizeY="1"/>
+    <object name="ghost" type="enemy" dynamic="true"
+      volatile="true" size="1,1" speedFactor="1.0d"
+      ai="com.jrq.xvgdl.pacman.model.object.ai.GhostAISimple"/>
+  </objects>
+
+  <rules>
+    <rule name="eatSmallDot" type="collision" gameState="default,pacmanPowerUp" fixed="true">
+      <ruleActions>
+        <ruleAction objectName="pacman" result="scoreUp" value="100"/>
+        <ruleAction objectName="smallDot" result="disappear"/>
+      </ruleActions>
+    </rule>
+
+    <rule name="eatBigDot" type="collision" gameState="default,pacmanPowerUp" fixed="true">
+      <ruleActions>
+        <ruleAction objectName="pacman" value="300" result=""
+          className="com.jrq.xvgdl.pacman.model.rules.PacmanPowerUpRuleAction"/>
+        <ruleAction objectName="bigDot" result="disappear"/>
+      </ruleActions>
+    </rule>
+
+    <rule name="ghostCatchPacmanLivesDown" type="collision" fixed="true">
+      <ruleActions>
+        <ruleAction objectName="pacman" result=""
+          className="com.jrq.xvgdl.pacman.model.rules.PacmanCheckLivesDownRuleAction"/>
+        <ruleAction objectName="ghost" result="initialPosition"/>
+      </ruleActions>
+    </rule>
+
+    <rule name="pacmanCatchGhost" type="collision" gameState="pacmanPowerUp" fixed="true">
+      <ruleActions>
+        <ruleAction objectName="pacman" result="scoreUp" value="1000"/>
+        <ruleAction objectName="ghost" result="initialPosition"/>
+      </ruleActions>
+    </rule>
+    <rule name="pacmanCatchGhostFreezeGhost" type="collision" gameState="pacmanPowerUp"
+      fixed="true">
+      <ruleActions>
+        <ruleAction objectName="pacman" result=""/>
+        <ruleAction objectName="ghost" result="freeze" value="1000"/>
+      </ruleActions>
+    </rule>
+  </rules>
+
+  <endConditions>
+    <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition"
+      value="80000"/>
+    <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
+      objectNames="bigDot,smallDot" winningCondition="true"/>
+    <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>
+  </endConditions>
+
+</gameDefinition>

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class GameRule implements IGameRule {
 
     private String name;
+    private Boolean fixed;
     private GameRuleType type;
     private GameRuleDefinition gameRuleDefinition;
     private List<IGameRuleAction> ruleActions = new ArrayList<>();
@@ -76,7 +77,7 @@ public class GameRule implements IGameRule {
     }
 
     private boolean manageGenericRule(GameContext gameContext) {
-        this.getRuleActions().forEach(ra -> ra.executeGameRuleAction(gameContext, null));
+        this.getRuleActions().forEach(ra -> ra.executeGameRuleAction(gameContext, null, null));
         return true;
     }
 
@@ -103,9 +104,9 @@ public class GameRule implements IGameRule {
                                 + " satisfied for two objects ["
                                 + object1.getId() + ", " + object2.getId() + "]");
                         this.getRuleActionByObjectName(object1.getName()).executeGameRuleAction(
-                                gameContext, object1);
+                                gameContext, object1, object2);
                         this.getRuleActionByObjectName(object2.getName()).executeGameRuleAction(
-                                gameContext, object2);
+                                gameContext, object2, object1);
                     }
                 }
             }

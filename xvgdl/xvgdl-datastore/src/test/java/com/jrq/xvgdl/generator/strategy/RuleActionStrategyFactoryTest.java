@@ -12,6 +12,6 @@ public class RuleActionStrategyFactoryTest extends TestCase {
                 RuleActionStrategyFactory.getStrategies().stream().filter(s -> s instanceof TeletransportStrategy).findFirst().orElse(null);
 
         assertNotNull(strategy);
-        assertEquals(7, RuleActionStrategyFactory.getStrategies().size());
+        assertEquals(14, RuleActionStrategyFactory.getStrategies().size());
     }
 }

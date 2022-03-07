@@ -13,6 +13,8 @@ public interface IGameRule {
 
     String getName();
 
+    Boolean getFixed();
+
     GameRuleType getType();
 
     List<IGameRuleAction> getRuleActions();

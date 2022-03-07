@@ -15,7 +15,7 @@ public class PacmanCheckLivesDownRuleActionTest {
     public void testLivesNotDownWithJustTheLastItemInSamePosition() {
         GameContext mockContext = mockContextItemAndPlayerSamePosition();
 
-        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer());
+        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer(), null);
 
         Assert.assertEquals(1, mockContext.getCurrentGamePlayer().getLives().intValue());
     }
@@ -24,7 +24,7 @@ public class PacmanCheckLivesDownRuleActionTest {
     public void testLivesDownWithJustTheLastItemInDifferentPosition() {
         GameContext mockContext = mockContextItemAndPlayerDifferentPosition();
 
-        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer());
+        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer(), mockContext.getCurrentGamePlayer());
 
         Assert.assertEquals(0, mockContext.getCurrentGamePlayer().getLives().intValue());
     }
@@ -37,7 +37,7 @@ public class PacmanCheckLivesDownRuleActionTest {
         item.setPosition(2, 2, 2);
         mockContext.addObject(item);
 
-        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer());
+        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer(), mockContext.getCurrentGamePlayer());
 
         Assert.assertEquals(0, mockContext.getCurrentGamePlayer().getLives().intValue());
     }
@@ -46,7 +46,7 @@ public class PacmanCheckLivesDownRuleActionTest {
     public void testLivesNotDownWithZeroItem() {
         GameContext mockContext = mockContextNoItems();
 
-        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer());
+        pacmanCheckLivesDownRuleAction.executeGameRuleAction(mockContext, mockContext.getCurrentGamePlayer(), mockContext.getCurrentGamePlayer());
 
         Assert.assertEquals(1, mockContext.getCurrentGamePlayer().getLives().intValue());
     }

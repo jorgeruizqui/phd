@@ -25,6 +25,8 @@ public class GameObjectDefinition {
     @JacksonXmlProperty(isAttribute = true)
     private String name;
     @JacksonXmlProperty(isAttribute = true)
+    private String spriteName;
+    @JacksonXmlProperty(isAttribute = true)
     private String type;
     @JacksonXmlProperty(isAttribute = true)
     private Integer sizeX;
@@ -68,6 +70,7 @@ public class GameObjectDefinition {
         try {
             GameObject gameObject = (GameObject) clazz.getDeclaredConstructor().newInstance();
             gameObject.setName(this.getName());
+            gameObject.setSpriteName(this.getSpriteName());
             gameObject.setInstance(instance);
             gameObject.setIsDynamic(this.getIsDynamic());
             gameObject.setIsVolatile(this.getIsVolatile());

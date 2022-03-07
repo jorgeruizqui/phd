@@ -1,6 +1,5 @@
 package com.jrq.xvgdl.fx;
 
-import com.fasterxml.jackson.databind.deser.impl.PropertyValue;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -8,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class FXRenderer extends Application {
@@ -30,7 +27,7 @@ public class FXRenderer extends Application {
         root.getChildren().add( canvas );
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        Image pacman = new Image( "pacman.png" );
+        Image pacman = new Image("old/pacman.png");
         gc.drawImage(pacman, 300, 200);
 
 /*
