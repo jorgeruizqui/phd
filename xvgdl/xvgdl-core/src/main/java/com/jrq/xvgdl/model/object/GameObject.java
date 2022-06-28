@@ -5,10 +5,9 @@ import com.jrq.xvgdl.engine.GameEngine;
 import com.jrq.xvgdl.model.location.DirectionVector;
 import com.jrq.xvgdl.model.location.Position;
 import com.jrq.xvgdl.model.object.ai.IGameObjectAI;
+import java.util.Random;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Random;
 
 /**
  * Game Object
@@ -20,6 +19,7 @@ import java.util.Random;
 public class GameObject implements IGameObject {
 
     private String name;
+    private String spriteName;
     private Integer instance;
     private Position position = new Position(-1, -1, -1);
     private Position lastPosition = new Position(-1, -1, -1);
@@ -29,8 +29,8 @@ public class GameObject implements IGameObject {
     private Integer sizeY;
     private Integer sizeZ;
     private GameObjectType objectType;
-    private Double speedFactor = 1.0;
-    private Double initialSpeedFactor = 1.0;
+    private double speedFactor = 1.0;
+    private double initialSpeedFactor = 1.0;
     private DirectionVector direction = new DirectionVector(new Position(0, 0, 0));
     private Boolean isDynamic;
     private Boolean isVolatile;
@@ -53,7 +53,7 @@ public class GameObject implements IGameObject {
     }
 
     @Override
-    public void resetMove() {
+    public void resetMove(IGameObject collision) {
         intendedPosition.setX(getPosition().getX());
         intendedPosition.setY(getPosition().getY());
         intendedPosition.setZ(getPosition().getZ());
@@ -84,14 +84,16 @@ public class GameObject implements IGameObject {
     @Override
     public Boolean isLocatedAnyWhereInMap() {
         return (getX() >= 0 && getY() >= 0 && getZ() >= 0) || (getIntendedPosition().getX() >= 0
-                && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
+            && getIntendedPosition().getY() >= 0 && getIntendedPosition().getZ() >= 0);
     }
 
     @Override
     public void updateState(GameContext gameContext) {
         if ((gameContext.getLoopTime() - updatedAt) >= getMySpeedFactorInMilliseconds()) {
 
-            if (updatedAt > 0) applyAI(gameContext);
+            if (updatedAt > 0) {
+                applyAI(gameContext);
+            }
 
             moveBasedOnIntendedPosition(gameContext);
             moveBaseOnDirectionVector(gameContext);
@@ -103,9 +105,9 @@ public class GameObject implements IGameObject {
         if (canMoveToDirectionVectorPosition(gameContext)) {
             if (direction.notZero()) {
                 setPosition(
-                        getX() + direction.getPosition().getX(),
-                        getY() + direction.getPosition().getY(),
-                        getZ() + direction.getPosition().getZ());
+                    getX() + direction.getPosition().getX(),
+                    getY() + direction.getPosition().getY(),
+                    getZ() + direction.getPosition().getZ());
             }
         }
     }
@@ -113,9 +115,9 @@ public class GameObject implements IGameObject {
     private void moveBasedOnIntendedPosition(GameContext gameContext) {
         if (canMoveToIntendedPosition(gameContext)) {
             setPosition(
-                    getIntendedPosition().getX(),
-                    getIntendedPosition().getY(),
-                    getIntendedPosition().getZ());
+                getIntendedPosition().getX(),
+                getIntendedPosition().getY(),
+                getIntendedPosition().getZ());
         }
     }
 
@@ -131,9 +133,9 @@ public class GameObject implements IGameObject {
         boolean canMove = true;
 
         IGameObject objectAtPosition = gameContext.getObjectAt(
-                position.getX(),
-                position.getY(),
-                position.getZ());
+            position.getX(),
+            position.getY(),
+            position.getZ());
         if (objectAtPosition != null && objectAtPosition.getObjectType().equals(GameObjectType.WALL)) {
             canMove = false;
         }
@@ -179,26 +181,27 @@ public class GameObject implements IGameObject {
         cloned.setIsVolatile(getIsVolatile());
         cloned.setSpeedFactor(getSpeedFactor());
         cloned.setInitialSpeedFactor(Double.valueOf(getInitialSpeedFactor()));
+        cloned.setSpriteName(getSpriteName());
         return cloned;
     }
 
     private void clonePositions(GameObject cloned) {
         cloned.setIntendedPosition(
-                getIntendedPosition().getX(),
-                getIntendedPosition().getY(),
-                getIntendedPosition().getZ());
+            getIntendedPosition().getX(),
+            getIntendedPosition().getY(),
+            getIntendedPosition().getZ());
         cloned.setX(getPosition().getX());
         cloned.setY(getPosition().getY());
         cloned.setZ(getPosition().getZ());
         cloned.setLastPosition(
-                new Position(
-                        getLastPosition().getX(),
-                        getLastPosition().getY(),
-                        getLastPosition().getZ()));
+            new Position(
+                getLastPosition().getX(),
+                getLastPosition().getY(),
+                getLastPosition().getZ()));
         cloned.setInitialPosition(
-                getInitialPosition().getX(),
-                getInitialPosition().getY(),
-                getInitialPosition().getZ());
+            getInitialPosition().getX(),
+            getInitialPosition().getY(),
+            getInitialPosition().getZ());
     }
 
     public void setIntendedPosition(int x, int y, int z) {
@@ -213,21 +216,21 @@ public class GameObject implements IGameObject {
         initialPosition.setZ(z);
     }
 
-    private void applyAI(GameContext gameContext) {
+    protected void applyAI(GameContext gameContext) {
         if (ai != null) {
             ai.applyAIonObject(gameContext, this);
         }
     }
 
-    private void setX(int x) {
+    protected void setX(int x) {
         position.setX(x);
     }
 
-    private void setY(int y) {
+    protected void setY(int y) {
         position.setY(y);
     }
 
-    private void setZ(int z) {
+    protected void setZ(int z) {
         position.setZ(z);
     }
 

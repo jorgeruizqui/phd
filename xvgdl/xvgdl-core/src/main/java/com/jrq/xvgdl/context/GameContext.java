@@ -14,6 +14,7 @@ import com.jrq.xvgdl.model.objectives.IGameObjective;
 import com.jrq.xvgdl.model.physics.IGamePhysic;
 import com.jrq.xvgdl.model.rules.IGameRule;
 import com.jrq.xvgdl.util.GameBaseProperties;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +41,7 @@ import java.util.stream.IntStream;
 @Slf4j
 public class GameContext implements Comparable<GameContext> {
 
+    private final String id = UUID.randomUUID().toString();
     public static final String DEFAULT_STATE = "default";
     private GameDefinition gameDefinition = new GameDefinition();
     private final EnumMap<GameObjectType, List<IGameObject>> objectsMap = new EnumMap<>(GameObjectType.class);
@@ -105,15 +107,18 @@ public class GameContext implements Comparable<GameContext> {
         }
 
         if (gc != null) {
+            // TODO JRQ Important not duplicates objects:
             this.addObjects(gc.getObjectsAsList());
             if (gc.getGameMap() != null) {
-                gc.getGameMap().generateMap(this);
+                //gc.getGameMap().generateMap(this);
+                this.gameMap = gc.getGameMap();
             }
             this.addProperties(gc.getGameDefinition().getProperties());
             this.addGameEndConditions(gc.getGameEndConditions());
             this.addEvents(gc.getGameEvents());
             this.addRules(gc.getGameRules());
             this.addGameObjectives(gc.getGameObjectives());
+            this.gameDefinition.setRenderer(gc.getGameDefinition().getRenderer());
             if (gc.getTimeout() > 0) this.setTimeout(gc.getTimeout());
         }
 
@@ -285,7 +290,10 @@ public class GameContext implements Comparable<GameContext> {
      * @param gameObject Game object to be removed.
      */
     public void removeGameObject(IGameObject gameObject) {
-        getObjectsMap().get(gameObject.getObjectType()).removeIf(s -> s.getId().equals(gameObject.getId()));
+        if (gameObject != null) {
+            List<IGameObject> list = getObjectsMap().get(gameObject.getObjectType());
+            if (list != null) list.removeIf(s -> s.getId().equals(gameObject.getId()));
+        }
     }
 
     /**

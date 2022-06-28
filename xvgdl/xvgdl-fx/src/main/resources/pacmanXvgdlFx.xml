@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Definition of pacman game -->
+
+<!--
+The actual pixel dimensions of the screen are 224 x 288,
+Each of the elments are 8x8
+so dividing each value by eight yields a grid that is 28 x 36 tiles in size, each tile occupied
+by one object.
+-->
+<gameDefinition>
+
+  <layout>
+    <component id="gameInfoTop" location="TOP">
+      <contextProperty id="score"/>
+      <contextProperty id="hiScore"/>
+    </component>
+
+    <component id="gameInfoDown" location="DOWN">
+      <contextProperty id="lives"/>
+      <contextProperty id="playerItems"/>
+    </component>
+  </layout>
+
+  <map type="2D" sizeX="28" sizeY="28" toroidal="false"
+    generator="com.jrq.xvgdl.pacman.model.map.FileBasedGameMapGenerator"
+    file="/context/pacmanMap.txt">
+  </map>
+
+  <players number="1" maxNumber="1" minNumber="1">
+    <player name="pacman" score="0" lives="3" livePercentage="100" speedFactor="1.0d"
+      spriteName="pacman19x19.png"/>
+<!--      ai="com.jrq.xvgdl.pacman.model.object.ai.PacmanAI"-->
+<!--    />-->
+  </players>
+
+  <objects>
+    <object name="wall" type="wall" dynamic="false" volatile="false"
+      sizeX="1" sizeY="1" spriteName="wall.png"/>
+    <object name="ghost" type="enemy" dynamic="true"
+      volatile="true" size="1,1" speedFactor="2"
+      ai="com.jrq.xvgdl.pacman.model.object.ai.GhostAI"/>
+    <object name="ghost" type="enemy" dynamic="true"
+      volatile="true" size="1,1" speedFactor="2"
+      ai="com.jrq.xvgdl.pacman.model.object.ai.GhostAI"/>
+    <object name="smallDot" type="item" dynamic="true"
+      volatile="true" size="1,1" spriteName="smalldot10x10.png"/>
+    <object name="bigDot" type="item" dynamic="true"
+      volatile="true" size="1,1" spriteName="bigdot14x14.png"/>
+  </objects>
+
+  <events>
+    <event type="engine" className="com.jrq.xvgdl.model.event.SpawnItemEvent"
+      objectName="ghost" timer="1000000"/>
+  </events>
+
+  <rules>
+    <rule name="wallsNotAllowed" type="collision" gameState="default,pacmanPowerUp">
+      <ruleActions>
+        <ruleAction objectName="pacman" result="cantMove"/>
+        <ruleAction objectName="wall" result=""/>
+      </ruleActions>
+    </rule>
+
+    <rule name="eatSmallDot" type="collision" gameState="default,pacmanPowerUp">
+      <ruleActions>
+        <ruleAction objectName="pacman" result="scoreUp" value="100"/>
+        <ruleAction objectName="smallDot" result="disappear"/>
+      </ruleActions>
+    </rule>
+
+    <rule name="eatBigDot" type="collision" gameState="default,pacmanPowerUp">
+      <ruleActions>
+        <ruleAction objectName="pacman" value="300" result=""
+          className="com.jrq.xvgdl.pacman.model.rules.PacmanPowerUpRuleAction"/>
+        <ruleAction objectName="bigDot" result="disappear"/>
+      </ruleActions>
+    </rule>
+
+    <rule name="ghostCatchPacman" type="collision">
+      <ruleActions>
+        <ruleAction objectName="pacman" result="initialPosition"/>
+        <ruleAction objectName="ghost" result=""/>
+      </ruleActions>
+    </rule>
+
+    <rule name="ghostCatchPacmanLivesDown" type="collision">
+      <ruleActions>
+        <ruleAction objectName="pacman" result="livesDown"/>
+        <ruleAction objectName="ghost" result=""/>
+      </ruleActions>
+    </rule>
+
+    <rule name="pacmanCatchGhost" type="collision" gameState="pacmanPowerUp">
+      <ruleActions>
+        <ruleAction objectName="pacman" result="scoreUp" value="1000"/>
+        <ruleAction objectName="ghost" result="initialPosition"/>
+      </ruleActions>
+    </rule>
+    <rule name="pacmanCatchGhostFreezeGhost" type="collision" gameState="pacmanPowerUp">
+      <ruleActions>
+        <ruleAction objectName="pacman" result=""/>
+        <ruleAction objectName="ghost" result="freeze" value="5000"/>
+      </ruleActions>
+    </rule>
+  </rules>
+
+  <endConditions>
+    <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.TimeoutGameEndCondition"
+      value="150000"/>
+    <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.NoObjectsPresentGameEndCondition"
+      objectNames="bigDot,smallDot" winningCondition="true"/>
+    <!--    <endCondition checkerClass="com.jrq.xvgdl.model.endcondition.LivesZeroGameEndCondition"/>-->
+  </endConditions>
+
+</gameDefinition>

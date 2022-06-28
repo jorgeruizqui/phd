@@ -42,7 +42,7 @@ public class PacmanAI implements IGameObjectAI {
 
         boolean moved = false;
         for (PlayerNextMoveComparator.ItemMovementSolution solution : solutions) {
-            if (solution.getPath().size() >= 1) {
+            if (solution.getPath().size() > 1) {
                 Pair<Integer, Integer> nextNode = solution.getPath().get(1);
                 player.moveTo(nextNode.getLeft(), nextNode.getRight(), player.getPosition().getZ());
                 moved = true;

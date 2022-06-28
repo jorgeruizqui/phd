@@ -1,293 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.jrq.xvgdl</groupId>
-	<version>0.0.1-SNAPSHOT</version>
-	<artifactId>xvgdl-def</artifactId>
-	<packaging>pom</packaging>
+  <groupId>com.jrq.xvgdl</groupId>
+  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>xvgdl-def</artifactId>
+  <packaging>pom</packaging>
 
-	<name>xvgdl-def</name>
-	<description>PHD Doctorate Program University of Malaga: Xml Video Game Description Language implementation</description>
-	<inceptionYear>2017</inceptionYear>
+  <name>xvgdl-def</name>
+  <description>PHD Doctorate Program University of Malaga: Xml Video Game Description Language
+    implementation
+  </description>
+  <inceptionYear>2017</inceptionYear>
 
+  <properties>
 
-	<properties>
+    <!-- Default Properties. Can be overwritten using -D in maven execution -->
+    <xvgdl.version>0.0.1-SNAPSHOT</xvgdl.version>
 
-		<!-- Default Properties. Can be overwritten using -D in maven execution -->
-		<xvgdl.version>0.0.1-SNAPSHOT</xvgdl.version>
+    <!-- Artifact versions -->
+    <log4j.version>1.2.17</log4j.version>
+    <junit.version>4.12</junit.version>
+    <slf4j.version>1.7.21</slf4j.version>
+    <apache.commons.version>3.6</apache.commons.version>
+    <lombok.version>1.18.10</lombok.version>
+    <!-- Build definitions -->
 
-		<!-- Artifact versions -->
-		<log4j.version>1.2.17</log4j.version>
-		<junit.version>4.13.1</junit.version>
-		<slf4j.version>1.7.21</slf4j.version>
-		<apache.commons.version>3.6</apache.commons.version>
-		<lombok.version>1.18.10</lombok.version>
-		<!-- Build definitions -->
+    <!-- Folder where to send Jar files once they are generated -->
+    <default.build.output.home.dir>../build</default.build.output.home.dir>
+    <build.output.home.dir>${default.build.output.home.dir}</build.output.home.dir>
 
-		<!-- Folder where to send Jar files once they are generated -->
-		<default.build.output.home.dir>../build</default.build.output.home.dir>
-		<build.output.home.dir>${default.build.output.home.dir}</build.output.home.dir>
+    <!-- Folder where to send Lib Jar files once they are generated -->
+    <build.output.default.lib.dir>${build.output.home.dir}</build.output.default.lib.dir>
+    <build.output.lib.dir>${build.output.default.lib.dir}</build.output.lib.dir>
 
-		<!-- Folder where to send Lib Jar files once they are generated -->
-		<build.output.default.lib.dir>${build.output.home.dir}</build.output.default.lib.dir>
-		<build.output.lib.dir>${build.output.default.lib.dir}</build.output.lib.dir>
+    <!-- This property is used in Deployment. By default, classpath will include
+      versions and SNAPSHOTS in their JAR names. If this property is set to "custom",
+      then classpath in MANIFEST will only include JAR names (without versions
+      an SNAPSHOTS -->
+    <default.custom.layout.type>custom</default.custom.layout.type>
+    <custom.layout.type>${default.custom.layout.type}</custom.layout.type>
 
-		<!-- This property is used in Deployment. By default, classpath will include
-			versions and SNAPSHOTS in their JAR names. If this property is set to "custom",
-			then classpath in MANIFEST will only include JAR names (without versions
-			an SNAPSHOTS -->
-		<default.custom.layout.type>custom</default.custom.layout.type>
-		<custom.layout.type>${default.custom.layout.type}</custom.layout.type>
+    <!-- Other properties -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- Other properties -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-	</properties>
+  <!-- General dependency definition. All dependencies declares within this
+    node can be referenced by this POM or by its child modules' POMs without
+    declaring the version. -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Project dependencies -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.dataformat</groupId>
+        <artifactId>jackson-dataformat-xml</artifactId>
+        <version>2.10.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jrq.xvgdl</groupId>
+        <artifactId>xvgdl-core</artifactId>
+        <version>${xvgdl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jrq.xvgdl</groupId>
+        <artifactId>xvgdl-datastore</artifactId>
+        <version>${xvgdl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jrq.xvgdl</groupId>
+        <artifactId>xvgdl-pacman</artifactId>
+        <version>${xvgdl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jrq.xvgdl</groupId>
+        <artifactId>xvgdl-clashroyale</artifactId>
+        <version>${xvgdl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jrq.xvgdl</groupId>
+        <artifactId>xvgdl-space-invaders</artifactId>
+        <version>${xvgdl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-bom</artifactId>
+        <version>1.11.837</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>commons-net</groupId>
+        <artifactId>commons-net</artifactId>
+        <version>3.6</version>
+      </dependency>
 
-	<!-- General dependency definition. All dependencies declares within this
-		node can be referenced by this POM or by its child modules' POMs without
-		declaring the version. -->
-	<dependencyManagement>
-		<dependencies>
-			<!-- Project dependencies -->
-			<dependency>
-				<groupId>com.fasterxml.jackson.dataformat</groupId>
-				<artifactId>jackson-dataformat-xml</artifactId>
-				<version>2.10.2</version>
-			</dependency>
-			<dependency>
-				<groupId>com.jrq.xvgdl</groupId>
-				<artifactId>xvgdl-core</artifactId>
-				<version>${xvgdl.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.jrq.xvgdl</groupId>
-				<artifactId>xvgdl-pacman</artifactId>
-				<version>${xvgdl.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.jrq.xvgdl</groupId>
-				<artifactId>xvgdl-clashroyale</artifactId>
-				<version>${xvgdl.version}</version>
-			</dependency>
-            <dependency>
-                <groupId>com.jrq.xvgdl</groupId>
-                <artifactId>xvgdl-space-invaders</artifactId>
-                <version>${xvgdl.version}</version>
-            </dependency>
+      <!-- Third-party dependencies -->
+      <dependency>
+        <groupId>com.1stleg</groupId>
+        <artifactId>jnativehook</artifactId>
+        <version>2.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${apache.commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.reflections</groupId>
+        <artifactId>reflections</artifactId>
+        <version>0.9.12</version>
+      </dependency>
+      <!-- Project Lombok -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>3.3.3</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-			<!-- Third-party dependencies -->
-			<dependency>
-				<groupId>com.1stleg</groupId>
-				<artifactId>jnativehook</artifactId>
-				<version>2.1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${apache.commons.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>es.indra.eplatform</groupId>
-				<artifactId>eplatform-commons</artifactId>
-				<version>${eplatform.commons.version}</version>
-			</dependency>
-			<!-- Project Lombok -->
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<version>3.3.3</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+  <!-- Add here dependencies affecting all modules -->
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+  </dependencies>
 
-	<!-- Add here dependencies affecting all modules -->
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-	</dependencies>
+  <build>
 
-	<build>
+    <!-- Plugins declared here can be reused by child POM's without taking
+      care of version, if any is reused you may want to configured it. -->
+    <pluginManagement>
+      <plugins>
+        <!-- org.projectlombok -->
+        <plugin>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok-maven-plugin</artifactId>
+          <version>${lombok.version}.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
-		<!-- Plugins declared here can be reused by child POM's without taking
-			care of version, if any is reused you may want to configured it. -->
-		<pluginManagement>
-			<plugins>
-				<!-- org.projectlombok -->
-				<plugin>
-					<groupId>org.projectlombok</groupId>
-					<artifactId>lombok-maven-plugin</artifactId>
-					<version>${lombok.version}.0</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+    <plugins>
 
-		<plugins>
+      <!-- Compile specific config -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+          <encoding>ISO-8859-1</encoding>
+          <meminitial>128m</meminitial>
+          <maxmem>512m</maxmem>
+        </configuration>
+      </plugin>
 
-			<!-- Compile specific config -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
-				<configuration>
-					<source>11</source>
-					<target>11</target>
-					<encoding>ISO-8859-1</encoding>
-					<meminitial>128m</meminitial>
-					<maxmem>512m</maxmem>
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-			<!-- Allow jar package -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
+      <!-- Allow jar package -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-			</plugin>
+      <!-- Allow execute junits -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <maxmem>512m</maxmem>
+        </configuration>
+      </plugin>
 
+      <!-- Deployment plugin. Just declare version -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
 
-			<!-- Allow execute junits -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<maxmem>512m</maxmem>
-				</configuration>
-			</plugin>
+    </plugins>
+  </build>
 
-			<!-- Deployment plugin. Just declare version -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.5</version>
-			</plugin>
+  <!-- Other info, just for documentation purpose -->
+  <organization>
+    <name>JOR</name>
+    <url>https://github.com/jorgeruizqui</url>
+  </organization>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/lib</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+  <!-- Developers -->
+  <developers>
 
-		</plugins>
-	</build>
+    <developer>
+      <id>jorgeruizqui</id>
+      <name>Jorge R. Quinones</name>
+      <email>jorge.ruiz.qui@gmail.com</email>
+      <organization>PHD</organization>
+      <roles>
+        <role>Technical Lead</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
 
-	<!-- Other info, just for documentation purpose -->
-	<organization>
-		<name>JOR</name>
-		<url>https://github.com/jorgeruizqui</url>
-	</organization>
+  </developers>
 
-	<!-- Developers -->
-	<developers>
+  <!-- Contributors -->
+  <contributors>
+  </contributors>
 
-		<developer>
-			<id>jorgeruizqui</id>
-			<name>Jorge R. Quinones</name>
-			<email>jorge.ruiz.qui@gmail.com</email>
-			<organization>PHD</organization>
-			<roles>
-				<role>Technical Lead</role>
-			</roles>
-			<timezone>+1</timezone>
-		</developer>
+  <issueManagement>
+  </issueManagement>
 
-	</developers>
+  <ciManagement>
+  </ciManagement>
 
-	<!-- Contributors -->
-	<contributors>
-	</contributors>
+  <scm>
+  </scm>
 
-	<issueManagement>
-	</issueManagement>
+  <profiles>
 
-	<ciManagement>
-	</ciManagement>
+    <profile>
 
-	<scm>
-	</scm>
+      <id>XVDGL</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>../xvgdl-core</module>
+        <module>../xvgdl-pacman</module>
+        <module>../xvgdl-space-invaders</module>
+        <module>../xvgdl-breakout</module>
+        <module>../xvgdl-tetris</module>
+        <module>../xvgdl-clashroyale</module>
+        <module>../xvgdl-datastore</module>
+        <module>../xvgdl-fx</module>
+      </modules>
 
-	<profiles>
+      <properties>
+      </properties>
 
-		<profile>
+      <repositories>
+      </repositories>
 
-			<id>XVDGL</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>../xvgdl-core</module>
-				<module>../xvgdl-pacman</module>
-                <module>../xvgdl-space-invaders</module>
-                <module>../xvgdl-breakout</module>
-				<module>../xvgdl-tetris</module>
-				<module>../xvgdl-clashroyale</module>
-			</modules>
+      <!-- Allow remote artifact deployment into Nexus repository -->
+      <distributionManagement>
+      </distributionManagement>
+    </profile>
 
-			<properties>
-			</properties>
-
-			<repositories>
-			</repositories>
-
-			<!-- Allow remote artifact deployment into Nexus repository -->
-			<distributionManagement>
-			</distributionManagement>
-		</profile>
-
-	</profiles>
-
+  </profiles>
 </project>

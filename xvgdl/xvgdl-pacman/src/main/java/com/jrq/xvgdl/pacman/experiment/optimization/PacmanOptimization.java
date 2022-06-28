@@ -35,7 +35,7 @@ public class PacmanOptimization {
     private static final String BASE_CONFIGURATION = "/context/optimization/pacmanXvgdlOptimization.xml";
     private static final int MAP_SIZE_X = 15;
     private static final int MAP_SIZE_Y = 28;
-    private static final int MAXIMUM_EVALUATIONS = 580;
+    private static final int MAXIMUM_EVALUATIONS = 1;
 
     private PacmanExperimentContextBuilder pacmanExperimentContextBuilder;
     private PacmanOptimizationSolution bestSolution;

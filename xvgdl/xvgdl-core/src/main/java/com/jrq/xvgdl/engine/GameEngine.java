@@ -11,14 +11,13 @@ import com.jrq.xvgdl.model.object.IGameObject;
 import com.jrq.xvgdl.model.rules.GameRuleType;
 import com.jrq.xvgdl.model.rules.IGameRule;
 import com.jrq.xvgdl.renderer.IGameRenderer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Game engine
@@ -36,7 +35,7 @@ public final class GameEngine {
     /**
      * Default value for MS_PER_FRAME. This value means that the game is rendered at 60f/sec
      */
-    private static final long DEFAULT_MS_PER_FRAME = 200;
+    private static final long DEFAULT_MS_PER_FRAME = 100;
 
     /**
      * Game speed factor of 1.0 means the objects with speed factor 1 will move 1 time per second.
@@ -99,7 +98,9 @@ public final class GameEngine {
     private void initializeGameRenderer() {
         if (gameContext.getGameDefinition().getRenderer() != null) {
             this.gameRenderer = gameContext.getGameDefinition().getRenderer().toModel();
-            if (this.gameRenderer != null) this.gameRenderer.initializeRenderer(this.gameContext);
+            if (this.gameRenderer != null) {
+                this.gameRenderer.initializeRenderer(this.gameContext);
+            }
         }
     }
 
@@ -108,7 +109,7 @@ public final class GameEngine {
         long start = System.currentTimeMillis();
         gameContext.loadGameContext(gc, configFile);
         long end = System.currentTimeMillis();
-        log.debug("Context has been created in " + (end - start)+ " ms.");
+        log.debug("Context has been created in " + (end - start) + " ms.");
     }
 
     private void addKeyboardListener() throws XvgdlException {
@@ -200,12 +201,11 @@ public final class GameEngine {
         } catch (NativeHookException e) {
             log.error("Exception Unregistering Native Hook:" + e.getMessage(), e);
         }
-
     }
 
     private long getMillisecondsPerFrame() {
         return gameContext.getGameDefinition().getProperties().getLongValue(
-                MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME);
+            MS_PER_FRAME_KEY, DEFAULT_MS_PER_FRAME);
     }
 
     private long timeToProcessGameLoop(long loopStartTime) {
@@ -259,6 +259,7 @@ public final class GameEngine {
                 boolean ruleResult = rule.applyGameRule(getGameContext());
 
                 if (ruleResult && rule.getType().equals(GameRuleType.END_CONDITION)) {
+                    log.debug("Game Finished by an EndCondition Rule:" + rule);
                     this.gameFinished = true;
                 }
             }

@@ -23,5 +23,5 @@ public interface IGameRuleAction {
     Double getValueAsDouble();
     Integer getValueAsInteger();
 
-    boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject);
+    boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject1, IGameObject gameObject2);
 }

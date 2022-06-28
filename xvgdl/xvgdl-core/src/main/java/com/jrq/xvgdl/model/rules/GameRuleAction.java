@@ -28,8 +28,8 @@ public class GameRuleAction implements IGameRuleAction {
     private String value;
 
     @Override
-    public boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject) {
-        return GameRuleUtils.executeResult(gameContext, gameObject, this);
+    public boolean executeGameRuleAction(GameContext gameContext, IGameObject gameObject1, IGameObject gameObject2) {
+        return GameRuleUtils.executeResult(gameContext, gameObject1, gameObject2, this);
     }
 
     @Override
