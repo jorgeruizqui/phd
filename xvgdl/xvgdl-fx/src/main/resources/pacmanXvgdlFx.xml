@@ -29,19 +29,14 @@ by one object.
   <players number="1" maxNumber="1" minNumber="1">
     <player name="pacman" score="0" lives="3" livePercentage="100" speedFactor="1.0d"
       spriteName="pacman19x19.png"/>
-<!--      ai="com.jrq.xvgdl.pacman.model.object.ai.PacmanAI"-->
-<!--    />-->
   </players>
 
   <objects>
     <object name="wall" type="wall" dynamic="false" volatile="false"
       sizeX="1" sizeY="1" spriteName="wall.png"/>
     <object name="ghost" type="enemy" dynamic="true"
-      volatile="true" size="1,1" speedFactor="2"
-      ai="com.jrq.xvgdl.pacman.model.object.ai.GhostAI"/>
-    <object name="ghost" type="enemy" dynamic="true"
-      volatile="true" size="1,1" speedFactor="2"
-      ai="com.jrq.xvgdl.pacman.model.object.ai.GhostAI"/>
+      volatile="true" size="1,1" speedFactor="2" spriteName="ghost19x18.png"/>
+    <!--      ai="com.jrq.xvgdl.pacman.model.object.ai.GhostAI"/>-->
     <object name="smallDot" type="item" dynamic="true"
       volatile="true" size="1,1" spriteName="smalldot10x10.png"/>
     <object name="bigDot" type="item" dynamic="true"

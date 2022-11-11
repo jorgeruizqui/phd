@@ -127,6 +127,7 @@ public class FXGameObject extends GameObject {
 
     private static void initializeSprite(FXGameContext fxGameContext, String spriteName, FXGameObject fxGameObject) {
         try {
+            log.info("INITIALIZING SPRITE: {} for {}", spriteName, fxGameObject.getName());
             fxGameObject.setSpriteName(spriteName);
             Image spriteImage = new Image(fxGameObject.getSpriteName());
             fxGameObject.setSprite(Sprite.builder().image(spriteImage)

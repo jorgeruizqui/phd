@@ -36,11 +36,21 @@ public class FXGameEngine extends Application {
     public void start(Stage stage) throws Exception {
         this.stage = stage;
         Group root = new Group();
-        // TODO Check map properties in XML
-        this.scene = new Scene(root, 30 * 28 + 50, 30 * 28 + 50);
+
+        this.scene = new Scene(root, 30 * 28, 30 * 28 + 50);
+
+        GridPane gridPane = new GridPane();
         Canvas canvas = new Canvas(30 * 28, 30 * 28);
-        root.getChildren().add(canvas);
+        //root.getChildren().add(canvas);
         graphicsContext = canvas.getGraphicsContext2D();
+        gridPane.add(canvas, 0, 0);
+
+        Label label = new Label("Lives: 5 --  Score: 100");
+        gridPane.add(label, 0, 1);
+        Label label2 = new Label("Timeout: 80");
+        gridPane.add(label2, 0, 2);
+
+        root.getChildren().add(gridPane);
 
         initializeFxGameEngine("/pacmanXvgdlFx.xml");
 
@@ -58,7 +68,7 @@ public class FXGameEngine extends Application {
         gridPane.add(label, 0, 0);
         root.getChildren().add(gridPane);
 
-        this.scene = new Scene(root, 30 * 28 + 50, 30 * 28 + 50);
+        this.scene = new Scene(root, 30 * 28, 30 * 28 + 50);
         this.stage.setScene(this.scene);
         this.stage.show();
     }

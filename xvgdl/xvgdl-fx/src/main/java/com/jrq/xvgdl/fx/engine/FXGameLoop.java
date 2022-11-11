@@ -53,7 +53,7 @@ public class FXGameLoop extends AnimationTimer {
 
     private void render() {
         // TODO size base on map properties...
-        fxGameContext.getGraphicsContext().setFill(Color.grayRgb(40));
+        fxGameContext.getGraphicsContext().setFill(Color.grayRgb(255));
         fxGameContext.getGraphicsContext().fillRect(0, 0,
             fxGameContext.getSpriteFactors() * 28,
             fxGameContext.getSpriteFactors() * 28);
